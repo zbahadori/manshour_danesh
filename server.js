@@ -1,18 +1,17 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const path = require('path');
-const logger = require('./app/middleware/logger');
+const path = require("path");
+const logger = require("./app/middleware/logger");
 
 const app = express();
-
 
 // Init middleware
 // app.use(logger);
 
-//CORS middleware 
+//CORS middleware
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "http://localhost:8081",
 };
 app.use(cors(corsOptions));
 
@@ -26,12 +25,12 @@ const db = require("./app/models");
 db.mongoose
   .connect(db.url, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
   .then(() => {
     console.log("Connected to the database!");
   })
-  .catch(err => {
+  .catch((err) => {
     console.log("Cannot connect to the database!", err);
     process.exit();
   });
@@ -41,7 +40,9 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
 });
 
-require("./app/routes/turorial.routes")(app);
+//Routes
+require("./app/routes/UserRouters")(app);
+require("./app/routes/AuthRoutes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
