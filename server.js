@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require('path');
-const logger = require('./middleware/logger');
+const logger = require('./app/middleware/logger');
 
 const app = express();
 
