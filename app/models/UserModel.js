@@ -1,9 +1,34 @@
 module.exports = (mongoose) => {
   var schema = mongoose.Schema(
     {
-      username: String,
-      password: String,
-      status: Boolean,
+      name: {
+        type: String,
+        required: true,
+        min: 2,
+        max: 255,
+      },
+      username: {
+        type: String,
+        required: true,
+        min: 6,
+        max: 255,
+      },
+      email: {
+        type: String,
+        required: true,
+        min: 6,
+        max: 255,
+      },
+      password: {
+        type: String,
+        required: true,
+        min: 6,
+        max: 255,
+      },
+      status: {
+        type: Boolean,
+        required: true,
+      },
     },
     { timestamps: true }
   );

@@ -1,3 +1,4 @@
 module.exports = {
-  url: "mongodb://localhost:27017/manshour",
+  url: process.env.DB_CONNECT,
+  origin: process.env.ORIGIN_URL,
 };

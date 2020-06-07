@@ -1,8 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const dotenv = require("dotenv");
 const path = require("path");
+const corsOrigin = require("./app/config/AppConfig");
 const AuthMiddleware = require("./app/middleware/AuthMiddleware");
+
+dotenv.config();
 
 const app = express();
 
@@ -11,7 +15,7 @@ app.use(AuthMiddleware);
 
 //CORS middleware
 var corsOptions = {
-  origin: "http://localhost:8081",
+  origin: corsOrigin,
 };
 app.use(cors(corsOptions));
 
@@ -21,6 +25,7 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//Database Connection
 const db = require("./app/models");
 db.mongoose
   .connect(db.url, {
@@ -37,7 +42,7 @@ db.mongoose
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "To our application" });
 });
 
 //Routes

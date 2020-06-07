@@ -1,19 +1,37 @@
 const db = require("../models");
 const User = db.users;
-
+const {
+  registerValidation,
+  loginValidation,
+} = require("../validations/validation");
 // Create and Save a new User
 exports.create = (req, res) => {
-  // Validate request
-  if (!req.body.username || !req.body.password) {
-    res.status(400).send({ message: "Username or Password can not be empty!" });
-    return;
-  }
+  //Validate with joi
+  const { error } = registerValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  //Check if email exists
+  User.findOne({
+    email: req.body.email,
+  })
+    .then((data) => {
+      return res.status(400).send({
+        message: "This email has been regestered before.",
+      });
+    })
+    .catch((err) => {
+      return res.status(400).send({
+        message: err.message || "Some error occurred while creating the User.",
+      });
+    });
 
   // Create a User
   const user = new User({
+    name: req.body.name,
     username: req.body.username,
+    email: req.body.email,
     password: req.body.password,
-    status: req.body.status ? req.body.status : false,
+    status: req.body.status ? true : false,
   });
 
   // Save User in the database
@@ -23,7 +41,7 @@ exports.create = (req, res) => {
       res.send(data);
     })
     .catch((err) => {
-      res.status(500).send({
+      res.status(400).send({
         message: err.message || "Some error occurred while creating the User.",
       });
     });
