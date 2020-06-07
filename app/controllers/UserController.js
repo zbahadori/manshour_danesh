@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const request = require("request");
 var bcrypt = require("bcryptjs");
 const db = require("../models");
 const User = db.users;
@@ -79,6 +80,25 @@ exports.findAll = (req, res) => {
 const hashpassword = async (password) => {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
+};
+
+const sendSms = () => {
+  axios({
+    url: process.env.SMS_URL,
+    method: "post",
+    data: {
+      op: "send",
+      uname: "YOUR_USERNAME",
+      pass: "YOUR_PASSWORD",
+      message: "salam",
+      from: "1000XXX",
+      to: ["936xxxxx", "912xxxx"],
+    },
+  })
+    .then((data) => {
+      return data;
+    })
+    .catch((e) => e);
 };
 
 // Find all published Users
