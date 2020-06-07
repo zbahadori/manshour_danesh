@@ -1,5 +1,4 @@
-const db = require("../models");
-const Tutorial = db.tutorials;
+const AuthConfig = require("../config/AuthConfig");
 
 // Create and Save a new Tutorial
 exports.login = (req, res) => {
@@ -8,6 +7,60 @@ exports.login = (req, res) => {
     res.status(400).send({ message: "Content can not be empty!" });
     return;
   }
+
+  // INstantiating the express-jwt middleware
+  const jwtMW = AuthConfig.secret;
+
+  // MOCKING DB just for test
+  let users = [
+    {
+      id: 1,
+      username: "test",
+      password: "asdf123",
+    },
+    {
+      id: 2,
+      username: "test2",
+      password: "asdf12345",
+    },
+  ];
+
+  // LOGIN ROUTE
+  app.post("/login", (req, res) => {
+    const { username, password } = req.body;
+    // Use your DB ORM logic here to find user and compare password
+    for (let user of users) {
+      // I am using a simple array users which i made above
+      if (
+        username == user.username &&
+        password ==
+          user.password /* Use your password hash checking logic here !*/
+      ) {
+        //If all credentials are correct do this
+        let token = jwt.sign(
+          { id: user.id, username: user.username },
+          "keyboard cat 4 ever",
+          { expiresIn: 129600 }
+        ); // Sigining the token
+        res.json({
+          sucess: true,
+          err: null,
+          token,
+        });
+        break;
+      } else {
+        res.status(401).json({
+          sucess: false,
+          token: null,
+          err: "Username or password is incorrect",
+        });
+      }
+    }
+  });
+
+  app.get("/", jwtMW /* Using the express jwt MW here */, (req, res) => {
+    res.send("You are authenticated"); //Sending some response when authenticated
+  });
 
   //   // Create a Tutorial
   //   const tutorial = new Tutorial({
@@ -28,118 +81,4 @@ exports.login = (req, res) => {
   //           err.message || "Some error occurred while creating the Tutorial."
   //       });
   //     });
-};
-
-// Retrieve all Tutorials from the database.
-exports.findAll = (req, res) => {
-  const title = req.query.title;
-  var condition = title
-    ? { title: { $regex: new RegExp(title), $options: "i" } }
-    : {};
-
-  Tutorial.find(condition)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials.",
-      });
-    });
-};
-
-// Find a single Tutorial with an id
-exports.findOne = (req, res) => {
-  const id = req.params.id;
-
-  Tutorial.findById(id)
-    .then((data) => {
-      if (!data)
-        res.status(404).send({ message: "Not found Tutorial with id " + id });
-      else res.send(data);
-    })
-    .catch((err) => {
-      res
-        .status(500)
-        .send({ message: "Error retrieving Tutorial with id=" + id });
-    });
-};
-
-// Update a Tutorial by the id in the request
-exports.update = (req, res) => {
-  if (!req.body) {
-    return res.status(400).send({
-      message: "Data to update can not be empty!",
-    });
-  }
-
-  const id = req.params.id;
-
-  Tutorial.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found!`,
-        });
-      } else res.send({ message: "Tutorial was updated successfully." });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error updating Tutorial with id=" + id,
-      });
-    });
-};
-
-// Delete a Tutorial with the specified id in the request
-exports.delete = (req, res) => {
-  const id = req.params.id;
-
-  Tutorial.findByIdAndRemove(id, { useFindAndModify: false })
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message: `Cannot delete Tutorial with id=${id}. Maybe Tutorial was not found!`,
-        });
-      } else {
-        res.send({
-          message: "Tutorial was deleted successfully!",
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Could not delete Tutorial with id=" + id,
-      });
-    });
-};
-
-// Delete all Tutorials from the database.
-exports.deleteAll = (req, res) => {
-  Tutorial.deleteMany({})
-    .then((data) => {
-      res.send({
-        message: `${data.deletedCount} Tutorials were deleted successfully!`,
-      });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all tutorials.",
-      });
-    });
-};
-
-// Find all published Tutorials
-exports.findAllPublished = (req, res) => {
-  Tutorial.find({ published: true })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials.",
-      });
-    });
 };

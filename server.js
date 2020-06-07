@@ -2,12 +2,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
-const logger = require("./app/middleware/logger");
+const AuthMiddleware = require("./app/middleware/AuthMiddleware");
 
 const app = express();
 
-// Init middleware
-// app.use(logger);
+// Init Auth middleware
+app.use(AuthMiddleware);
 
 //CORS middleware
 var corsOptions = {
