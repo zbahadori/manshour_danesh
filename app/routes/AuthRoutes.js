@@ -3,8 +3,9 @@ module.exports = (app) => {
 
   var router = require("express").Router();
 
-  // Create a new Tutorial
+  // Main Routes
   router.post("/login", Auth.login);
+  router.post("/register", Auth.register);
 
   app.use("/api/auth", router);
 

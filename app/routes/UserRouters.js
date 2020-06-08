@@ -1,20 +1,20 @@
 module.exports = (app) => {
   const users = require("../controllers/UserController.js");
-  const jwtVerify = require("../middleware/JWTVerify");
+  const jwtMiddleware = require("../middleware/JWTMiddleware");
 
   var router = require("express").Router();
 
   // Create a new User
-  router.post("/", users.create);
+  // router.post("/", users.create);
 
-  // Retrieve all Users
-  router.get("/", users.findAll);
+  // // Retrieve all Users
+  // router.get("/", users.findAll);
 
-  // Retrieve all published Users
-  router.get("/published", jwtVerify, users.findAllPublished);
+  // // Retrieve all published Users
+  // router.get("/published", jwtVerify, users.findAllPublished);
 
-  // Retrieve a single User with id
-  router.post("/login", users.login);
+  // // Retrieve a single User with id
+  // router.post("/login", users.login);
 
   // // Update a User with id
   // router.put("/:id", users.update);

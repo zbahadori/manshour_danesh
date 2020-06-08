@@ -1,84 +1,108 @@
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const db = require("../models");
 const AuthConfig = require("../config/AuthConfig");
+const User = db.users;
 
-// Create and Save a new Tutorial
-exports.login = (req, res) => {
-  // Validate request
-  if (!req.body.username || !req.body.password) {
-    res.status(400).send({ message: "Content can not be empty!" });
-    return;
-  }
+const {
+  registerValidation,
+  loginValidation,
+} = require("../validations/validation");
 
-  // INstantiating the express-jwt middleware
-  const jwtMW = AuthConfig.secret;
+// Loggin user in
+exports.login = async (req, res) => {
+  //Validate with joi
+  const { error } = loginValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
-  // MOCKING DB just for test
-  let users = [
-    {
-      id: 1,
-      username: "test",
-      password: "asdf123",
-    },
-    {
-      id: 2,
-      username: "test2",
-      password: "asdf12345",
-    },
-  ];
+  //check if email is correct
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) res.status(400).send("No user found with this email address.");
 
-  // LOGIN ROUTE
-  app.post("/login", (req, res) => {
-    const { username, password } = req.body;
-    // Use your DB ORM logic here to find user and compare password
-    for (let user of users) {
-      // I am using a simple array users which i made above
-      if (
-        username == user.username &&
-        password ==
-          user.password /* Use your password hash checking logic here !*/
-      ) {
-        //If all credentials are correct do this
-        let token = jwt.sign(
-          { id: user.id, username: user.username },
-          "keyboard cat 4 ever",
-          { expiresIn: 129600 }
-        ); // Sigining the token
-        res.json({
-          sucess: true,
-          err: null,
-          token,
-        });
-        break;
-      } else {
-        res.status(401).json({
-          sucess: false,
-          token: null,
-          err: "Username or password is incorrect",
-        });
-      }
-    }
+  //compare the password
+  const verifyPassword = await bcrypt.compare(req.body.password, user.password);
+  if (!verifyPassword) res.status(400).send("Password is incorrect.");
+
+  const token = jwt.sign({ email: user.email }, AuthConfig.secret, {
+    expiresIn: 129600,
   });
-
-  app.get("/", jwtMW /* Using the express jwt MW here */, (req, res) => {
-    res.send("You are authenticated"); //Sending some response when authenticated
+  res.status(200).header("authorization", "JWT_TOKEN").json({
+    success: true,
+    error: false,
+    token,
   });
+};
 
-  //   // Create a Tutorial
-  //   const tutorial = new Tutorial({
-  //     title: req.body.title,
-  //     description: req.body.description,
-  //     published: req.body.published ? req.body.published : false
-  //   });
+// Register User
+exports.register = (req, res) => {
+  //Validate with joi
+  const { error } = registerValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
-  //   // Save Tutorial in the database
-  //   tutorial
-  //     .save(tutorial)
-  //     .then(data => {
-  //       res.send(data);
-  //     })
-  //     .catch(err => {
-  //       res.status(500).send({
-  //         message:
-  //           err.message || "Some error occurred while creating the Tutorial."
-  //       });
-  //     });
+  //Hash password
+  hashpassword(req.body.password).then((hashedpassword) => {
+    //Check if email exists
+    User.findOne({
+      email: req.body.email,
+    })
+      .then((data) => {
+        if (data)
+          return res.status(400).send({
+            message: "This email has been regestered before.",
+          });
+      })
+      .catch((err) => {
+        return res.status(400).send({
+          message:
+            err.message || "Some error occurred while creating the User.",
+        });
+      });
+
+    // Create a User
+    const user = new User({
+      name: req.body.name,
+      username: req.body.username,
+      email: req.body.email,
+      password: hashedpassword,
+      status: req.body.status ? true : false,
+    });
+
+    // Save User in the database
+    user
+      .save(user)
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message:
+            err.message || "Some error occurred while creating the User.",
+        });
+      });
+  });
+};
+
+// Find a single User with an id
+const hashpassword = async (password) => {
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(password, salt);
+};
+
+const sendSms = () => {
+  axios({
+    url: process.env.SMS_URL,
+    method: "post",
+    data: {
+      op: "send",
+      uname: "YOUR_USERNAME",
+      pass: "YOUR_PASSWORD",
+      message: "salam",
+      from: "1000XXX",
+      to: ["936xxxxx", "912xxxx"],
+    },
+  })
+    .then((data) => {
+      return data;
+    })
+    .catch((e) => e);
 };
