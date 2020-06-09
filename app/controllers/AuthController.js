@@ -7,7 +7,7 @@ const User = db.users;
 const {
   registerValidation,
   loginValidation,
-} = require("../validations/validation");
+} = require("../validations/AuthValidations");
 
 // Loggin user in
 exports.login = async (req, res) => {
@@ -64,7 +64,6 @@ exports.register = (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: hashedpassword,
-      status: req.body.status ? true : false,
     });
 
     // Save User in the database

@@ -13,6 +13,16 @@ module.exports = (mongoose) => {
         min: 6,
         max: 255,
       },
+      phone_number: {
+        type: String,
+        required: true,
+        length: 11,
+      },
+      phone_verified: {
+        type: Boolean,
+        required: true,
+        default: false,
+      },
       email: {
         type: String,
         required: true,
@@ -25,9 +35,24 @@ module.exports = (mongoose) => {
         min: 6,
         max: 255,
       },
+      role: {
+        type: String,
+        required: true,
+        default: "student",
+        min: 6,
+        max: 255,
+      },
+      image: {
+        type: String,
+        required: true,
+        default: "default_image.jpg",
+        min: 6,
+        max: 255,
+      },
       status: {
         type: Boolean,
         required: true,
+        default: false,
       },
     },
     { timestamps: true }

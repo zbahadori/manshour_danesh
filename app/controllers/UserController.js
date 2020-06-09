@@ -1,8 +1,3 @@
-const jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
-const db = require("../models");
-const User = db.users;
-
 // Retrieve all Users from the database.
 // exports.findAll = (req, res) => {
 //   //check query string
