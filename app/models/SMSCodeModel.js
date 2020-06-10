@@ -6,7 +6,7 @@ module.exports = (mongoose) => {
         required: true,
         length: 11,
       },
-      Phone_code: {
+      code: {
         type: String,
         required: true,
         min: 6,
@@ -22,6 +22,6 @@ module.exports = (mongoose) => {
     return object;
   });
 
-  const User = mongoose.model("user", schema);
-  return User;
+  const smsCode = mongoose.model("smsCode", schema);
+  return smsCode;
 };

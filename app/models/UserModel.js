@@ -3,13 +3,13 @@ module.exports = (mongoose) => {
     {
       name: {
         type: String,
-        required: true,
+        default: null,
         min: 2,
         max: 255,
       },
       username: {
         type: String,
-        required: true,
+        default: null,
         min: 6,
         max: 255,
       },
@@ -22,18 +22,6 @@ module.exports = (mongoose) => {
         type: Boolean,
         required: true,
         default: false,
-      },
-      email: {
-        type: String,
-        required: true,
-        min: 6,
-        max: 255,
-      },
-      password: {
-        type: String,
-        required: true,
-        min: 6,
-        max: 255,
       },
       role: {
         type: String,

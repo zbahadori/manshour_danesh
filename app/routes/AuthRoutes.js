@@ -5,8 +5,8 @@ module.exports = (app) => {
 
   // Main Routes
   router.post("/login", Auth.login);
-  router.post("/register", Auth.register);
-  router.get("/test", Auth.test);
+  router.post("/register-begin", Auth.registerBegin);
+  router.post("/register-complete", Auth.registerComplete);
 
   app.use("/api/auth", router);
 
