@@ -152,44 +152,42 @@ exports.registerComplete = (req, res) => {
         res.json({ message: "No item was found" });
       }
 
-      res.json({ msg: "valid" });
-      //Hash password
-      hashpassword(req.body.password).then((hashedpassword) => {
-        //Check if email exists
-        User.findOne({
-          phone_number: req.body.phone_number,
-        })
-          .then((data) => {
-            if (data)
-              return res.status(400).send({
-                message: "This email has been regestered before.",
-              });
-          })
-          .catch((err) => {
-            return res.status(400).send({
-              message:
-                err.message || "Some error occurred while creating the User.",
-            });
-          });
+      //Create User
 
-        // Create a User
-        const query = new User({
-          phone_number: req.body.phone_number,
+      //Check if email exists
+      User.findOne({
+        phone_number: item.phone_number,
+      })
+        .then((data) => {
+          if (data)
+            return res.status(400).json({
+              message: "This email has been regestered before.",
+            });
+        })
+        .catch((err) => {
+          return res.status(400).json({
+            message:
+              err.message || "Some error occurred while creating the User.",
+          });
         });
 
-        // Save User in the database
-        query
-          .save(query)
-          .then((data) => {
-            res.send(data);
-          })
-          .catch((err) => {
-            res.status(400).send({
-              message:
-                err.message || "Some error occurred while creating the User.",
-            });
-          });
+      // Create a User
+      const query = new User({
+        phone_number: item.phone_number,
       });
+
+      // Save User in the database
+      query
+        .save(query)
+        .then((data) => {
+          res.send(data);
+        })
+        .catch((err) => {
+          res.status(400).send({
+            message:
+              err.message || "Some error occurred while creating the User.",
+          });
+        });
     })
     .catch((e) =>
       res.json({ message: "Can not find any user with this information" })
