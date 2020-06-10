@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+var crypto = require("crypto");
 const db = require("../models");
 const AuthConfig = require("../config/AuthConfig");
+const SMSController = require("../controllers/SMSControlller");
 const User = db.users;
 
 const {
@@ -34,7 +36,7 @@ exports.login = async (req, res) => {
 };
 
 // Register User
-exports.register = (req, res) => {
+exports.register1 = (req, res) => {
   //Validate with joi
   const { error } = registerValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -87,21 +89,15 @@ const hashpassword = async (password) => {
   return await bcrypt.hash(password, salt);
 };
 
-const sendSms = () => {
-  axios({
-    url: process.env.SMS_URL,
-    method: "post",
-    data: {
-      op: "send",
-      uname: "YOUR_USERNAME",
-      pass: "YOUR_PASSWORD",
-      message: "salam",
-      from: "1000XXX",
-      to: ["936xxxxx", "912xxxx"],
-    },
-  })
-    .then((data) => {
-      return data;
-    })
-    .catch((e) => e);
+// Register User
+exports.registerBegin = (req, res) => {
+  //Validate with joi
+  const { error } = registerValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  var code = crypto.randomBytes(6).toString("hex");
+
+  SMSController.sendWelcomeSms("09127170126", code)
+    .then((data) => {})
+    .catch((e) => e.status(401).send("SMS could not be sent at this moment"));
 };
