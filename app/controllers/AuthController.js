@@ -5,24 +5,30 @@ const db = require("../models");
 const AuthConfig = require("../config/AuthConfig");
 const SMSController = require("../controllers/SMSControlller");
 const User = db.users;
-const SMSCode = db.smsCodes;
+const registrationCode = db.registrationCode;
 
 const {
   registerValidation,
-  loginValidation,
+  loginStartValidation,
   registerBeginValidation,
   registerCompleteValidation,
 } = require("../validations/AuthValidations");
 
 // Loggin user in
-exports.login = async (req, res) => {
+exports.loginStart = async (req, res) => {
   //Validate with joi
-  const { error } = loginValidation(req.body);
+  const { error } = loginStartValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  //Generate the code
+  var code = Math.floor(100000 + Math.random() * 900000);
+
   //check if email is correct
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) res.status(400).send("No user found with this email address.");
+  const user = await User.findOne({ phone_number: req.body.phone_number });
+  if (!user) res.status(400).send("No user found with this Phone number.");
+
+  const temp = await SMSController.sendLoginSms(req.body.phone_number, code);
+  res.send(temp);
 
   //compare the password
   const verifyPassword = await bcrypt.compare(req.body.password, user.password);
@@ -90,24 +96,24 @@ const hashpassword = async (password) => {
 };
 
 // Start the Registration Process by sending the code via sms
-exports.registerBegin = (req, res) => {
+exports.registerStart = (req, res) => {
   //Validate with joi
   const { error } = registerBeginValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  var code = crypto.randomBytes(6).toString("hex");
+  var code = Math.floor(100000 + Math.random() * 900000);
 
-  SMSController.sendWelcomeSms("09127170126", code)
+  SMSController.sendWelcomeSms(req.body.phone_number, code)
     .then((data) => {
       // Create a User
-      const smsCode = new SMSCode({
+      const registrationCodeData = new registrationCode({
         phone_number: req.body.phone_number,
         code,
       });
 
       // Save User in the database
-      smsCode
-        .save(smsCode)
+      registrationCodeData
+        .save(registrationCodeData)
         .then((data) => {
           res.send("SMS has been sent successfully.");
         })
@@ -133,7 +139,8 @@ exports.registerComplete = (req, res) => {
 
   new Date().toISOString();
 
-  SMSCode.find()
+  registrationCode
+    .find()
     .limit(1)
     .sort({ updatedAt: -1 })
     .findOne({ code: req.body.code })
@@ -152,20 +159,18 @@ exports.registerComplete = (req, res) => {
         res.json({ message: "No item was found" });
       }
 
-      //Create User
-
-      //Check if email exists
+      //Check if phone_number exists
       User.findOne({
         phone_number: item.phone_number,
       })
         .then((data) => {
-          if (data)
-            return res.status(400).json({
-              message: "This email has been regestered before.",
+          if (data.phone_number)
+            res.status(400).json({
+              message: "This phone number has been regestered before.",
             });
         })
         .catch((err) => {
-          return res.status(400).json({
+          res.status(400).json({
             message:
               err.message || "Some error occurred while creating the User.",
           });

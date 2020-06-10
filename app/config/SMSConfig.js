@@ -3,4 +3,5 @@ module.exports = {
   patternUrl: process.env.SMS_PATTERN_URL,
   from: process.env.SMS_FROM,
   welcomePattern: "6usex4u6en",
+  loginPattern: "yewn3aqqgp",
 };

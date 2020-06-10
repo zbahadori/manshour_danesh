@@ -7,6 +7,6 @@ const db = {};
 db.mongoose = mongoose;
 db.url = dbConfig.url;
 db.users = require("./UserModel.js")(mongoose);
-db.smsCodes = require("./SMSCodeModel")(mongoose);
+db.registrationCode = require("./RegistrationCodeModel")(mongoose);
 
 module.exports = db;
