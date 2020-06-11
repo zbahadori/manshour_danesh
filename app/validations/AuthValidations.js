@@ -1,7 +1,7 @@
 //VALIDATION
 const Joi = require("joi-persian");
 
-//Login Validation
+//Login Start Validation
 const loginStartValidation = (data) => {
   const schema = Joi.object({
     phone_number: Joi.string().required().min(11).max(11),
@@ -9,18 +9,20 @@ const loginStartValidation = (data) => {
   return schema.validate(data);
 };
 
-//Register Validation
-const registerValidation = (data) => {
+//Login Complete Validation
+const loginCompleteValidation = (data) => {
+  const smsCodeLength = process.env.SMS_CODE_LENGTH;
   const schema = Joi.object({
-    name: Joi.string().required().min(6),
-    username: Joi.string().required().min(6),
-    email: Joi.string().required().min(6).email(),
-    password: Joi.string().required().min(6),
+    code: Joi.string()
+      .required()
+      .min(parseInt(smsCodeLength))
+      .max(parseInt(smsCodeLength)),
   });
+
   return schema.validate(data);
 };
 
-//Start registration
+//Start registration Validation
 const registerBeginValidation = (data) => {
   const schema = Joi.object({
     phone_number: Joi.string().required().min(11).max(11),
@@ -28,10 +30,9 @@ const registerBeginValidation = (data) => {
   return schema.validate(data);
 };
 
-//Complete registration
+//Complete registration validation
 const registerCompleteValidation = (data) => {
   const smsCodeLength = process.env.SMS_CODE_LENGTH;
-  console.log(smsCodeLength);
   const schema = Joi.object({
     code: Joi.string()
       .required()
@@ -43,8 +44,8 @@ const registerCompleteValidation = (data) => {
 };
 
 module.exports = {
-  registerValidation,
-  registerBeginValidation,
   loginStartValidation,
+  loginCompleteValidation,
+  registerBeginValidation,
   registerCompleteValidation,
 };

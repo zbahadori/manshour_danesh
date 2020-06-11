@@ -15,7 +15,7 @@ exports.sendWelcomeSms = async (toNumber, code) => {
 exports.sendLoginSms = async (toNumber, code) => {
   return new Promise((resolve, reject) => {
     axios({
-      url: `${SMSConfig.patternUrl}${SMSConfig.apikey}&pid=${SMSConfig.welcomePattern}&fnum=${SMSConfig.from}&tnum=${toNumber}&p1=code&v1=${code}`,
+      url: `${SMSConfig.patternUrl}${SMSConfig.apikey}&pid=${SMSConfig.loginPattern}&fnum=${SMSConfig.from}&tnum=${toNumber}&p1=code&v1=${code}`,
       method: "get",
     })
       .then((res) => resolve(200))
