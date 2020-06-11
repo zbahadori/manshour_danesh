@@ -26,12 +26,12 @@ module.exports = (mongoose) => {
         max: 255,
       },
       phone_number: {
-        type: Number,
+        type: String,
         required: true,
         length: 11,
       },
-      phone_number: {
-        type: Number,
+      reference_phone_number: {
+        type: String,
         default: null,
         unique: true,
         length: 11,

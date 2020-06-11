@@ -101,9 +101,7 @@ exports.registerStart = async (req, res) => {
     return res.status(400).send("The number has been registered already");
 
   let status = await SMSController.sendWelcomeSms(req.body.phone_number, code);
-  return res.json("valid");
 
-  console.log(status);
   // Create a SMS registration record
   if (status != 200)
     return res.status(400).send("SMS could not be sent at this moment");
@@ -118,8 +116,11 @@ exports.registerStart = async (req, res) => {
 
   // Save User in the database
   status = await registrationCodeData.save(registrationCodeData);
-  console.log(status);
-  if (status == 200) return res.status(400).send("SMS has been sent to you.");
+
+  if (!status)
+    return res.status(400).send("The Generated code could not be stored");
+
+  return res.status(400).send("SMS has been sent to you.");
 };
 
 // Complete the registration process by creating the user
@@ -159,9 +160,12 @@ exports.registerComplete = async (req, res) => {
     });
 
   // Create a User
-  const query = new User({
+  let query = new User({
     phone_number: code.phone_number,
   });
+
+  if (code.reference_phone_number)
+    query.reference_phone_number = code.reference_phone_number;
 
   // Save User in the database
   const createdUser = await query.save();
