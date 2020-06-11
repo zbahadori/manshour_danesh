@@ -2,8 +2,13 @@ module.exports = (mongoose) => {
   var schema = mongoose.Schema(
     {
       phone_number: {
-        type: String,
+        type: Number,
         required: true,
+        length: 11,
+      },
+      reference_phone_number: {
+        type: Number,
+        default: null,
         length: 11,
       },
       code: {
