@@ -41,7 +41,7 @@ exports.loginStart = async (req, res) => {
     // Save User in the database
     await loginCodeData.save();
 
-    res.json({
+    return res.json({
       message: "SMS has been sent successfully",
     });
   }
@@ -68,10 +68,10 @@ exports.loginComplete = async (req, res) => {
     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
     diffMins = Math.abs(diffMins);
     if (diffMins > process.env.SMS_EXPIRATION_MINUTES) {
-      res.json({ message: "Code has been expired" });
+      return res.json({ message: "Code has been expired" });
     }
   } else {
-    res.status(400).send("Invalid code submitted.");
+    return res.status(400).send("Invalid code submitted.");
   }
 
   const token = await jwt.sign(
@@ -81,7 +81,7 @@ exports.loginComplete = async (req, res) => {
       expiresIn: 129600,
     }
   );
-  res.status(200).header("authorization", "JWT_TOKEN").json({
+  return res.status(200).header("authorization", "JWT_TOKEN").json({
     message: "Ok",
     success: true,
     error: false,
@@ -170,7 +170,7 @@ exports.registerComplete = async (req, res) => {
 
   // Save User in the database
   const createdUser = await query.save();
-  res.send(createdUser);
+  return res.send(createdUser);
 };
 
 // Find a single User with an id
