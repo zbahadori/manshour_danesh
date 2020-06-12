@@ -4,6 +4,9 @@ module.exports = (app) => {
 
   var router = require("express").Router();
 
+  //Update User Information
+  router.post("/update-information", users.userUpdateInformation);
+
   // Create a new User
   // router.post("/", users.create);
 
@@ -21,5 +24,5 @@ module.exports = (app) => {
 
   router.get("/test", jwtStudentMiddleware, users.test);
 
-  app.use("/api/users", router);
+  app.use("/api/user", router);
 };

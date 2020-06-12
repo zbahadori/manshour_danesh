@@ -21,6 +21,28 @@ exports.loginStart = async (req, res) => {
   const { error } = loginStartValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  //check if User exists
+  const theLoginCode = await loginCode
+    .find()
+    .limit(1)
+    .sort({ updatedAt: -1 })
+    .findOne({ phone_number: req.body.phone_number });
+
+  if (theLoginCode) {
+    dateItem = new Date(theLoginCode.updatedAt);
+    dateNow = new Date();
+    var diffMs = dateNow - dateItem; // milliseconds between now & Christmas
+    var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+    diffMins = Math.abs(diffMins);
+    if (diffMins < process.env.SMS_RESEND_MINUNES) {
+      return res.json({
+        message: `Please wait ${
+          process.env.SMS_RESEND_MINUNES - diffMins
+        } minutes to send another code`,
+      });
+    }
+  }
+
   //Generate the code
   var code = Math.floor(100000 + Math.random() * 900000);
 
@@ -74,8 +96,13 @@ exports.loginComplete = async (req, res) => {
     return res.status(400).send("Invalid code submitted.");
   }
 
+  //check if User exists
+  const user = await User.findOne({ phone_number: code.phone_number });
+  if (!user)
+    return res.status(400).send("No user found with this code number.");
+
   const token = await jwt.sign(
-    { phone_number: code.phone_number },
+    { phone_number: user.phone_number, role: user.role },
     AuthConfig.secret,
     {
       expiresIn: 129600,
@@ -95,18 +122,42 @@ exports.registerStart = async (req, res) => {
   const { error } = registerBeginValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  var code = Math.floor(100000 + Math.random() * 900000);
-
+  //Check if the number has already been registered
   let user = await User.findOne({ phone_number: req.body.phone_number });
   if (user)
     return res.status(400).send("The number has been registered already");
 
+  //check if User exists
+  const theRegistrationCode = await registrationCode
+    .find()
+    .limit(1)
+    .sort({ updatedAt: -1 })
+    .findOne({ phone_number: req.body.phone_number });
+
+  if (theRegistrationCode) {
+    dateItem = new Date(theRegistrationCode.updatedAt);
+    dateNow = new Date();
+    var diffMs = dateNow - dateItem; // milliseconds between now & Christmas
+    var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+    diffMins = Math.abs(diffMins);
+    if (diffMins < process.env.SMS_RESEND_MINUNES) {
+      return res.json({
+        message: `Please wait ${
+          process.env.SMS_RESEND_MINUNES - diffMins
+        } minutes to send another code`,
+      });
+    }
+  }
+  //generate the code
+  var code = Math.floor(100000 + Math.random() * 900000);
+  //send the code via SMS service
   let status = await SMSController.sendWelcomeSms(req.body.phone_number, code);
 
   // Create a SMS registration record
   if (status != 200)
     return res.status(400).send("SMS could not be sent at this moment");
 
+  //create a SMS record
   const registrationCodeData = new registrationCode({
     phone_number: req.body.phone_number,
     reference_phone_number: req.body.reference_phone_number
@@ -118,9 +169,11 @@ exports.registerStart = async (req, res) => {
   // Save User in the database
   status = await registrationCodeData.save(registrationCodeData);
 
+  //if could not store in DB throw error
   if (!status)
     return res.status(400).send("The Generated code could not be stored");
 
+  //All GOod
   return res.status(400).send("SMS has been sent to you.");
 };
 

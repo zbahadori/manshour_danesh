@@ -95,7 +95,6 @@ module.exports = (mongoose) => {
       },
       status: {
         type: Boolean,
-        required: true,
         default: false,
       },
     },
