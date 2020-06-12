@@ -26,7 +26,8 @@ exports.loginStart = async (req, res) => {
 
   //check if User exists
   const user = await User.findOne({ phone_number: req.body.phone_number });
-  if (!user) res.status(400).send("No user found with this Phone number.");
+  if (!user)
+    return res.status(400).send("No user found with this Phone number.");
 
   const temp = await SMSController.sendLoginSms(req.body.phone_number, code);
   //If SMS was successfull create a record
