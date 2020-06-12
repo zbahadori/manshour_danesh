@@ -40,10 +40,10 @@ db.mongoose
     process.exit();
   });
 
+app.use(express.static(path.join(__dirname, "client")));
+
 // simple route
-app.get("/", (req, res) =>
-  res.json({ message: "Welcome To Manshour_danesh application" })
-);
+app.get("/", (req, res) => res.render("index.html"));
 
 //Routes
 require("./app/routes/UserRouters")(app);
