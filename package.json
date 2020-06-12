@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Back end application for manshour_danesh group",
   "main": "server.js",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "start": "node server.js",
     "build": "node server.js",

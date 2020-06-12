@@ -41,16 +41,27 @@ db.mongoose
   });
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({ message: "To our application" });
-});
+app.get("/", (req, res) =>
+  res.json({ message: "Welcome To Manshour_danesh application" })
+);
 
 //Routes
 require("./app/routes/UserRouters")(app);
 require("./app/routes/AuthRoutes")(app);
 
 // set port, listen for requests
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+const PORT = process.env.PORT || 5000;
+app
+  .listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+  })
+  .on("error", function (err) {
+    if (err.errno === "EADDRINUSE") {
+      console.log(
+        `----- Port ${port} is busy, trying with port ${port + 1} -----`
+      );
+      listen(port + 1);
+    } else {
+      console.log(err);
+    }
+  });
