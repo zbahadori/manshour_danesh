@@ -7,9 +7,8 @@
     "node": "12.x"
   },
   "scripts": {
-    "start": "start",
-    "build": "node server.js",
-    "heroku-postbuild": "npm install && npm run build",
+    "start": "node server.js",
+    "heroku-postbuild": "npm install && npm start",
     "dev": "nodemon server.js"
   },
   "keywords": [],
