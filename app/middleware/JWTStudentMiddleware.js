@@ -5,11 +5,19 @@ module.exports = (req, res, next) => {
   const token = req.header("authorization");
   if (!token) res.status(401).send("access denied.");
 
+  //get the payload
+  var base64Url = token.split(".")[1];
+  var base64 = base64Url.replace("-", "+").replace("_", "/");
+  const payload = JSON.parse(Buffer.from(base64, "base64").toString());
+  console.log(payload);
+
   try {
     const verified = jwt.verify(token, AuthConfig.secret);
+
+    //User is verified
     req.user = verified;
-    next();
+    return next();
   } catch (err) {
-    res.status(401).send("invalid JWT token.");
+    return res.status(401).send("JWT token is invalid");
   }
 };

@@ -44,4 +44,7 @@ exports.test = async (req, res) => {
   //     message: "Data to update can not be empty!",
   //   });
   // }
+  return res.json({
+    message: "Hello test",
+  });
 };

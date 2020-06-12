@@ -1,6 +1,6 @@
 module.exports = (app) => {
   const users = require("../controllers/UserController.js");
-  const jwtMiddleware = require("../middleware/JWTMiddleware");
+  const jwtStudentMiddleware = require("../middleware/JWTStudentMiddleware");
 
   var router = require("express").Router();
 
@@ -19,7 +19,7 @@ module.exports = (app) => {
   // // Update a User with id
   // router.put("/:id", users.update);
 
-  router.get("/test", users.test);
+  router.get("/test", jwtStudentMiddleware, users.test);
 
   app.use("/api/users", router);
 };
