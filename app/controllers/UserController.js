@@ -46,12 +46,11 @@ exports.userGetReferencedUsers = async (req, res) => {
 };
 
 // Test function
-exports.test = async (req, res) => {
+exports.userUpdateAvatar = async (req, res) => {
   if (!req.files || !req.files.image)
     res.json({ message: "no image has been selected" });
 
   let filename = new Date().getTime();
-  console.log(filename);
   let arr = req.files.image.name.split(".");
   let extention = arr[arr.length - 1];
 
@@ -62,7 +61,10 @@ exports.test = async (req, res) => {
   )
     return res.json({ message: "File type should be image format" });
 
-  const theImage = await sharp(req.files.image.data).resize(200).toBuffer();
+  const theImage = await sharp(req.files.image.data)
+    .rotate()
+    .resize(320, 240)
+    .toBuffer();
   if (!theImage)
     return res.json({ message: "Image could not be converted by sharp" });
 
@@ -71,11 +73,56 @@ exports.test = async (req, res) => {
 
   // Use the mv() method to place the file somewhere on your server
   const status = await img.mv(
-    `files/upload/${filename}.${extention}`,
+    `${process.env.USER_IMAGE_PATH}${filename}.${extention}`,
     function (err) {
       if (err) return res.status(500).send(err);
 
-      console.log(status);
+      db.user.findOne({ phone_number: "09127170126" }).then((user) => {
+        if (!user)
+          return res.json({ message: "User is not found based on auth" });
+        user
+          .update({
+            user_image: `${filename}.${extention}`,
+          })
+          .then((status) => {
+            if (status) return res.json({ data: theImage });
+          });
+      });
+    }
+  );
+};
+
+// Test function
+exports.test = async (req, res) => {
+  if (!req.files || !req.files.image)
+    res.json({ message: "no image has been selected" });
+
+  let filename = new Date().getTime();
+  let arr = req.files.image.name.split(".");
+  let extention = arr[arr.length - 1];
+
+  let mime = req.files.image.mimetype.split("/");
+  if (
+    mime[0] != "image" &&
+    !(extention == "jpg" || extention == "jpeg" || extention == "png")
+  )
+    return res.json({ message: "File type should be image format" });
+
+  const theImage = await sharp(req.files.image.data)
+    .rotate()
+    .resize(320, 240)
+    .toBuffer();
+  if (!theImage)
+    return res.json({ message: "Image could not be converted by sharp" });
+
+  let img = req.files.image;
+  img.data = theImage;
+
+  // Use the mv() method to place the file somewhere on your server
+  const status = await img.mv(
+    `${process.env.USER_IMAGE_PATH}${filename}.${extention}`,
+    function (err) {
+      if (err) return res.status(500).send(err);
 
       res.json({ data: theImage });
     }

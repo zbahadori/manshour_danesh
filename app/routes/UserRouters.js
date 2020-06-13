@@ -7,6 +7,7 @@ module.exports = (app) => {
   //User routes
   router.post("/update-information", userController.userUpdateInformation);
   router.get("/referenced-users", userController.userGetReferencedUsers);
+  router.post("/update-avatar", userController.userUpdateAvatar);
 
   router.post("/test", jwtStudentMiddleware, userController.test);
 
