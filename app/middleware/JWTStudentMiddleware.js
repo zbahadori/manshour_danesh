@@ -7,7 +7,6 @@ module.exports = (req, res, next) => {
 
   try {
     const user = jwt.verify(token, AuthConfig.secret);
-    console.log(user);
     if (user.role != "student" && user.role != "admin")
       return res.status(401).send("User is not student or admin");
     //User is verified

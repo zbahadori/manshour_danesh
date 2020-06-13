@@ -1,13 +1,12 @@
 module.exports = (app) => {
-  const Auth = require("../controllers/AuthController");
-  const axios = require("axios");
+  const AuthController = require("../controllers/AuthController");
   var router = require("express").Router();
 
   // Main Routes
-  router.post("/login-start", Auth.loginStart);
-  router.post("/login-complete", Auth.loginComplete);
-  router.post("/register-start", Auth.registerStart);
-  router.post("/register-complete", Auth.registerComplete);
+  router.post("/login-start", AuthController.loginStart);
+  router.post("/login-complete", AuthController.loginComplete);
+  router.post("/register-start", AuthController.registerStart);
+  router.post("/register-complete", AuthController.registerComplete);
 
   app.use("/api/auth", router);
 

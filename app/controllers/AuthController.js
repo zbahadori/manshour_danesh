@@ -4,7 +4,7 @@ var crypto = require("crypto");
 const db = require("../models");
 const AuthConfig = require("../config/AuthConfig");
 const SMSController = require("../controllers/SMSControlller");
-const User = db.users;
+const User = db.user;
 const registrationCode = db.registrationCode;
 const loginCode = db.loginCode;
 

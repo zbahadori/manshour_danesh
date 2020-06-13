@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
+const fileUpload = require("express-fileupload");
 const corsOrigin = require("./app/config/AppConfig");
 const AuthMiddleware = require("./app/middleware/AuthMiddleware");
 
@@ -24,6 +25,20 @@ app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Enable file Upload
+app.use(
+  fileUpload({
+    safeFileNames: true,
+    limits: { fileSize: 50 * 1024 * 1024 },
+    createParentPath: true,
+    preserveExtension: 4,
+    debug: true,
+    limitHandler: (req, res, next) => {
+      return res.json({ err: true, message: "Size limit has been exceeded" });
+    },
+  })
+);
 
 //Database Connection
 const db = require("./app/models");

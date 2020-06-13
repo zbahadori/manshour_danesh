@@ -9,7 +9,6 @@ module.exports = (req, res, next) => {
   var base64Url = token.split(".")[1];
   var base64 = base64Url.replace("-", "+").replace("_", "/");
   const payload = JSON.parse(Buffer.from(base64, "base64").toString());
-  console.log(payload);
 
   try {
     const user = jwt.verify(token, AuthConfig.secret);
