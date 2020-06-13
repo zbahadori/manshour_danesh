@@ -4,18 +4,24 @@ module.exports = (mongoose) => {
       phone_number: {
         type: String,
         required: true,
+        unique: true,
         length: 11,
       },
-      reference_phone_number: {
-        type: String,
-        default: null,
-        length: 11,
-      },
-      code: {
+      national_id: {
         type: String,
         required: true,
-        min: 6,
+        unique: true,
+        length: 10,
+      },
+      national_id_image: {
+        type: String,
+        required: true,
+        min: 5,
         max: 255,
+      },
+      verified: {
+        type: Boolean,
+        default: false,
       },
     },
     { timestamps: true }
@@ -27,6 +33,6 @@ module.exports = (mongoose) => {
     return object;
   });
 
-  const registrationCode = mongoose.model("registration_code", schema);
-  return registrationCode;
+  const NationalID = mongoose.model("national_id", schema);
+  return NationalID;
 };

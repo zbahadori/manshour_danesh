@@ -18,6 +18,15 @@ const userUpdateValidation = (data) => {
   return schema.validate(data);
 };
 
+//Update user information validation
+const userUpdateNationalID = (data) => {
+  const schema = Joi.object({
+    national_id: Joi.string().required().length(10),
+  });
+  return schema.validate(data);
+};
+
 module.exports = {
   userUpdateValidation,
+  userUpdateNationalID,
 };

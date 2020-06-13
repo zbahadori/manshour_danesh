@@ -1,21 +1,20 @@
 module.exports = (mongoose) => {
   var schema = mongoose.Schema(
     {
-      phone_number: {
-        type: String,
-        required: true,
-        length: 11,
-      },
-      reference_phone_number: {
+      title: {
         type: String,
         default: null,
-        length: 11,
-      },
-      code: {
-        type: String,
-        required: true,
-        min: 6,
+        min: 2,
         max: 255,
+      },
+      message: {
+        type: String,
+        default: null,
+        min: 2,
+      },
+      status: {
+        type: Boolean,
+        default: false,
       },
     },
     { timestamps: true }
@@ -27,6 +26,6 @@ module.exports = (mongoose) => {
     return object;
   });
 
-  const registrationCode = mongoose.model("registration_code", schema);
-  return registrationCode;
+  const Alert = mongoose.model("alert", schema);
+  return Alert;
 };

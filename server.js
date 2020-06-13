@@ -61,6 +61,7 @@ app.use(express.static(path.join(__dirname, "client")));
 app.get("/", (req, res) => res.render("index.html"));
 
 //Routes
+require("./app/routes/AdminRoutes")(app);
 require("./app/routes/UserRouters")(app);
 require("./app/routes/AuthRoutes")(app);
 

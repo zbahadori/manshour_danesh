@@ -9,5 +9,7 @@ db.url = dbConfig.url;
 db.user = require("./UserModel.js")(mongoose);
 db.registrationCode = require("./RegistrationCodeModel")(mongoose);
 db.loginCode = require("./LoginCodeModel")(mongoose);
+db.nationalID = require("./NationalIDModel")(mongoose);
+db.alert = require("./AlertsModel")(mongoose);
 
 module.exports = db;

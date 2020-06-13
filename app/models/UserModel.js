@@ -68,17 +68,6 @@ module.exports = (mongoose) => {
         min: 2,
         max: 255,
       },
-      national_id: {
-        type: Number,
-        default: null,
-        length: 10,
-      },
-      national_id_image: {
-        type: String,
-        default: null,
-        min: 5,
-        max: 255,
-      },
       role: {
         type: String,
         required: true,

@@ -7,7 +7,8 @@ module.exports = (app) => {
   //User routes
   router.post("/update-information", userController.userUpdateInformation);
   router.get("/referenced-users", userController.userGetReferencedUsers);
-  router.post("/update-avatar", userController.userUpdateAvatar);
+  router.post("/update-national-id", userController.userUpdateNationalID);
+  router.get("/get-active-alerts", userController.userGetActiveAlerts);
 
   router.post("/test", jwtStudentMiddleware, userController.test);
 

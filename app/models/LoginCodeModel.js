@@ -22,6 +22,6 @@ module.exports = (mongoose) => {
     return object;
   });
 
-  const loginCode = mongoose.model("loginCode", schema);
+  const loginCode = mongoose.model("login_code", schema);
   return loginCode;
 };

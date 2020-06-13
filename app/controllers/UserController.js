@@ -1,5 +1,8 @@
 const sharp = require("sharp");
-const { userUpdateValidation } = require("../validations/UserValidations");
+const {
+  userUpdateValidation,
+  userUpdateNationalID,
+} = require("../validations/UserValidations");
 const db = require("../models");
 
 //User update information in the first visit to dashboard
@@ -45,8 +48,12 @@ exports.userGetReferencedUsers = async (req, res) => {
   });
 };
 
-// Test function
-exports.userUpdateAvatar = async (req, res) => {
+// User update National ID information
+exports.userUpdateNationalID = async (req, res) => {
+  //Validate with joi
+  const { error } = userUpdateNationalID(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
   if (!req.files || !req.files.image)
     res.json({ message: "no image has been selected" });
 
@@ -73,23 +80,52 @@ exports.userUpdateAvatar = async (req, res) => {
 
   // Use the mv() method to place the file somewhere on your server
   const status = await img.mv(
-    `${process.env.USER_IMAGE_PATH}${filename}.${extention}`,
+    `${process.env.USER_NATIONAL_ID_PATH}${filename}.${extention}`,
     function (err) {
       if (err) return res.status(500).send(err);
 
       db.user.findOne({ phone_number: "09127170126" }).then((user) => {
         if (!user)
           return res.json({ message: "User is not found based on auth" });
-        user
-          .update({
-            user_image: `${filename}.${extention}`,
+
+        db.nationalID
+          .findOne({
+            phone_number: user.phone_number,
           })
-          .then((status) => {
-            if (status) return res.json({ data: theImage });
+          .then((record) => {
+            if (record)
+              record
+                .update({
+                  phone_number: "09127170126",
+                  national_id: req.body.national_id,
+                  national_id_image: filename + "." + extention,
+                })
+                .then((status) => {
+                  if (status)
+                    return res.json({ data: "Data has been updated" });
+                });
+
+            db.nationalID
+              .create({
+                phone_number: "09127170126",
+                national_id: req.body.national_id,
+                national_id_image: filename + "." + extention,
+              })
+              .then((status) => {
+                return res.json({ data: "Data has been created" });
+              });
           });
       });
     }
   );
+};
+
+// User update National ID information
+exports.userGetActiveAlerts = async (req, res) => {
+  const alerts = await db.alert.find({ status: true }).sort({ createdAt: -1 });
+  if (!alerts) return res.json({ message: "no item was found in DB" });
+
+  return res.json({ message: "success", data: alerts });
 };
 
 // Test function
