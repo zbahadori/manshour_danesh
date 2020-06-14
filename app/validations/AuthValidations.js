@@ -4,7 +4,7 @@ const Joi = require("joi-persian");
 //Login Start Validation
 const loginStartValidation = (data) => {
   const schema = Joi.object({
-    phone_number: Joi.string().required().min(11).max(11),
+    phone_number: Joi.string().required().length(11),
   });
   return schema.validate(data);
 };
@@ -13,10 +13,7 @@ const loginStartValidation = (data) => {
 const loginCompleteValidation = (data) => {
   const smsCodeLength = process.env.SMS_CODE_LENGTH;
   const schema = Joi.object({
-    code: Joi.string()
-      .required()
-      .min(parseInt(smsCodeLength))
-      .max(parseInt(smsCodeLength)),
+    code: Joi.string().required().length(parseInt(smsCodeLength)),
   });
 
   return schema.validate(data);
@@ -25,8 +22,8 @@ const loginCompleteValidation = (data) => {
 //Start registration Validation
 const registerBeginValidation = (data) => {
   const schema = Joi.object({
-    phone_number: Joi.string().required().min(11).max(11),
-    reference_phone_number: Joi.string().min(11).max(11),
+    phone_number: Joi.string().required().length(11),
+    reference_phone_number: Joi.string().length(11),
   });
   return schema.validate(data);
 };
@@ -35,10 +32,7 @@ const registerBeginValidation = (data) => {
 const registerCompleteValidation = (data) => {
   const smsCodeLength = process.env.SMS_CODE_LENGTH;
   const schema = Joi.object({
-    code: Joi.string()
-      .required()
-      .min(parseInt(smsCodeLength))
-      .max(parseInt(smsCodeLength)),
+    code: Joi.string().required().length(parseInt(smsCodeLength)),
   });
 
   return schema.validate(data);
