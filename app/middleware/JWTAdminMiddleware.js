@@ -3,7 +3,12 @@ const AuthConfig = require("../config/AuthConfig");
 
 module.exports = (req, res, next) => {
   const token = req.header("authorization");
-  if (!token) res.status(401).send("access denied.");
+  if (!token)
+    return res.json({
+      success: false,
+      err: true,
+      message: "یوزر مهمان است.",
+    });
 
   //get the payload
   var base64Url = token.split(".")[1];
@@ -12,11 +17,20 @@ module.exports = (req, res, next) => {
 
   try {
     const user = jwt.verify(token, AuthConfig.secret);
-    if (user.role != "admin") return res.status(401).send("User is not admin");
+    if (user.role != "admin")
+      return res.json({
+        success: false,
+        err: true,
+        message: "یوزو ادمین نیست",
+      });
     //User is verified
     req.user = user;
     return next();
   } catch (err) {
-    return res.status(401).send("JWT token is invalid");
+    return res.json({
+      success: false,
+      err: true,
+      message: "کد منقضی شده است.",
+    });
   }
 };

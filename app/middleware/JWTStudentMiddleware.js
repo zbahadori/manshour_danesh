@@ -3,16 +3,29 @@ const AuthConfig = require("../config/AuthConfig");
 
 module.exports = (req, res, next) => {
   const token = req.header("authorization");
-  if (!token) res.status(401).send("access denied.");
+  if (!token)
+    return res.json({
+      success: false,
+      err: true,
+      message: "یوزر مهمان است.",
+    });
 
   try {
     const user = jwt.verify(token, AuthConfig.secret);
     if (user.role != "student" && user.role != "admin")
-      return res.status(401).send("User is not student or admin");
+      return res.json({
+        success: false,
+        err: true,
+        message: "یوزر مهمان است.",
+      });
     //User is verified
     req.user = user;
     return next();
   } catch (err) {
-    return res.status(401).send("JWT token is invalid");
+    return res.json({
+      success: false,
+      err: true,
+      message: "کد منقضی شده است.",
+    });
   }
 };

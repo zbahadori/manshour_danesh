@@ -9,9 +9,19 @@ const db = require("../models");
 //get all users
 exports.adminGetAllUser = async (req, res) => {
   const users = await db.user.find().sort({ createdAt: -1 });
-  if (!users) return res.json({ message: "No user was found in DB" });
+  if (!users)
+    return res.json({
+      success: false,
+      err: true,
+      message: "دانش آموزی با این مشخصات یافت نشد.",
+    });
 
-  return res.json({ message: "success", data: users });
+  return res.json({
+    success: true,
+    err: false,
+    message: "اطلاعات با موفقیت یافت شد",
+    data: { users },
+  });
 };
 
 //block or unblock a user
@@ -23,21 +33,44 @@ exports.adminUserBlockUpdate = async (req, res) => {
   const user = await db.user.findOne({
     phone_number: req.body.phone_number,
   });
-  if (!user) return res.json({ message: "No user was found in DB" });
+  if (!user)
+    return res.json({
+      success: false,
+      err: true,
+      message: "دانش آموزی با این مشخصات یافت نشد.",
+    });
 
   const modifiedUser = user.update({ status: !user.status });
   if (!modifiedUser)
-    return res.json({ message: "User could not be updated at this moment" });
+    return res.json({
+      success: false,
+      err: true,
+      message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+    });
 
-  return res.json({ message: "success" });
+  return res.json({
+    success: true,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
+  });
 };
 
 //Admin get All nationalID
 exports.adminGetAllNationalID = async (req, res) => {
   const nationalIDs = await db.nationalID.find().sort({ createdAt: -1 });
-  if (!nationalIDs) return res.json({ message: "No item was found in DB" });
+  if (!nationalIDs)
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعات با این مشخصات یافت نشد.",
+    });
 
-  return res.json({ message: "success", data: nationalIDs });
+  return res.json({
+    success: true,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
+    data: { nationalIDs },
+  });
 };
 
 //Admin Delete single nationalID
@@ -51,11 +84,18 @@ exports.adminDeleteSingleNationalID = async (req, res) => {
     phone_number: req.body.phone_number,
   });
   if (!nationalIDs)
-    return res.json({ message: "No item was found with this query" });
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعات با این مشخصات یافت نشد.",
+    });
 
   const deleted = await nationalIDs.delete();
-  console.log(deleted);
-  return res.json({ message: "success" });
+  return res.json({
+    success: true,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
+  });
 };
 
 // Admin create Alert
@@ -65,11 +105,18 @@ exports.adminCreateAlert = async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
   //Store alert in DB
   const alert = await db.alert.create(req.body);
-  if (!alert) return res.json({ message: "DB error no alert created" });
+  if (!alert)
+    return res.json({
+      success: false,
+      err: true,
+      message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+    });
 
   return res.json({
-    message: "Alert created successfully",
-    alert,
+    success: true,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
+    data: { alert },
   });
 };
 
@@ -77,11 +124,18 @@ exports.adminCreateAlert = async (req, res) => {
 exports.adminGetAllAlert = async (req, res) => {
   //Store alert in DB
   const alerts = await db.alert.find();
-  if (!alerts) return res.json({ message: "No item has been found" });
+  if (!alerts)
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعاتی در دیتابیس یافت نشد.",
+    });
 
   return res.json({
-    message: "success",
-    data: alerts,
+    success: true,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
+    data: { alerts },
   });
 };
 
@@ -94,11 +148,18 @@ exports.adminUpdateSingleAlert = async (req, res) => {
   const alert = await db.alert.findOne({
     _id: req.body.id,
   });
+
   if (!alert)
-    return res.json({ message: "DB error no alert found with this id" });
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعاتی در دیتابیس یافت نشد.",
+    });
 
   return res.json({
-    message: "Alert updated successfully",
-    alert,
+    success: true,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
+    data: { alert },
   });
 };

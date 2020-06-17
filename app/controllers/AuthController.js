@@ -36,9 +36,11 @@ exports.loginStart = async (req, res) => {
     diffMins = Math.abs(diffMins);
     if (diffMins < process.env.SMS_RESEND_MINUNES) {
       return res.json({
-        message: `Please wait ${
+        success: false,
+        err: true,
+        message: `لطفا برای استفاده از سرویس پیام کوتاه, ${
           process.env.SMS_RESEND_MINUNES - diffMins
-        } minutes to send another code`,
+        } دقیقه صبر کنید.`,
       });
     }
   }
@@ -49,7 +51,11 @@ exports.loginStart = async (req, res) => {
   //check if User exists
   const user = await User.findOne({ phone_number: req.body.phone_number });
   if (!user)
-    return res.status(400).send("No user found with this Phone number.");
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعاتی در دیتابیس یافت نشد.",
+    });
 
   const temp = await SMSController.sendLoginSms(req.body.phone_number, code);
   //If SMS was successfull create a record
@@ -61,10 +67,18 @@ exports.loginStart = async (req, res) => {
     });
 
     // Save User in the database
-    await loginCodeData.save();
+    const savedData = await loginCodeData.save();
+    if (!savedData)
+      return res.json({
+        success: false,
+        err: true,
+        message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+      });
 
     return res.json({
-      message: "SMS has been sent successfully",
+      success: true,
+      err: false,
+      message: "عملیات با موفقیت انجام شد.",
     });
   }
 };
@@ -90,29 +104,41 @@ exports.loginComplete = async (req, res) => {
     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
     diffMins = Math.abs(diffMins);
     if (diffMins > process.env.SMS_EXPIRATION_MINUTES) {
-      return res.json({ message: "Code has been expired" });
+      return res.json({
+        success: false,
+        err: true,
+        message: "کد منقضی شده است.",
+      });
     }
   } else {
-    return res.status(400).send("Invalid code submitted.");
+    return res.json({
+      success: false,
+      err: true,
+      message: "کد اشتباه است.",
+    });
   }
 
   //check if User exists
   const user = await User.findOne({ phone_number: code.phone_number });
   if (!user)
-    return res.status(400).send("No user found with this code number.");
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعات با این مشخصات یافت نشد.",
+    });
 
   const token = await jwt.sign(
     { phone_number: user.phone_number, role: user.role },
     AuthConfig.secret,
     {
-      expiresIn: 129600,
+      expiresIn: process.env.JWT_EXPIRATION,
     }
   );
   return res.status(200).header("authorization", "JWT_TOKEN").json({
-    message: "Ok",
+    message: "یوزر با موفقیت وارد شد",
     success: true,
     error: false,
-    token,
+    data: { token },
   });
 };
 
@@ -125,7 +151,11 @@ exports.registerStart = async (req, res) => {
   //Check if the number has already been registered
   let user = await User.findOne({ phone_number: req.body.phone_number });
   if (user)
-    return res.status(400).send("The number has been registered already");
+    return res.json({
+      success: false,
+      err: true,
+      message: "شماره موبایل ثبت شده است.",
+    });
 
   //check if User exists
   const theRegistrationCode = await registrationCode
@@ -155,7 +185,11 @@ exports.registerStart = async (req, res) => {
 
   // Create a SMS registration record
   if (status != 200)
-    return res.status(400).send("SMS could not be sent at this moment");
+    return res.json({
+      success: false,
+      err: true,
+      message: "در حال حاظر امکان ارسال پیام کوتاه نمی باشد",
+    });
 
   //create a SMS record
   const registrationCodeData = new registrationCode({
@@ -171,10 +205,18 @@ exports.registerStart = async (req, res) => {
 
   //if could not store in DB throw error
   if (!status)
-    return res.status(400).send("The Generated code could not be stored");
+    return res.json({
+      success: false,
+      err: true,
+      message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+    });
 
   //All GOod
-  return res.status(400).send("SMS has been sent to you.");
+  return res.json({
+    success: true,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
+  });
 };
 
 // Complete the registration process by creating the user
@@ -197,10 +239,18 @@ exports.registerComplete = async (req, res) => {
     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
     diffMins = Math.abs(diffMins);
     if (diffMins > process.env.SMS_EXPIRATION_MINUTES) {
-      return res.json({ message: "Code has been expired" });
+      return res.json({
+        success: false,
+        err: true,
+        message: "کد منقضی شده است.",
+      });
     }
   } else {
-    return res.json({ message: "No item was found" });
+    return res.json({
+      success: false,
+      err: true,
+      message: "کد اشتباه شده است.",
+    });
   }
 
   //Check if phone_number exists
@@ -209,8 +259,10 @@ exports.registerComplete = async (req, res) => {
   });
 
   if (user)
-    return res.status(400).json({
-      message: "This phone number has been registered before.",
+    return res.json({
+      success: false,
+      err: true,
+      message: "شماره موبایل ثبت شده است.",
     });
 
   // Create a User
@@ -223,7 +275,12 @@ exports.registerComplete = async (req, res) => {
 
   // Save User in the database
   const createdUser = await query.save();
-  return res.send(createdUser);
+  return res.json({
+    success: true,
+    err: false,
+    message: "یوزر با موفقیت ثبت شد.",
+    data: createdUser,
+  });
 };
 
 // Find a single User with an id

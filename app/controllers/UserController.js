@@ -12,14 +12,27 @@ exports.userUpdateInformation = async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   const user = await db.user.findOne({ phone_number: "09127170126" });
-  if (!user) return res.json({ message: "No user found with the given info" });
+  if (!user)
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعاتی در دیتابیس یافت نشد.",
+    });
 
   const userStored = await user.update(req.body);
   if (!userStored)
-    return res.json({ message: "User could not be stored in database" });
+    return res.json({
+      success: false,
+      err: true,
+      message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+    });
 
   return res.json({
     user: userStored,
+    message: "عملیات با موفقیت انجام شد",
+    success: true,
+    error: false,
+    data: { token },
   });
 };
 
@@ -30,21 +43,28 @@ exports.userGetReferencedUsers = async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   const user = await db.user.findOne({ phone_number: "09127170126" });
-  if (!user) return res.json({ message: "No user found with the given info" });
+  if (!user)
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعاتی در دیتابیس یافت نشد.",
+    });
 
   const referencedUsers = await db.user.findOne({
     reference_phone_number: user.phone_number,
   });
   if (!referencedUsers)
     return res.json({
-      message: "No referenced user has been recorded with this phone number",
+      success: false,
+      err: true,
+      message: "اطلاعاتی در دیتابیس یافت نشد.",
     });
 
   return res.json({
-    message: "",
+    message: "یوزر با موفقیت وارد شد",
     success: true,
-    err: false,
-    users: referencedUsers,
+    error: false,
+    data: { referencedUsers },
   });
 };
 
@@ -55,7 +75,11 @@ exports.userUpdateNationalID = async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   if (!req.files || !req.files.image)
-    res.json({ message: "no image has been selected" });
+    res.json({
+      success: false,
+      err: true,
+      message: "فایلی برای آپلود انتخاب نشده است",
+    });
 
   let filename = new Date().getTime();
   let arr = req.files.image.name.split(".");
@@ -66,14 +90,22 @@ exports.userUpdateNationalID = async (req, res) => {
     mime[0] != "image" &&
     !(extention == "jpg" || extention == "jpeg" || extention == "png")
   )
-    return res.json({ message: "File type should be image format" });
+    return res.json({
+      success: false,
+      err: true,
+      message: "فایلی انتخابی برای آپلود از نوع عکس نیست.",
+    });
 
   const theImage = await sharp(req.files.image.data)
     .rotate()
     .resize(320, 240)
     .toBuffer();
   if (!theImage)
-    return res.json({ message: "Image could not be converted by sharp" });
+    return res.json({
+      success: false,
+      err: true,
+      message: "خطا در تغییر شارپ",
+    });
 
   let img = req.files.image;
   img.data = theImage;
@@ -86,7 +118,11 @@ exports.userUpdateNationalID = async (req, res) => {
 
       db.user.findOne({ phone_number: "09127170126" }).then((user) => {
         if (!user)
-          return res.json({ message: "User is not found based on auth" });
+          return res.json({
+            success: false,
+            err: true,
+            message: "اطلاعاتی در دیتابیس یافت نشد.",
+          });
 
         db.nationalID
           .findOne({
@@ -102,7 +138,11 @@ exports.userUpdateNationalID = async (req, res) => {
                 })
                 .then((status) => {
                   if (status)
-                    return res.json({ data: "Data has been updated" });
+                    return res.json({
+                      success: true,
+                      err: false,
+                      message: "عملیات با موفقیت انجام شد.",
+                    });
                 });
 
             db.nationalID
@@ -112,7 +152,11 @@ exports.userUpdateNationalID = async (req, res) => {
                 national_id_image: filename + "." + extention,
               })
               .then((status) => {
-                return res.json({ data: "Data has been created" });
+                return res.json({
+                  success: true,
+                  err: false,
+                  message: "عملیات با موفقیت انجام شد.",
+                });
               });
           });
       });
@@ -123,15 +167,29 @@ exports.userUpdateNationalID = async (req, res) => {
 // User update National ID information
 exports.userGetActiveAlerts = async (req, res) => {
   const alerts = await db.alert.find({ status: true }).sort({ createdAt: -1 });
-  if (!alerts) return res.json({ message: "no item was found in DB" });
+  if (!alerts)
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعاتی در دیتابیس یافت نشد.",
+    });
 
-  return res.json({ message: "success", data: alerts });
+  return res.json({
+    success: true,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
+    data: { alerts },
+  });
 };
 
 // Test function
 exports.test = async (req, res) => {
   if (!req.files || !req.files.image)
-    res.json({ message: "no image has been selected" });
+    return res.json({
+      success: false,
+      err: true,
+      message: "فایلی برای آپلود انتخاب نشده است",
+    });
 
   let filename = new Date().getTime();
   let arr = req.files.image.name.split(".");
@@ -142,14 +200,22 @@ exports.test = async (req, res) => {
     mime[0] != "image" &&
     !(extention == "jpg" || extention == "jpeg" || extention == "png")
   )
-    return res.json({ message: "File type should be image format" });
+    return res.json({
+      success: false,
+      err: true,
+      message: "فایلی انتخابی برای آپلود از نوع عکس نیست.",
+    });
 
   const theImage = await sharp(req.files.image.data)
     .rotate()
     .resize(320, 240)
     .toBuffer();
   if (!theImage)
-    return res.json({ message: "Image could not be converted by sharp" });
+    return res.json({
+      success: false,
+      err: true,
+      message: "خطا در تغییر شارپ",
+    });
 
   let img = req.files.image;
   img.data = theImage;
@@ -160,7 +226,12 @@ exports.test = async (req, res) => {
     function (err) {
       if (err) return res.status(500).send(err);
 
-      res.json({ data: theImage });
+      return res.json({
+        success: true,
+        err: false,
+        message: "عملیات با موفقیت انجام شد.",
+        data: { theImage },
+      });
     }
   );
 };
