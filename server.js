@@ -58,7 +58,7 @@ db.mongoose
 app.use(express.static(path.join(__dirname, "client")));
 
 // simple route
-app.get("/", (req, res) => res.render("index.html"));
+// app.get("/", (req, res) => res.render("./client/build/index.html"));
 
 //Routes
 require("./app/routes/AdminRoutes")(app);
