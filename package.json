@@ -11,7 +11,7 @@
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "simulate": "concurrently \"npm run server\" \"cd client\"",
+    "simulate": "concurrently \"npm start\" \"cd client\"",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "keywords": [],

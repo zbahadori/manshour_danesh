@@ -55,8 +55,6 @@ db.mongoose
     process.exit();
   });
 
-app.use(express.static(path.join(__dirname, "client")));
-
 // simple route
 // app.get("/", (req, res) => res.render("./client/build/index.html"));
 
@@ -64,6 +62,15 @@ app.use(express.static(path.join(__dirname, "client")));
 require("./app/routes/AdminRoutes")(app);
 require("./app/routes/UserRouters")(app);
 require("./app/routes/AuthRoutes")(app);
+
+// static folder route
+app.use(express.static("public"));
+
+app.use(express.static(path.join(__dirname, "client", "build")));
+
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "build", "index.html"));
+// });
 
 // set port, listen for requests
 const PORT = process.env.PORT || 5000;
