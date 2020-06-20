@@ -69,7 +69,7 @@ require("./app/routes/UserRouters")(app);
 require("./app/routes/AuthRoutes")(app);
 
 // static folder route
-app.use(express.static(path.join(__dirname, "client", "build")));
+app.use(express.static(path.join(__dirname, "build")));
 
 app.get("/this", async (req, res) => {
   await secureStorage.setItem("key", req.cookies);
