@@ -49,6 +49,7 @@
     "react-test-renderer": "^16.13.1",
     "react-validation": "^3.0.7",
     "reactstrap": "^8.4.1",
+    "recoil": "0.0.10",
     "rxjs": "^6.5.5",
     "simple-line-icons": "^2.4.1",
     "styled-components": "^5.1.1",
@@ -78,5 +79,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8080"
+  "proxy": "http://localhost:3000"
 }

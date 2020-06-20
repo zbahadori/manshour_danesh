@@ -28,7 +28,12 @@ exports.adminGetAllUser = async (req, res) => {
 exports.adminUserBlockUpdate = async (req, res) => {
   //Validate with joi
   const { error } = adminUserUpdateBlockValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error)
+    return res.json({
+      message: error.details[0].message,
+      success: false,
+      error: true,
+    });
 
   const user = await db.user.findOne({
     phone_number: req.body.phone_number,
@@ -77,8 +82,14 @@ exports.adminGetAllNationalID = async (req, res) => {
 exports.adminDeleteSingleNationalID = async (req, res) => {
   //Validate with joi
   const { error } = adminDeleteSingleNationalIDValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-  console.log(req.body.phone_number);
+  if (error)
+    return res.json({
+      message: error.details[0].message,
+      success: false,
+      error: true,
+    });
+
+  g(req.body.phone_number);
 
   const nationalIDs = await db.nationalID.findOne({
     phone_number: req.body.phone_number,
@@ -102,8 +113,14 @@ exports.adminDeleteSingleNationalID = async (req, res) => {
 exports.adminCreateAlert = async (req, res) => {
   //Validate with joi
   const { error } = adminCreateAlertsValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-  //Store alert in DB
+  if (error)
+    return res.json({
+      message: error.details[0].message,
+      success: false,
+      error: true,
+    });
+
+  ert in DB;
   const alert = await db.alert.create(req.body);
   if (!alert)
     return res.json({
@@ -142,7 +159,12 @@ exports.adminGetAllAlert = async (req, res) => {
 exports.adminUpdateSingleAlert = async (req, res) => {
   //Validate with joi
   const { error } = adminUpdateSingleAlertValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error)
+    return res.json({
+      message: error.details[0].message,
+      success: false,
+      error: true,
+    });
 
   //Store alert in DB
   const alert = await db.alert.findOne({

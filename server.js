@@ -3,16 +3,18 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
+var cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 const corsOrigin = require("./app/config/AppConfig");
-const AuthMiddleware = require("./app/middleware/AuthMiddleware");
+const secureStorage = require("./app/services/SecureStorage");
+const AuthMiddleware = require("./app/middlewares/AuthMiddleware");
 
 dotenv.config();
 
 const app = express();
 
 // Init Auth middleware
-app.use(AuthMiddleware);
+// app.use(AuthMiddleware);
 
 //CORS middleware
 var corsOptions = {
@@ -25,6 +27,9 @@ app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Coockie parser for JWT
+app.use(cookieParser());
 
 // Enable file Upload
 app.use(
@@ -64,13 +69,13 @@ require("./app/routes/UserRouters")(app);
 require("./app/routes/AuthRoutes")(app);
 
 // static folder route
-app.use(express.static("public"));
-
 app.use(express.static(path.join(__dirname, "client", "build")));
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.resolve(__dirname, "build", "index.html"));
-// });
+app.get("/this", async (req, res) => {
+  await secureStorage.setItem("key", "dgsksnjdgldkn");
+  const data = await secureStorage.getItem("key");
+  res.send(data);
+});
 
 // set port, listen for requests
 const PORT = process.env.PORT || 5000;

@@ -1,6 +1,6 @@
 module.exports = (app) => {
   const adminController = require("../controllers/AdminController");
-  const JWTAdminMiddleware = require("../middleware/JWTAdminMiddleware");
+  const JWTAdminMiddleware = require("../middlewares/JWTAdminMiddleware");
 
   var router = require("express").Router();
 
@@ -21,7 +21,7 @@ module.exports = (app) => {
     adminController.adminDeleteSingleNationalID
   );
 
-  // router.post("/test", JWTAdminMiddleware, adminController.test);
+  // router.post("/test", adminController.test);
 
-  app.use("/api/admin", router);
+  app.use("/api/admin", JWTAdminMiddleware, router);
 };

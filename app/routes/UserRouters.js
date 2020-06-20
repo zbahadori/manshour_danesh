@@ -1,6 +1,6 @@
 module.exports = (app) => {
   const userController = require("../controllers/UserController.js");
-  const jwtStudentMiddleware = require("../middleware/JWTStudentMiddleware");
+  const jwtStudentMiddleware = require("../middlewares/JWTStudentMiddleware");
 
   var router = require("express").Router();
 

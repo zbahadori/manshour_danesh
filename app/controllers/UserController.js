@@ -9,7 +9,12 @@ const db = require("../models");
 exports.userUpdateInformation = async (req, res) => {
   //Validate with joi
   const { error } = userUpdateValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error)
+    return res.json({
+      message: error.details[0].message,
+      success: false,
+      error: true,
+    });
 
   const user = await db.user.findOne({ phone_number: "09127170126" });
   if (!user)
@@ -38,10 +43,6 @@ exports.userUpdateInformation = async (req, res) => {
 
 //Get the list of users that has been invited to the application
 exports.userGetReferencedUsers = async (req, res) => {
-  //Validate with joi
-  const { error } = userUpdateValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
   const user = await db.user.findOne({ phone_number: "09127170126" });
   if (!user)
     return res.json({
@@ -72,7 +73,12 @@ exports.userGetReferencedUsers = async (req, res) => {
 exports.userUpdateNationalID = async (req, res) => {
   //Validate with joi
   const { error } = userUpdateNationalID(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error)
+    return res.json({
+      message: error.details[0].message,
+      success: false,
+      error: true,
+    });
 
   if (!req.files || !req.files.image)
     res.json({

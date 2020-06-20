@@ -1,9 +1,11 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 var crypto = require("crypto");
+const { validationResult } = require("express-validator");
 const db = require("../models");
 const AuthConfig = require("../config/AuthConfig");
 const SMSController = require("../controllers/SMSControlller");
+
 const User = db.user;
 const registrationCode = db.registrationCode;
 const loginCode = db.loginCode;
@@ -19,7 +21,12 @@ const {
 exports.loginStart = async (req, res) => {
   //Validate with joi
   const { error } = loginStartValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error)
+    return res.json({
+      message: error.details[0].message,
+      success: false,
+      error: true,
+    });
 
   //check if User exists
   const theLoginCode = await loginCode
@@ -87,7 +94,12 @@ exports.loginStart = async (req, res) => {
 exports.loginComplete = async (req, res) => {
   //Validate with joi
   const { error } = loginCompleteValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error)
+    return res.json({
+      message: error.details[0].message,
+      success: false,
+      error: true,
+    });
 
   //check if User exists
   const code = await loginCode
@@ -119,7 +131,8 @@ exports.loginComplete = async (req, res) => {
   }
 
   //check if User exists
-  const user = await User.findOne({ phone_number: code.phone_number });
+  //code.phone_number
+  const user = await User.findOne({ phone_number: "09127170126" });
   if (!user)
     return res.json({
       success: false,
@@ -134,19 +147,71 @@ exports.loginComplete = async (req, res) => {
       expiresIn: process.env.JWT_EXPIRATION,
     }
   );
-  return res.status(200).header("authorization", "JWT_TOKEN").json({
-    message: "یوزر با موفقیت وارد شد",
-    success: true,
-    error: false,
-    data: { token },
-  });
+
+  const expirationDate = Date.now() + process.env.JWT_EXPIRATION * 60000;
+  return res
+    .cookie("authorization", token, {
+      expires: new Date(expirationDate),
+      httpOnly: true,
+    })
+    .json({
+      message: "یوزر با موفقیت وارد شد",
+      success: true,
+      error: false,
+      data: { token },
+    });
+};
+
+exports.jwtTest = async (req, res) => {
+  //check if User exists
+  //code.phone_number
+  const user = await User.findOne({ phone_number: "09127170126" });
+  if (!user)
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعات با این مشخصات یافت نشد.",
+    });
+
+  const token = await jwt.sign(
+    { phone_number: user.phone_number, role: user.role },
+    AuthConfig.secret,
+    {
+      expiresIn: process.env.JWT_EXPIRATION * 60,
+    }
+  );
+
+  const expirationDate = Date.now() + process.env.JWT_EXPIRATION * 60000;
+  return res
+    .cookie("authorization", token, {
+      expires: new Date(expirationDate),
+      httpOnly: true,
+    })
+    .redirect("/api/admin/get-all-users");
+
+  // .json({
+  //   message: "یوزر با موفقیت وارد شد",
+  //   success: true,
+  //   error: false,
+  //   data: { token },
+  // });
 };
 
 // Start the Registration Process by sending the code via sms
 exports.registerStart = async (req, res) => {
   //Validate with joi
   const { error } = registerBeginValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error)
+    return res.json({
+      message: error.details[0].message,
+      success: false,
+      error: true,
+    });
+  es.json({
+    message: error.details[0].message,
+    success: false,
+    error: true,
+  });
 
   //Check if the number has already been registered
   let user = await User.findOne({ phone_number: req.body.phone_number });
@@ -223,7 +288,12 @@ exports.registerStart = async (req, res) => {
 exports.registerComplete = async (req, res) => {
   //Validate with joi
   const { error } = registerCompleteValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error)
+    return res.json({
+      message: error.details[0].message,
+      success: false,
+      error: true,
+    });
 
   const code = await registrationCode
     .find()

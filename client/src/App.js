@@ -1,121 +1,83 @@
-import React from "react";
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
-import StudentDashboard from "./student/routes/Dashboard";
-import Account from "./student/routes/Account";
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import StudentDashboard from "./componenets/student/routes/Dashboard";
+import SignIn from "./componenets/student/routes/SignIn";
 import HomePage from "./public/HomePage";
+import DefaultLayout from "./componenets/admin/containers/DefaultLayout";
+import Login from "./componenets/admin/views/Pages/Login";
+import Register from "./componenets/admin/views/Pages/Register";
+import Page404 from "./componenets/admin/views/Pages/Page404";
+import Page500 from "./componenets/admin/views/Pages/Page500";
+import AdminPanel from "./componenets/admin/component/AdminPanel";
+import MainPage from "./componenets/admin/component/MainPage";
+import StudentProfile from "./componenets/student/containers/header/StudentProfile/StudentProfile";
+import TeachersList from "./componenets/admin/component/TeachersList/TeachersList";
 
-import DefaultLayout from "./admin/containers/DefaultLayout";
-import Login from "./admin/views/Pages/Login";
-import Register from "./admin/views/Pages/Register";
-import Page404 from "./admin/views/Pages/Page404";
-import Page500 from "./admin/views/Pages/Page500";
-import AdminPanel from "./admin/component/AdminPanel";
-import MainPage from "./admin/component/MainPage";
-import Test from "./student/components/Test/Test";
-import StudentProfile from "./student/containers/header/StudentProfile/StudentProfile";
-import { isAuthenticated } from './repository';
-import TeachersList from "./admin/component/TeachersList/TeachersList";
+import { atom, useRecoilState, selector } from "recoil";
+import { testState } from "./services/Recoils";
+require("dotenv").config();
 
+export default function App() {
+  return (
+    <Router>
+      <Switch>
+        {/* Static page routes */}
+        {/* <Route
+          exact
+          path="/"
+          name="صفحه اصلی منشور دانش"
+          render={(props) => <MainPage {...props} />}
+        /> */}
+        <Route
+          path="/signin"
+          name="ورود به حساب کاربری"
+          render={(props) => <SignIn {...props} />}
+        />
 
-//import { UsersList } from './admin/component/UsersList/UsersList';
+        {/* <Route
+          exact
+          path="/admin/teacher"
+          name="صفحه اصلی منشور دانش"
+          render={(props) => <TeachersList {...props} />}
+        /> */}
 
+        {/* <Route
+          exact
+          path="/student/studentprofile"
+          name="صفحه اصلی منشور دانش"
+          render={(props) => <StudentProfile {...props} />}
+        /> */}
 
-require('dotenv').config();
+        {/* Admin panel routes */}
+        {/* <Route
+          exact
+          path="/admin/dashbord"
+          name="داشبورد اصلی"
+          render={(props) => <DefaultLayout {...props} />}
+        /> */}
 
+        {/* <Route
+          path="/admin/"
+          name="ثبت نام"
+          render={(props) => <AdminPanel {...props} />}
+        /> */}
 
+        {/* Student panel routes */}
+        {/* <Route
+          path="/student"
+          name="پنل دانش آموز"
+          render={(props) => <StudentDashboard {...props} />}
+        /> */}
 
-class App extends React.Component {
-
-
-  logOut() {
-    localStorage.removeItem('x-access-token');
-  }
-
-
-
-  render() {
-
-
-
-    return (
-      <Router >
-        <Switch>
-          {/* Static page routes */}
-
-          <Route
-            exact
-            path="/"
-            name="صفحه اصلی منشور دانش"
-            render={(props) => <MainPage {...props} />}
-          />
-
-
-
-
-          <Route
-            exact
-            path="/student/test"
-            name="صفحه اصلی منشور دانش"
-            render={(props) => <Test {...props} />}
-          />
-
-
-          <Route
-            exact
-            path="/admin/teacher"
-            name="صفحه اصلی منشور دانش"
-            render={(props) => <TeachersList {...props} />}
-          />
-
-          <Route
-            exact
-            path="/student/studentprofile"
-            name="صفحه اصلی منشور دانش"
-            render={(props) => <StudentProfile {...props} />}
-          />
-
-
-          {/* Admin panel routes */}
-          <Route
-            exact
-            path="/admin/dashbord"
-            name="داشبورد اصلی"
-            render={(props) => <DefaultLayout {...props} />}
-          />
-
-          <Route
-            path="/admin/"
-            name="ثبت نام"
-            render={(props) => <AdminPanel {...props} />}
-          />
-
-
-
-          {/* Student panel routes */}
-          <Route
-            path="/student"
-            name="پنل دانش آموز"
-            render={(props) => <StudentDashboard {...props} />}
-          />
-          <Route
-            path="/account"
-            name="ورود به حساب کاربری"
-            render={(props) => <Account {...props} />}
-          />
-
-          {/* Errors routes */}
-          {/* in case that no route matches the provided routes, then redirect to the route with no path specified*/}
-          <Route
-            path="/500"
-            name="ارور ۵۰۰"
-            render={(props) => <Page500 {...props} />}
-          />
-          <Route name="ارور ۴۰۴" render={(props) => <Page404 {...props} />} />
-
-        </Switch>
-      </Router>
-    );
-  }
+        {/* Errors routes */}
+        {/* in case that no route matches the provided routes, then redirect to the route with no path specified*/}
+        {/* <Route
+          path="/500"
+          name="ارور ۵۰۰"
+          render={(props) => <Page500 {...props} />}
+        /> */}
+        <Route name="ارور ۴۰۴" render={(props) => <Page404 {...props} />} />
+      </Switch>
+    </Router>
+  );
 }
-
-export default App;
