@@ -13,6 +13,7 @@ module.exports = (app) => {
   );
   router.post("/register-complete", AuthController.registerComplete);
   router.get("/jwt-test", AuthController.jwtTest);
+  router.get("/is-authenticated", AuthController.isAuthenticated);
 
   app.use("/api/auth", router);
 

@@ -1,8 +1,16 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Link,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
+import axios from "axios";
+import Cookies from "js-cookie";
 import StudentDashboard from "./componenets/student/routes/Dashboard";
 import SignIn from "./componenets/student/routes/SignIn";
-import HomePage from "./public/HomePage";
+import HomePage from "./componenets/public/HomePage";
 import DefaultLayout from "./componenets/admin/containers/DefaultLayout";
 import Login from "./componenets/admin/views/Pages/Login";
 import Register from "./componenets/admin/views/Pages/Register";
@@ -14,10 +22,31 @@ import StudentProfile from "./componenets/student/containers/header/StudentProfi
 import TeachersList from "./componenets/admin/component/TeachersList/TeachersList";
 
 import { atom, useRecoilState, selector } from "recoil";
-import { testState } from "./services/Recoils";
+import { IsAuthenticated, UserRole, PhoneNumber } from "./services/Recoils";
 require("dotenv").config();
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useRecoilState(IsAuthenticated);
+  const [phoneNumber, setPhoneNumber] = useRecoilState(PhoneNumber);
+  const [userRole, setUserRole] = useRecoilState(UserRole);
+  useEffect(() => {
+    axios({
+      url: process.env.REACT_APP_BACKEND_URL + "api/auth/is-authenticated",
+      withCredentials: true,
+      method: "get",
+    }).then((res) => {
+      if (res.data) {
+        setIsAuthenticated(res.data.success);
+        setPhoneNumber(res.data.data.phone_number);
+        setUserRole(res.data.data.role);
+      } else {
+        setIsAuthenticated(false);
+        setPhoneNumber(null);
+        setUserRole(null);
+      }
+      console.log(res.data);
+    });
+  }, []);
   return (
     <Router>
       <Switch>
@@ -29,9 +58,13 @@ export default function App() {
           render={(props) => <MainPage {...props} />}
         /> */}
         <Route
+          exact
           path="/"
           name="ورود به حساب کاربری"
-          render={(props) => <SignIn {...props} />}
+          render={(props) => {
+            if (isAuthenticated) return <Redirect to="/this" />;
+            else return <SignIn {...props} />;
+          }}
         />
 
         {/* <Route
@@ -41,12 +74,12 @@ export default function App() {
           render={(props) => <TeachersList {...props} />}
         /> */}
 
-        {/* <Route
+        <Route
           exact
           path="/student/studentprofile"
           name="صفحه اصلی منشور دانش"
           render={(props) => <StudentProfile {...props} />}
-        /> */}
+        />
 
         {/* Admin panel routes */}
         {/* <Route

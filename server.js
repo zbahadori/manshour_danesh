@@ -4,8 +4,8 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
 var cookieParser = require("cookie-parser");
+var cookieSession = require("cookie-session");
 const fileUpload = require("express-fileupload");
-const corsOrigin = require("./app/config/AppConfig");
 const secureStorage = require("./app/services/SecureStorage");
 const AuthMiddleware = require("./app/middlewares/AuthMiddleware");
 
@@ -17,10 +17,17 @@ const app = express();
 // app.use(AuthMiddleware);
 
 //CORS middleware
-var corsOptions = {
-  origin: corsOrigin,
-};
-app.use(cors(corsOptions));
+
+app.use(
+  cors({
+    origin: [
+      `${process.env.FRONT_URL}`,
+      "http://localhost:3000",
+      "https://manshour.herokuapp.com",
+    ],
+    credentials: true,
+  })
+);
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
@@ -30,7 +37,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Coockie parser for JWT
 app.use(cookieParser());
-
+// app.use(
+//   cookieSession({
+//     secret: "crypted key",
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: false }, // Put true if https
+//   })
+// );
 // Enable file Upload
 app.use(
   fileUpload({
@@ -72,8 +86,7 @@ require("./app/routes/AuthRoutes")(app);
 app.use(express.static(path.join(__dirname, "build")));
 
 app.get("/this", async (req, res) => {
-  await secureStorage.setItem("key", req.cookies);
-  const data = await secureStorage.getItem("key");
+  const data = req.headers.cookie.split("authorization=")[1];
   res.send(data);
 });
 

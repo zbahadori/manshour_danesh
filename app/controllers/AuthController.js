@@ -16,6 +16,7 @@ const {
   registerBeginValidation,
   registerCompleteValidation,
 } = require("../validations/AuthValidations");
+const { user } = require("../models");
 
 // Loggin user in
 exports.loginStart = async (req, res) => {
@@ -165,6 +166,7 @@ exports.loginComplete = async (req, res) => {
 exports.jwtTest = async (req, res) => {
   //check if User exists
   //code.phone_number
+
   const user = await User.findOne({ phone_number: "09127170126" });
   if (!user)
     return res.json({
@@ -187,7 +189,7 @@ exports.jwtTest = async (req, res) => {
       expires: new Date(expirationDate),
       httpOnly: true,
     })
-    .redirect("/api/admin/get-all-users");
+    .redirect("/api/auth/is-authenticated");
 
   // .json({
   //   message: "یوزر با موفقیت وارد شد",
@@ -349,7 +351,42 @@ exports.registerComplete = async (req, res) => {
 };
 
 // Find a single User with an id
-// const hashpassword = async (password) => {
-//   const salt = await bcrypt.genSalt(10);
-//   return await bcrypt.hash(password, salt);
-// };
+exports.isAuthenticated = async (req, res, next) => {
+  const token = req.headers.cookie.split("authorization=")[1];
+  if (!token)
+    return res.json({
+      success: false,
+      err: true,
+      message: "یوزر مهمان است.",
+      data: {
+        phone_number: user.phone_number,
+        role: user.role,
+      },
+    });
+
+  try {
+    const user = jwt.verify(token, AuthConfig.secret);
+    console.log(user);
+    if (user.role != "student" && user.role != "admin")
+      return res.json({
+        success: false,
+        err: true,
+        message: "لطفا ابتدا Login کنید.",
+      });
+
+    return res.json({
+      success: true,
+      err: false,
+      message: "خوش آمدید",
+      data: user,
+    });
+  } catch (err) {
+    return res.json({
+      success: false,
+      err: true,
+      message: "کد منقضی شده است.",
+      token,
+      errMessage: err,
+    });
+  }
+};
