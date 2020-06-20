@@ -207,11 +207,6 @@ exports.registerStart = async (req, res) => {
       success: false,
       error: true,
     });
-  es.json({
-    message: error.details[0].message,
-    success: false,
-    error: true,
-  });
 
   //Check if the number has already been registered
   let user = await User.findOne({ phone_number: req.body.phone_number });
@@ -354,7 +349,7 @@ exports.registerComplete = async (req, res) => {
 };
 
 // Find a single User with an id
-const hashpassword = async (password) => {
-  const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hash(password, salt);
-};
+// const hashpassword = async (password) => {
+//   const salt = await bcrypt.genSalt(10);
+//   return await bcrypt.hash(password, salt);
+// };

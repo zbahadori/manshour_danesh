@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { ErrorStatus, ErrorMessage } from "../../../../services/Recoils";
+import { useRecoilState } from "recoil";
 
-export default function Alert(props) {
-  return props.message ? (
-    <div style={{ direction: "rtl" }} className={"alert alert-" + props.class}>
-      {props.message}
-    </div>
+export default function Alert() {
+  const [errorStatus, setErrorStatus] = useRecoilState(ErrorStatus);
+  const [errorMessage, setErrorMessage] = useRecoilState(ErrorMessage);
+
+  // useEffect(() => {
+  //   return () => {
+  //     setErrorStatus(null);
+  //     setErrorMessage(null);
+  //   };
+  // }, []);
+
+  return errorMessage ? (
+    <div className={"alert alert-" + errorStatus}>{errorMessage}</div>
   ) : null;
 }

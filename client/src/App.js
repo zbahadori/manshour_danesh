@@ -29,7 +29,7 @@ export default function App() {
           render={(props) => <MainPage {...props} />}
         /> */}
         <Route
-          path="/signin"
+          path="/"
           name="ورود به حساب کاربری"
           render={(props) => <SignIn {...props} />}
         />

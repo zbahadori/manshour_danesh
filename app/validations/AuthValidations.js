@@ -23,7 +23,7 @@ const loginCompleteValidation = (data) => {
 const registerBeginValidation = (data) => {
   const schema = Joi.object({
     phone_number: Joi.string().required().length(11),
-    reference_phone_number: Joi.string().length(11).optional(),
+    reference_phone_number: Joi.string().length(11).optional().allow(""),
   });
   return schema.validate(data);
 };
