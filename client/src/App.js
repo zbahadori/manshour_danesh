@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Link,
@@ -11,7 +11,7 @@ import Cookies from "js-cookie";
 import StudentDashboard from "./componenets/student/routes/Dashboard";
 import SignIn from "./componenets/student/routes/SignIn";
 import HomePage from "./componenets/public/HomePage";
-import DefaultLayout from "./componenets/admin/containers/DefaultLayout";
+import AdminDashboard from "./componenets/admin/component/dashboard";
 import Login from "./componenets/admin/views/Pages/Login";
 import Register from "./componenets/admin/views/Pages/Register";
 import Page404 from "./componenets/admin/views/Pages/Page404";
@@ -29,27 +29,75 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useRecoilState(IsAuthenticated);
   const [phoneNumber, setPhoneNumber] = useRecoilState(PhoneNumber);
   const [userRole, setUserRole] = useRecoilState(UserRole);
+  const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     axios({
       url: process.env.REACT_APP_BACKEND_URL + "api/auth/is-authenticated",
       withCredentials: true,
       method: "get",
-    }).then((res) => {
-      if (res.data) {
-        setIsAuthenticated(res.data.success);
-        setPhoneNumber(res.data.data.phone_number);
-        setUserRole(res.data.data.role);
-      } else {
-        setIsAuthenticated(false);
-        setPhoneNumber(null);
-        setUserRole(null);
-      }
-      console.log(res.data);
-    });
+    })
+      .then((res) => {
+        try {
+          setIsAuthenticated(res.data.success);
+          setPhoneNumber(res.data.data.phone_number);
+          setUserRole(res.data.data.role);
+        } catch (e) {
+          setIsAuthenticated(false);
+          setPhoneNumber(null);
+          setUserRole(null);
+        }
+
+        console.log(res.data);
+      })
+      .finally(() => {
+        setIsLoaded(true);
+      });
   }, []);
-  return (
+  return isLoaded ? (
     <Router>
       <Switch>
+        {/* Login Route */}
+        <Route
+          exact
+          path="/signin"
+          name="ورود به حساب کاربری"
+          render={(props) => {
+            if (isAuthenticated) return <Redirect to="/student/dashboard" />;
+            else return <SignIn {...props} />;
+          }}
+        />
+
+        {/* Student panel routes */}
+        <Route
+          exact
+          path="/student/dashboard"
+          name="پنل دانش آموز"
+          render={(props) => {
+            if (isAuthenticated) return <StudentDashboard {...props} />;
+            else return <Redirect to="/signin" />;
+          }}
+        />
+
+        {/* Admin panel routes */}
+        <Route
+          exact
+          path="/admin/dashboard"
+          name="داشبورد اصلی"
+          render={(props) => {
+            if (isAuthenticated && userRole == "admin")
+              return <AdminDashboard {...props} />;
+            else return <Redirect to="/signin" />;
+          }}
+        />
+
+        {/* Student's Profile Route */}
+        {/* <Route
+          exact
+          path="/student/studentprofile"
+          name="صفحه اصلی منشور دانش"
+          render={(props) => <StudentProfile {...props} />}
+        /> */}
+
         {/* Static page routes */}
         {/* <Route
           exact
@@ -57,15 +105,6 @@ export default function App() {
           name="صفحه اصلی منشور دانش"
           render={(props) => <MainPage {...props} />}
         /> */}
-        <Route
-          exact
-          path="/"
-          name="ورود به حساب کاربری"
-          render={(props) => {
-            if (isAuthenticated) return <Redirect to="/this" />;
-            else return <SignIn {...props} />;
-          }}
-        />
 
         {/* <Route
           exact
@@ -74,32 +113,10 @@ export default function App() {
           render={(props) => <TeachersList {...props} />}
         /> */}
 
-        <Route
-          exact
-          path="/student/studentprofile"
-          name="صفحه اصلی منشور دانش"
-          render={(props) => <StudentProfile {...props} />}
-        />
-
-        {/* Admin panel routes */}
-        {/* <Route
-          exact
-          path="/admin/dashbord"
-          name="داشبورد اصلی"
-          render={(props) => <DefaultLayout {...props} />}
-        /> */}
-
         {/* <Route
           path="/admin/"
           name="ثبت نام"
           render={(props) => <AdminPanel {...props} />}
-        /> */}
-
-        {/* Student panel routes */}
-        {/* <Route
-          path="/student"
-          name="پنل دانش آموز"
-          render={(props) => <StudentDashboard {...props} />}
         /> */}
 
         {/* Errors routes */}
@@ -112,5 +129,7 @@ export default function App() {
         <Route name="ارور ۴۰۴" render={(props) => <Page404 {...props} />} />
       </Switch>
     </Router>
+  ) : (
+    "Loading"
   );
 }

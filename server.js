@@ -86,8 +86,21 @@ require("./app/routes/AuthRoutes")(app);
 app.use(express.static(path.join(__dirname, "build")));
 
 app.get("/this", async (req, res) => {
-  const data = req.headers.cookie.split("authorization=")[1];
-  res.send(data);
+  try {
+    const data = req.headers.cookie.split("authorization=")[1];
+  } catch (e) {
+    return res.json({
+      success: false,
+      err: true,
+      message: "یوزر مهمان است.",
+    });
+  }
+  return res.json({
+    success: false,
+    err: true,
+    message: "یوزر مهمان است.",
+    data,
+  });
 });
 
 // set port, listen for requests

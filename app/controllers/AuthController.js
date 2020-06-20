@@ -352,7 +352,16 @@ exports.registerComplete = async (req, res) => {
 
 // Find a single User with an id
 exports.isAuthenticated = async (req, res, next) => {
-  const token = req.headers.cookie.split("authorization=")[1];
+  var token = null;
+  try {
+    token = req.headers.cookie.split("authorization=")[1];
+  } catch (e) {
+    return res.json({
+      success: false,
+      err: true,
+      message: "یوزر مهمان است.",
+    });
+  }
   if (!token)
     return res.json({
       success: false,
