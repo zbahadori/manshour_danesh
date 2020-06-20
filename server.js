@@ -72,7 +72,7 @@ require("./app/routes/AuthRoutes")(app);
 app.use(express.static(path.join(__dirname, "client", "build")));
 
 app.get("/this", async (req, res) => {
-  await secureStorage.setItem("key", "dgsksnjdgldkn");
+  await secureStorage.setItem("key", req.cookies);
   const data = await secureStorage.getItem("key");
   res.send(data);
 });
