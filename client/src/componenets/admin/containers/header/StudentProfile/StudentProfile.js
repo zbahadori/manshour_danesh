@@ -1,10 +1,20 @@
 import React, { useState } from "react";
-import { Container, Col, Row } from "react-bootstrap";
+import {
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  FormText,
+  ButtonToggle,
+} from "reactstrap";
+import { InputGroup, FormControl, Container, Col, Row } from "react-bootstrap";
+import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import "./studentprofile.scss";
 import Header from "../../Header";
 import Menu from "../../Menu";
 import Footer from "../../Footer";
+import Button from "@material-ui/core/Button";
 import Alert from "../../../components/Alert/Alert";
 import FormInput from "../../../components/FormInput/FormInput";
 import CustomButton from "../../../components/CustomButton";

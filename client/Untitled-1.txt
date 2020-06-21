@@ -1,0 +1,49 @@
+{
+"success": true,
+"err": false,
+"message": "اطلاعات با موفقیت یافت شد",
+"data": {
+"users": [
+{
+"name": null,
+"lastname": null,
+"name_english": null,
+"lastname_english": null,
+"reference_phone_number": "09127170126",
+"father_name": null,
+"phone_verified": false,
+"grade": null,
+"provance": null,
+"city": null,
+"school": null,
+"role": "student",
+"user_image": "default_image.jpg",
+"status": false,
+"phone_number": "09376681856",
+"createdAt": "2020-06-20T10:09:06.750Z",
+"updatedAt": "2020-06-20T10:09:06.750Z",
+"id": "5eede042ef38590004cad636"
+},
+{
+"name": null,
+"lastname": null,
+"name_english": null,
+"lastname_english": null,
+"reference_phone_number": null,
+"father_name": null,
+"phone_verified": false,
+"grade": null,
+"provance": null,
+"city": null,
+"school": null,
+"role": "admin",
+"user_image": "default_image.jpg",
+"status": false,
+"phone_number": "09127170126",
+"createdAt": "2020-06-20T04:18:18.247Z",
+"updatedAt": "2020-06-20T04:18:18.247Z",
+"id": "5eed8e0a18cf8a15b4468054"
+}
+]
+}
+}

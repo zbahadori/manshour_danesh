@@ -1,27 +1,21 @@
 {
   "files": {
-    "main.css": "/static/css/main.522cb1e7.chunk.css",
-    "main.js": "/static/js/main.d12432f4.chunk.js",
-    "main.js.map": "/static/js/main.d12432f4.chunk.js.map",
+    "main.css": "/static/css/main.d0391507.chunk.css",
+    "main.js": "/static/js/main.4bbe15cb.chunk.js",
+    "main.js.map": "/static/js/main.4bbe15cb.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.3ea18b6e.js",
     "runtime-main.js.map": "/static/js/runtime-main.3ea18b6e.js.map",
     "static/css/2.af3c1da9.chunk.css": "/static/css/2.af3c1da9.chunk.css",
-    "static/js/2.c02e03c3.chunk.js": "/static/js/2.c02e03c3.chunk.js",
-    "static/js/2.c02e03c3.chunk.js.map": "/static/js/2.c02e03c3.chunk.js.map",
+    "static/js/2.3565c507.chunk.js": "/static/js/2.3565c507.chunk.js",
+    "static/js/2.3565c507.chunk.js.map": "/static/js/2.3565c507.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.ce0a02c68d50e9c8d550fd743a37483a.js": "/precache-manifest.ce0a02c68d50e9c8d550fd743a37483a.js",
+    "precache-manifest.828ef571d16a53de0581df8858239078.js": "/precache-manifest.828ef571d16a53de0581df8858239078.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.af3c1da9.chunk.css.map": "/static/css/2.af3c1da9.chunk.css.map",
-    "static/css/main.522cb1e7.chunk.css.map": "/static/css/main.522cb1e7.chunk.css.map",
-    "static/js/2.c02e03c3.chunk.js.LICENSE.txt": "/static/js/2.c02e03c3.chunk.js.LICENSE.txt",
+    "static/css/main.d0391507.chunk.css.map": "/static/css/main.d0391507.chunk.css.map",
+    "static/js/2.3565c507.chunk.js.LICENSE.txt": "/static/js/2.3565c507.chunk.js.LICENSE.txt",
     "static/media/SignIn.scss": "/static/media/Login-bg.1869d8e7.jpg",
     "static/media/icons.css": "/static/media/Simple-Line-Icons.f33df365.eot",
-    "static/media/book01.jpg": "/static/media/book01.5898a127.jpg",
-    "static/media/book02.jpg": "/static/media/book02.fa82df38.jpg",
-    "static/media/book03.jpg": "/static/media/book03.7e99a2b6.jpg",
-    "static/media/book04.jpg": "/static/media/book04.90e2a29d.jpg",
-    "static/media/book05.jpg": "/static/media/book05.53ba8f1f.jpg",
-    "static/media/book06.jpg": "/static/media/book06.0134759c.jpg",
     "static/media/style.scss": "/static/media/iranyekanweb-thin.f78b74c5.woff",
     "static/media/logo.png": "/static/media/logo.cd92811f.png",
     "static/media/profile-pic.jpg": "/static/media/profile-pic.d4f40d8a.jpg"
@@ -29,8 +23,8 @@
   "entrypoints": [
     "static/js/runtime-main.3ea18b6e.js",
     "static/css/2.af3c1da9.chunk.css",
-    "static/js/2.c02e03c3.chunk.js",
-    "static/css/main.522cb1e7.chunk.css",
-    "static/js/main.d12432f4.chunk.js"
+    "static/js/2.3565c507.chunk.js",
+    "static/css/main.d0391507.chunk.css",
+    "static/js/main.4bbe15cb.chunk.js"
   ]
 }

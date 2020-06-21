@@ -16,7 +16,7 @@ export const IsAuthenticated = atom({
 });
 
 export const PhoneNumber = atom({
-  key: "is_authenticated",
+  key: "phone_number",
   default: null,
 });
 
