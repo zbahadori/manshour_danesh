@@ -10,7 +10,7 @@ import axios from "axios";
 import SignIn from "./componenets/pages/SignIn";
 import StudentDashboard from "./componenets/pages/StudentDashboard";
 import AdminDashboard from "./componenets/pages/AdminDashboard";
-
+import AdminUserList from "./componenets/pages/AdminUserList";
 import { useRecoilState } from "recoil";
 import { IsAuthenticated, UserRole, PhoneNumber } from "./services/Recoils";
 require("dotenv").config();
@@ -52,7 +52,7 @@ export default function App() {
           path="/"
           name="adminUserList"
           render={(props) => {
-            return <AdminDashboard {...props} />;
+            return <AdminUserList {...props} />;
           }}
         />
 

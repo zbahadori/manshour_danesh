@@ -1,22 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Table } from "reactstrap";
+import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import axios from "axios";
 
-import AdminHeader from "../Header";
-import AdminMenue from "../Menu";
-import AdminFooter from "../Footer";
+const UsersList = (props) => {
+  const API = process.env.REACT_APP_BACKEND_URL + "/api/admin/get-all-users";
+  const [data, setData] = useState({ hits: [] });
 
-const AdminUserList = (props) => {
+  useEffect(async () => {
+    const result = await axios.get(API);
+    setData(result.data);
+  }, []);
+
   return (
     <>
-      <AdminHeader />
-      <AdminMenue />
-
-      <table class="table d-flex flex-column justify-content-center align-items-center">
+      <Table bordered>
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
           </tr>
         </thead>
         <tbody>
@@ -24,25 +28,57 @@ const AdminUserList = (props) => {
             <th scope="row">1</th>
             <td>Mark</td>
             <td>Otto</td>
-            <td>@mdo</td>
+            <td>09121535812</td>
           </tr>
           <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
+            <ul>
+              {data.hits.map((item) => (
+                <li key={item.phone_number}>
+                  <a href={item.id}>{item.name}</a>
+                </li>
+              ))}
+            </ul>
           </tr>
           <tr>
             <th scope="row">3</th>
             <td>Larry</td>
             <td>the Bird</td>
-            <td>@twitter</td>
+            <td>0910205982</td>
           </tr>
         </tbody>
-      </table>
+      </Table>
 
-      <AdminFooter />
+      <Pagination aria-label="Page navigation example">
+        <PaginationItem>
+          <PaginationLink first href="#" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink previous href="#" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">2</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">3</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">4</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">5</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink next href="#" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink last href="#" />
+        </PaginationItem>
+      </Pagination>
     </>
   );
 };
-export default AdminUserList;
+
+export default UsersList;
