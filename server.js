@@ -4,7 +4,6 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
 var cookieParser = require("cookie-parser");
-var cookieSession = require("cookie-session");
 const fileUpload = require("express-fileupload");
 const secureStorage = require("./app/services/SecureStorage");
 const AuthMiddleware = require("./app/middlewares/AuthMiddleware");
@@ -37,14 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Coockie parser for JWT
 app.use(cookieParser());
-// app.use(
-//   cookieSession({
-//     secret: "crypted key",
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: { secure: false }, // Put true if https
-//   })
-// );
+
 // Enable file Upload
 app.use(
   fileUpload({
