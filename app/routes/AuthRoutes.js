@@ -1,6 +1,8 @@
 module.exports = (app) => {
   const { check } = require("express-validator");
+  const NewValidation = require("../validations/NewValidations");
   const AuthController = require("../controllers/AuthController");
+  const TestController = require("../controllers/TestController");
   var router = require("express").Router();
 
   // Main Routes
@@ -14,6 +16,8 @@ module.exports = (app) => {
   router.post("/register-complete", AuthController.registerComplete);
   router.get("/jwt-test", AuthController.jwtTest);
   router.get("/is-authenticated", AuthController.isAuthenticated);
+
+  router.post("/test", NewValidation.count, TestController.test);
 
   app.use("/api/auth", router);
 

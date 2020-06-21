@@ -202,13 +202,19 @@ exports.jwtTest = async (req, res) => {
 // Start the Registration Process by sending the code via sms
 exports.registerStart = async (req, res) => {
   //Validate with joi
-  const { error } = registerBeginValidation(req.body);
-  if (error)
-    return res.json({
-      message: error.details[0].message,
-      success: false,
-      error: true,
-    });
+  // const { error } = registerBeginValidation(req.body);
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.mapped() });
+  }
+
+  // if (errors)
+  //   return res.json({
+  //     message: error.details[0].message,
+  //     success: false,
+  //     error: true,
+  //   });
 
   //Check if the number has already been registered
   let user = await User.findOne({ phone_number: req.body.phone_number });
