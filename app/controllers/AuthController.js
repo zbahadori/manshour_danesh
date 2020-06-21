@@ -10,24 +10,19 @@ const User = db.user;
 const registrationCode = db.registrationCode;
 const loginCode = db.loginCode;
 
-const {
-  loginStartValidation,
-  loginCompleteValidation,
-  registerBeginValidation,
-  registerCompleteValidation,
-} = require("../validations/AuthValidations");
 const { user } = require("../models");
 
 // Loggin user in
 exports.loginStart = async (req, res) => {
-  //Validate with joi
-  const { error } = loginStartValidation(req.body);
-  if (error)
+  //Validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
     return res.json({
-      message: error.details[0].message,
       success: false,
-      error: true,
+      err: true,
+      message: errors.errors[0].msg,
     });
+  }
 
   //check if User exists
   const theLoginCode = await loginCode
@@ -93,14 +88,15 @@ exports.loginStart = async (req, res) => {
 
 // Loggin user in
 exports.loginComplete = async (req, res) => {
-  //Validate with joi
-  const { error } = loginCompleteValidation(req.body);
-  if (error)
+  //Validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
     return res.json({
-      message: error.details[0].message,
       success: false,
-      error: true,
+      err: true,
+      message: errors.errors[0].msg,
     });
+  }
 
   //check if User exists
   const code = await loginCode
@@ -201,12 +197,14 @@ exports.jwtTest = async (req, res) => {
 
 // Start the Registration Process by sending the code via sms
 exports.registerStart = async (req, res) => {
-  //Validate with joi
-  // const { error } = registerBeginValidation(req.body);
-
+  //Validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.mapped() });
+    return res.json({
+      success: false,
+      err: true,
+      message: errors.errors[0].msg,
+    });
   }
 
   // if (errors)
@@ -289,14 +287,15 @@ exports.registerStart = async (req, res) => {
 
 // Complete the registration process by creating the user
 exports.registerComplete = async (req, res) => {
-  //Validate with joi
-  const { error } = registerCompleteValidation(req.body);
-  if (error)
+  //Validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
     return res.json({
-      message: error.details[0].message,
       success: false,
-      error: true,
+      err: true,
+      message: errors.errors[0].msg,
     });
+  }
 
   const code = await registrationCode
     .find()

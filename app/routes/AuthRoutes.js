@@ -1,23 +1,28 @@
 module.exports = (app) => {
   const { check } = require("express-validator");
-  const NewValidation = require("../validations/NewValidations");
+  const UserValidations = require("../validations/UserValidations");
   const AuthController = require("../controllers/AuthController");
-  const TestController = require("../controllers/TestController");
   var router = require("express").Router();
 
   // Main Routes
-  router.post("/login-start", AuthController.loginStart);
+  router.post(
+    "/login-start",
+    [UserValidations.phone_number],
+    AuthController.loginStart
+  );
   router.post("/login-complete", AuthController.loginComplete);
   router.post(
     "/register-start",
-    [check("phone_number").isEmail()],
+    [UserValidations.phone_number, UserValidations.reference_phone_number],
     AuthController.registerStart
   );
-  router.post("/register-complete", AuthController.registerComplete);
-  router.get("/jwt-test", AuthController.jwtTest);
+  router.post(
+    "/register-complete",
+    [UserValidations.code],
+    AuthController.registerComplete
+  );
+  router.get("/jwt", AuthController.jwtTest);
   router.get("/is-authenticated", AuthController.isAuthenticated);
-
-  router.post("/test", NewValidation.count, TestController.test);
 
   app.use("/api/auth", router);
 

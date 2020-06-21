@@ -1,9 +1,4 @@
-const {
-  adminCreateAlertsValidation,
-  adminUserUpdateBlockValidation,
-  adminDeleteSingleNationalIDValidation,
-  adminUpdateSingleAlertValidation,
-} = require("../validations/AdminValidations");
+const { validationResult } = require("express-validator");
 const db = require("../models");
 
 //get all users
@@ -26,14 +21,15 @@ exports.adminGetAllUser = async (req, res) => {
 
 //block or unblock a user
 exports.adminUserBlockUpdate = async (req, res) => {
-  //Validate with joi
-  const { error } = adminUserUpdateBlockValidation(req.body);
-  if (error)
+  //Validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
     return res.json({
-      message: error.details[0].message,
       success: false,
-      error: true,
+      err: true,
+      message: errors.errors[0].msg,
     });
+  }
 
   const user = await db.user.findOne({
     phone_number: req.body.phone_number,
@@ -80,14 +76,15 @@ exports.adminGetAllNationalID = async (req, res) => {
 
 //Admin Delete single nationalID
 exports.adminDeleteSingleNationalID = async (req, res) => {
-  //Validate with joi
-  const { error } = adminDeleteSingleNationalIDValidation(req.body);
-  if (error)
+  //Validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
     return res.json({
-      message: error.details[0].message,
       success: false,
-      error: true,
+      err: true,
+      message: errors.errors[0].msg,
     });
+  }
 
   g(req.body.phone_number);
 
@@ -111,14 +108,15 @@ exports.adminDeleteSingleNationalID = async (req, res) => {
 
 // Admin create Alert
 exports.adminCreateAlert = async (req, res) => {
-  //Validate with joi
-  const { error } = adminCreateAlertsValidation(req.body);
-  if (error)
+  //Validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
     return res.json({
-      message: error.details[0].message,
       success: false,
-      error: true,
+      err: true,
+      message: errors.errors[0].msg,
     });
+  }
 
   ert in DB;
   const alert = await db.alert.create(req.body);
@@ -157,14 +155,15 @@ exports.adminGetAllAlert = async (req, res) => {
 };
 
 exports.adminUpdateSingleAlert = async (req, res) => {
-  //Validate with joi
-  const { error } = adminUpdateSingleAlertValidation(req.body);
-  if (error)
+  //Validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
     return res.json({
-      message: error.details[0].message,
       success: false,
-      error: true,
+      err: true,
+      message: errors.errors[0].msg,
     });
+  }
 
   //Store alert in DB
   const alert = await db.alert.findOne({
