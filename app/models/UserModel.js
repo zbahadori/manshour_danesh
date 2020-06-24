@@ -50,7 +50,7 @@ module.exports = (mongoose) => {
         type: Number,
         default: null,
       },
-      provance: {
+      province: {
         type: String,
         default: null,
         min: 2,

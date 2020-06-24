@@ -5,8 +5,7 @@ const dotenv = require("dotenv");
 const path = require("path");
 var cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
-const secureStorage = require("./app/services/SecureStorage");
-const AuthMiddleware = require("./app/middlewares/AuthMiddleware");
+const TestController = require("./app/controllers/TestController");
 
 dotenv.config();
 
@@ -16,7 +15,6 @@ const app = express();
 // app.use(AuthMiddleware);
 
 //CORS middleware
-
 app.use(
   cors({
     origin: [
@@ -54,7 +52,7 @@ app.use(
 //Database Connection
 const db = require("./app/models");
 db.mongoose
-  .connect(db.url, {
+  .connect(process.env.DB_CONNECT, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -77,7 +75,7 @@ require("./app/routes/AuthRoutes")(app);
 // static folder route
 app.use(express.static(path.join(__dirname, "build")));
 
-app.get("/this", async (req, res) => {
+app.get("/test", async (req, res) => {
   try {
     const data = req.headers.cookie.split("authorization=")[1];
   } catch (e) {
@@ -93,6 +91,8 @@ app.get("/this", async (req, res) => {
     message: "یوزر مهمان است.",
     data,
   });
+
+  TestController;
 });
 
 // set port, listen for requests

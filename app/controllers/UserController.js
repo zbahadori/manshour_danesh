@@ -1,20 +1,53 @@
-const sharp = require("sharp");
-const {
-  userUpdateValidation,
-  userUpdateNationalID,
-} = require("../validations/UserValidations");
+const { validationResult } = require("express-validator");
+const ImageUpload = require("../services/ImageUpload");
+
 const db = require("../models");
 
-//User update information in the first visit to dashboard
-exports.userUpdateInformation = async (req, res) => {
-  //Validate with joi
-  const { error } = userUpdateValidation(req.body);
-  if (error)
+//Get Authenticated user information
+exports.userGetUserInformantion = async (req, res) => {
+  const user = await db.user.findOne({ phone_number: "09127170126" });
+  if (!user)
     return res.json({
-      message: error.details[0].message,
       success: false,
-      error: true,
+      err: true,
+      message: "اطلاعاتی در دیتابیس یافت نشد.",
     });
+
+  console.log(user);
+
+  return res.json({
+    message: "عملیات با موفقیت انجام شد.",
+    success: true,
+    error: false,
+    data: {
+      phone_number: user.phone_number,
+      reference_phone_number: user.reference_phone_number,
+      name: user.name,
+      lastname: user.lastname,
+      name_english: user.name_english,
+      lastname_english: user.lastname_english,
+      father_name: user.father_name,
+      grade: user.grade,
+      school: user.school,
+      province: user.province,
+      city: user.city,
+      user_image: user.user_image,
+    },
+  });
+};
+
+//User update information in the first visit to dashboard
+exports.userUpdateUserInformation = async (req, res) => {
+  //Validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.json({
+      success: false,
+      err: true,
+      message: errors.errors[0].msg,
+      error: errors,
+    });
+  }
 
   const user = await db.user.findOne({ phone_number: "09127170126" });
   if (!user)
@@ -24,7 +57,40 @@ exports.userUpdateInformation = async (req, res) => {
       message: "اطلاعاتی در دیتابیس یافت نشد.",
     });
 
-  const userStored = await user.update(req.body);
+  let uploadedImage;
+
+  if (req.files) {
+    uploadedImage = await ImageUpload(
+      req,
+      req.files.image,
+      process.env.USER_IMAGE_PATH
+    );
+    if (!uploadedImage.success)
+      return res.json({
+        success: uploadedImage.success,
+        err: uploadedImage.err,
+        message: uploadedImage.message,
+        hello: "dgdg",
+      });
+  }
+
+  var inputdata = {
+    name: req.body.name,
+    lastname: req.body.lastname,
+    name_english: req.body.name_english,
+    lastname_english: req.body.lastname_english,
+    father_name: req.body.father_name,
+    grade: req.body.grade,
+    province: req.body.province,
+    city: req.body.city,
+    school: req.body.school,
+  };
+
+  if (uploadedImage) {
+    inputdata.user_image = uploadedImage.image;
+  }
+
+  const userStored = await user.update(inputdata);
   if (!userStored)
     return res.json({
       success: false,
@@ -33,17 +99,15 @@ exports.userUpdateInformation = async (req, res) => {
     });
 
   return res.json({
-    user: userStored,
     message: "عملیات با موفقیت انجام شد",
     success: true,
     error: false,
-    data: { token },
   });
 };
 
 //Get the list of users that has been invited to the application
 exports.userGetReferencedUsers = async (req, res) => {
-  const user = await db.user.findOne({ phone_number: "09127170126" });
+  const user = await db.user.findOne({ phone_number: req.user.phone_number });
   if (!user)
     return res.json({
       success: false,
@@ -62,7 +126,7 @@ exports.userGetReferencedUsers = async (req, res) => {
     });
 
   return res.json({
-    message: "یوزر با موفقیت وارد شد",
+    message: "عملیات با موفقیت انجام شد.",
     success: true,
     error: false,
     data: { referencedUsers },
@@ -71,103 +135,16 @@ exports.userGetReferencedUsers = async (req, res) => {
 
 // User update National ID information
 exports.userUpdateNationalID = async (req, res) => {
-  //Validate with joi
-  const { error } = userUpdateNationalID(req.body);
-  if (error)
-    return res.json({
-      message: error.details[0].message,
-      success: false,
-      error: true,
-    });
-
-  if (!req.files || !req.files.image)
-    res.json({
-      success: false,
-      err: true,
-      message: "فایلی برای آپلود انتخاب نشده است",
-    });
-
-  let filename = new Date().getTime();
-  let arr = req.files.image.name.split(".");
-  let extention = arr[arr.length - 1];
-
-  let mime = req.files.image.mimetype.split("/");
-  if (
-    mime[0] != "image" &&
-    !(extention == "jpg" || extention == "jpeg" || extention == "png")
-  )
+  //Validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
     return res.json({
       success: false,
       err: true,
-      message: "فایلی انتخابی برای آپلود از نوع عکس نیست.",
+      message: errors.errors[0].msg,
+      error: errors,
     });
-
-  const theImage = await sharp(req.files.image.data)
-    .rotate()
-    .resize(320, 240)
-    .toBuffer();
-  if (!theImage)
-    return res.json({
-      success: false,
-      err: true,
-      message: "خطا در تغییر شارپ",
-    });
-
-  let img = req.files.image;
-  img.data = theImage;
-
-  // Use the mv() method to place the file somewhere on your server
-  const status = await img.mv(
-    `${process.env.USER_NATIONAL_ID_PATH}${filename}.${extention}`,
-    function (err) {
-      if (err) return res.status(500).send(err);
-
-      db.user.findOne({ phone_number: "09127170126" }).then((user) => {
-        if (!user)
-          return res.json({
-            success: false,
-            err: true,
-            message: "اطلاعاتی در دیتابیس یافت نشد.",
-          });
-
-        db.nationalID
-          .findOne({
-            phone_number: user.phone_number,
-          })
-          .then((record) => {
-            if (record)
-              record
-                .update({
-                  phone_number: "09127170126",
-                  national_id: req.body.national_id,
-                  national_id_image: filename + "." + extention,
-                })
-                .then((status) => {
-                  if (status)
-                    return res.json({
-                      success: true,
-                      err: false,
-                      message: "عملیات با موفقیت انجام شد.",
-                    });
-                });
-
-            db.nationalID
-              .create({
-                phone_number: "09127170126",
-                national_id: req.body.national_id,
-                national_id_image: filename + "." + extention,
-              })
-              .then((status) => {
-                return res.json({
-                  success: true,
-                  err: false,
-                  message: "عملیات با موفقیت انجام شد.",
-                });
-              });
-          });
-      });
-    }
-  );
+  }
 };
 
 // User update National ID information
@@ -190,54 +167,24 @@ exports.userGetActiveAlerts = async (req, res) => {
 
 // Test function
 exports.test = async (req, res) => {
-  if (!req.files || !req.files.image)
-    return res.json({
-      success: false,
-      err: true,
-      message: "فایلی برای آپلود انتخاب نشده است",
-    });
-
-  let filename = new Date().getTime();
-  let arr = req.files.image.name.split(".");
-  let extention = arr[arr.length - 1];
-
-  let mime = req.files.image.mimetype.split("/");
-  if (
-    mime[0] != "image" &&
-    !(extention == "jpg" || extention == "jpeg" || extention == "png")
-  )
-    return res.json({
-      success: false,
-      err: true,
-      message: "فایلی انتخابی برای آپلود از نوع عکس نیست.",
-    });
-
-  const theImage = await sharp(req.files.image.data)
-    .rotate()
-    .resize(320, 240)
-    .toBuffer();
-  if (!theImage)
-    return res.json({
-      success: false,
-      err: true,
-      message: "خطا در تغییر شارپ",
-    });
-
-  let img = req.files.image;
-  img.data = theImage;
-
-  // Use the mv() method to place the file somewhere on your server
-  const status = await img.mv(
-    `${process.env.USER_IMAGE_PATH}${filename}.${extention}`,
-    function (err) {
-      if (err) return res.status(500).send(err);
-
-      return res.json({
-        success: true,
-        err: false,
-        message: "عملیات با موفقیت انجام شد.",
-        data: { theImage },
-      });
-    }
+  console.log(req.files);
+  const status = await ImageUpload(
+    req,
+    req.files ? req.files.image : null,
+    process.env.USER_IMAGE_PATH
   );
+  console.log(status);
+  if (!status.success)
+    return res.json({
+      success: status.success,
+      err: status.err,
+      message: status.message,
+    });
+
+  return res.json({
+    success: status.success,
+    err: status.err,
+    message: status.message,
+    image: status.image,
+  });
 };

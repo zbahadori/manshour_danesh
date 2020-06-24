@@ -3,19 +3,19 @@ const { validationResult } = require("express-validator");
 
 //get all users
 exports.test = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
+  try {
+    const data = req.headers.cookie.split("authorization=")[1];
+  } catch (e) {
     return res.json({
       success: false,
       err: true,
-      message: errors.mapped(),
+      message: "یوزر مهمان است.",
     });
   }
-
   return res.json({
-    success: true,
-    err: false,
-    message: "اطلاعات با موفقیت یافت شد",
-    data: req.body,
+    success: false,
+    err: true,
+    message: "یوزر مهمان است.",
+    data,
   });
 };

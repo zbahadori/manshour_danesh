@@ -8,7 +8,7 @@ exports.adminGetAllUser = async (req, res) => {
     return res.json({
       success: false,
       err: true,
-      message: "دانش آموزی با این مشخصات یافت نشد.",
+      message: "اطلاعاتی یافت نشد.",
     });
 
   return res.json({
@@ -28,6 +28,7 @@ exports.adminUserBlockUpdate = async (req, res) => {
       success: false,
       err: true,
       message: errors.errors[0].msg,
+      error: errors,
     });
   }
 
@@ -63,7 +64,7 @@ exports.adminGetAllNationalID = async (req, res) => {
     return res.json({
       success: false,
       err: true,
-      message: "اطلاعات با این مشخصات یافت نشد.",
+      message: "اطلاعاتی یافت نشد.",
     });
 
   return res.json({
@@ -83,10 +84,9 @@ exports.adminDeleteSingleNationalID = async (req, res) => {
       success: false,
       err: true,
       message: errors.errors[0].msg,
+      error: errors,
     });
   }
-
-  g(req.body.phone_number);
 
   const nationalIDs = await db.nationalID.findOne({
     phone_number: req.body.phone_number,
@@ -115,16 +115,16 @@ exports.adminCreateAlert = async (req, res) => {
       success: false,
       err: true,
       message: errors.errors[0].msg,
+      error: errors,
     });
   }
 
-  ert in DB;
   const alert = await db.alert.create(req.body);
   if (!alert)
     return res.json({
       success: false,
       err: true,
-      message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+      message: "اطلاعات با این مشخصات یافت نشد.",
     });
 
   return res.json({
@@ -162,6 +162,7 @@ exports.adminUpdateSingleAlert = async (req, res) => {
       success: false,
       err: true,
       message: errors.errors[0].msg,
+      error: errors,
     });
   }
 

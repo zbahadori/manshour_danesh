@@ -7,8 +7,11 @@ module.exports = (app) => {
   var router = require("express").Router();
 
   //User routes
+
+  router.post("/get-user-information", UserController.userGetUserInformantion);
+
   router.post(
-    "/update-information",
+    "/update-user-information",
     [
       UserValidations.name,
       UserValidations.lastname,
@@ -20,7 +23,7 @@ module.exports = (app) => {
       UserValidations.city,
       UserValidations.school,
     ],
-    UserController.userUpdateInformation
+    UserController.userUpdateUserInformation
   );
   router.get("/referenced-users", UserController.userGetReferencedUsers);
   router.post(
@@ -30,5 +33,9 @@ module.exports = (app) => {
   );
   router.get("/get-active-alerts", UserController.userGetActiveAlerts);
 
+  router.get("/test", UserController.test);
+  router.post("/test", UserController.test);
+
+  // app.use("/api/user", [jwtStudentMiddleware], router);
   app.use("/api/user", router);
 };

@@ -7,10 +7,11 @@ import {
   Redirect,
 } from "react-router-dom";
 import axios from "axios";
-import SignIn from "./componenets/pages/SignIn";
-import StudentDashboard from "./componenets/pages/StudentDashboard";
-import AdminDashboard from "./componenets/pages/AdminDashboard";
-import AdminUserList from "./componenets/pages/AdminUserList";
+
+import SignIn from "./componenets/pages/public/SignIn";
+import StudentDashboard from "./componenets/pages/student/StudentDashboard";
+import AdminDashboard from "./componenets/pages/admin/AdminDashboard";
+import StudentUserInfo from "./componenets/pages/student/StudentUserInfo";
 import { useRecoilState } from "recoil";
 import { IsAuthenticated, UserRole, PhoneNumber } from "./services/Recoils";
 require("dotenv").config();
@@ -52,16 +53,16 @@ export default function App() {
           path="/"
           name="adminUserList"
           render={(props) => {
-            return <AdminUserList {...props} />;
+            return <StudentUserInfo {...props} />;
           }}
         />
 
         <Route
           exact
           path="/test"
-          name="adminUserList"
+          name="TEST"
           render={(props) => {
-            return <StudentDashboard {...props} />;
+            return <StudentUserInfo {...props} />;
           }}
         />
 
@@ -71,7 +72,10 @@ export default function App() {
           path="/signin"
           name="signin"
           render={(props) => {
-            if (isAuthenticated) return <Redirect to="/student/dashboard" />;
+            if (isAuthenticated && userRole == "student")
+              return <Redirect to="/student/dashboard" />;
+            else if (isAuthenticated && userRole == "admin")
+              return <Redirect to="/admin/dashboard" />;
             else return <SignIn {...props} />;
           }}
         />
