@@ -71,7 +71,7 @@ exports.adminGetAllNationalID = async (req, res) => {
     success: true,
     err: false,
     message: "عملیات با موفقیت انجام شد.",
-    data: { nationalIDs },
+    data: nationalIDs,
   });
 };
 
@@ -83,7 +83,7 @@ exports.adminDeleteSingleNationalID = async (req, res) => {
     return res.json({
       success: false,
       err: true,
-      message: errors.errors[0].msg,
+      message: errors.errors[errors.errors.length - 1].msg,
       error: errors,
     });
   }
@@ -99,6 +99,46 @@ exports.adminDeleteSingleNationalID = async (req, res) => {
     });
 
   const deleted = await nationalIDs.delete();
+  return res.json({
+    success: true,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
+  });
+};
+
+//Admin Confirm Single Record
+exports.adminConfirmSingleNationalID = async (req, res) => {
+  //Validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.json({
+      success: false,
+      err: true,
+      message: errors.errors[errors.errors.length - 1].msg,
+      error: errors,
+    });
+  }
+
+  const nationalIDs = await db.nationalID.findOne({
+    phone_number: req.body.phone_number,
+  });
+  if (!nationalIDs)
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعات با این مشخصات یافت نشد.",
+    });
+  nationalIDs.verified = nationalIDs.verified ? false : true;
+  const updated = await nationalIDs.save();
+  if (!updated)
+    return res.json({
+      success: false,
+      err: true,
+      message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+    });
+
+  console.log(nationalIDs.verified);
+
   return res.json({
     success: true,
     err: false,

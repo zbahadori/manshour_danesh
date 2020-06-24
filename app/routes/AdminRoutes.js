@@ -34,8 +34,14 @@ module.exports = (app) => {
   router.get("/get-alert", AdminController.adminGetAllAlert);
 
   //national Id
-  router.get("/get-national-id", AdminController.adminGetAllNationalID);
-  router.delete(
+  router.post("/get-national-id", AdminController.adminGetAllNationalID);
+  router.post(
+    "/confirm-national-id",
+    [UserValidations.phone_number],
+    AdminController.adminConfirmSingleNationalID
+  );
+
+  router.post(
     "/delete-national-id",
     [UserValidations.phone_number],
     AdminController.adminDeleteSingleNationalID
@@ -43,5 +49,5 @@ module.exports = (app) => {
 
   // router.post("/test", AdminController.test);
 
-  app.use("/api/admin", JWTAdminMiddleware, router);
+  app.use("/api/admin", router);
 };

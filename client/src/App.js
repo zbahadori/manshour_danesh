@@ -12,6 +12,7 @@ import SignIn from "./componenets/pages/public/SignIn";
 import StudentDashboard from "./componenets/pages/student/StudentDashboard";
 import AdminDashboard from "./componenets/pages/admin/AdminDashboard";
 import StudentUserInfo from "./componenets/pages/student/StudentUserInfo";
+import AdminNationalID from "./componenets/pages/admin/AdminNationalID";
 import { useRecoilState } from "recoil";
 import { IsAuthenticated, UserRole, PhoneNumber } from "./services/Recoils";
 require("dotenv").config();
@@ -53,7 +54,7 @@ export default function App() {
           path="/"
           name="adminUserList"
           render={(props) => {
-            return <StudentUserInfo {...props} />;
+            return <AdminNationalID {...props} />;
           }}
         />
 

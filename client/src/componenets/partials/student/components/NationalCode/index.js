@@ -40,24 +40,22 @@ function NationalCode({ ...props }) {
     var submitBtn = document.querySelector("#custom-button-national-submit");
     submitBtn.disabled = true;
 
-    const data = {
-      national_id,
-    };
+    let data = new FormData();
 
-    if (imageFile) data.national_id_image = imageFile;
+    data.append("national_id", national_id);
+    data.append("national_id_image", imageFile);
+    data.append("national_id_image_name", image);
 
-    // formData.append("national_id", national_id);
-    // formData.append("national_id_image", image);
+    for (var key of data.entries()) {
+      console.log(key[0] + ", " + key[1]);
+    }
 
-    // for (var key of formData.entries()) {
-    //   console.log(key[0] + ", " + key[1]);
-    // }
-    console.log(typeof national_id);
-    console.log(data);
     Axios({
       url: process.env.REACT_APP_BACKEND_URL + "api/user/update-national-id",
       withCredentials: true,
-
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
       method: "POST",
       data,
     }).then((res) => {

@@ -3,14 +3,14 @@ const { check } = require("express-validator");
 module.exports.phone_number = [
   check("phone_number")
     .isString()
-    .isLength({ min: 2, max: 2 })
+    .isLength({ min: 11, max: 11 })
     .withMessage("شماره موبایل خود را بررسی مجدد کنید."),
 ];
 
 module.exports.reference_phone_number = [
   check("reference_phone_number")
     .isString()
-    .isLength({ min: 2, max: 2 })
+    .isLength({ min: 11, max: 11 })
     .optional()
     .withMessage("شماره موبایل معرف خود را بررسی مجدد کنید.")
     .custom((value, { req }) => {

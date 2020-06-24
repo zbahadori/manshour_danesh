@@ -1,18 +1,39 @@
-import React from "react";
-import "../../sass/link.scss";
-import PropTypes from "prop-types";
-function Link({ ...props }) {
+import React, { useState, useEffect } from "react";
+import "./link.scss";
+import Axios from "axios";
+
+function Link() {
+  const [reference_link, setReference_link] = useState("");
+
+  useEffect(() => {
+    updateListComponent();
+  }, []);
+
+  const updateListComponent = async () => {
+    Axios({
+      url: process.env.REACT_APP_BACKEND_URL + "api/user/reference-link",
+      withCredentials: true,
+      method: "POST",
+    }).then((res) => {
+      console.log(res);
+      setReference_link(res.data.data);
+    });
+  };
+
+  const handleCopyBtnOnClick = () => {
+    navigator.clipboard.writeText(reference_link);
+  };
   return (
-    <div class="container-fluid">
+    <div className="container-fluid">
       <section className="form-wrapper wrapper">
-        <h2 className="section-title">لینک اختصاصی شما</h2>
+        <h2 className="section-title">لینک معرفی شما برای دوستانتان</h2>
         <div className="container-fluid">
           <div className="row">
             <div className="col-sm-5 col-md-4 col-lg-3">
               <button
                 className="btn btn-primary d-block"
-                id="copyUrl"
                 data-ripple="ripple"
+                onClick={handleCopyBtnOnClick}
               >
                 کپی کنید
               </button>
@@ -21,9 +42,9 @@ function Link({ ...props }) {
               <input
                 type="text"
                 className="form-control text-left"
-                value={props.link}
-                id="userUrl"
-                disabled
+                value={reference_link}
+                id="reference_link"
+                readOnly
               />
             </div>
           </div>
@@ -32,7 +53,5 @@ function Link({ ...props }) {
     </div>
   );
 }
-Link.propTypes = {
-  linl: PropTypes.string.isRequired,
-};
+
 export default Link;

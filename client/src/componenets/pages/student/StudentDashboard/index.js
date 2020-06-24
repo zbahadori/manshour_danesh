@@ -6,7 +6,7 @@ import StudentHeader from "../../../partials/student/containers/Header";
 import StudentMenu from "../../../partials/student/containers/Menu";
 import StudentFooter from "../../../partials/student/containers/Footer";
 
-import ListTabel from "../../../partials/student/components/ListTabel/ListTabel";
+import ReferenceLink from "../../../partials/student/components/Link";
 
 export default function Dashboard(props) {
   return (
@@ -14,7 +14,7 @@ export default function Dashboard(props) {
       <StudentHeader />
       <StudentMenu />
       <main>
-        <ListTabel />
+        <ReferenceLink />
       </main>
       <StudentFooter />
     </Fragment>

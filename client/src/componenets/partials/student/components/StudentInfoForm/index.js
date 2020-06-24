@@ -8,7 +8,6 @@ import { useRecoilState } from "recoil";
 export default function StudentInfoForm() {
   const [Cities, setCities] = useState([]);
   const [file, setFile] = useState("");
-  const [filename, setFilename] = useState("Choose File");
   const [isLoaded, setIsLoaded] = useState(false);
   const [phone_number, setPhone_number] = useState("");
   const [reference_Phone_number, setReference_Phone_number] = useState("");
@@ -48,7 +47,6 @@ export default function StudentInfoForm() {
 
   const handleAvatarOnChange = (e) => {
     setFile(e.target.files[0]);
-    setFilename(e.target.files[0].name);
     document.querySelector("#custom-text-avatar").innerHTML = "";
     document
       .querySelector("#custom-button-avatar")
@@ -60,20 +58,25 @@ export default function StudentInfoForm() {
     var submitBtn = document.querySelector("#custom-button-submit");
     submitBtn.disabled = true;
     e.preventDefault();
-    var data = {
-      phone_number,
-      reference_Phone_number,
-      name,
-      lastname,
-      name_english,
-      lastname_english,
-      father_name,
-      grade,
-      school,
-      province,
-      city,
-      user_image,
-    };
+
+    let data = new FormData();
+    data.append("phone_number", phone_number);
+    data.append("reference_Phone_number", reference_Phone_number);
+    data.append("name", name);
+    data.append("lastname", lastname);
+    data.append("name_english", name_english);
+    data.append("lastname_english", lastname_english);
+    data.append("father_name", father_name);
+    data.append("grade", grade);
+    data.append("school", school);
+    data.append("province", province);
+    data.append("city", city);
+    data.append("image", file);
+
+    for (var key of data.entries()) {
+      console.log(key[0] + ", " + key[1]);
+    }
+
     console.log(data);
 
     Axios({

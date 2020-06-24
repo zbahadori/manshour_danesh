@@ -35,6 +35,8 @@ module.exports = (app) => {
 
   router.get("/referenced-users", UserController.userGetReferencedUsers);
 
+  router.post("/reference-link", UserController.userGetReferencedLink);
+
   router.get("/get-active-alerts", UserController.userGetActiveAlerts);
 
   router.get("/test", UserController.test);

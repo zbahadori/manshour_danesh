@@ -133,6 +133,23 @@ exports.userGetReferencedUsers = async (req, res) => {
   });
 };
 
+exports.userGetReferencedLink = async (req, res) => {
+  const user = await db.user.findOne({ phone_number: "09127170126" });
+  if (!user)
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعاتی در دیتابیس یافت نشد.",
+    });
+
+  return res.json({
+    message: "عملیات با موفقیت انجام شد.",
+    success: true,
+    error: false,
+    data: process.env.REACT_APP_URL + "register/" + user.phone_number,
+  });
+};
+
 exports.userUpdateNationalID = async (req, res) => {
   //Validation
   const errors = validationResult(req);
@@ -145,14 +162,13 @@ exports.userUpdateNationalID = async (req, res) => {
     });
   }
 
-  const nationalId = new db.nationalID({
+  let nationalId = {
     phone_number: "09127170126",
-  });
+  };
 
   nationalId.national_id = req.body.national_id;
 
   let uploadedImage;
-  console.log(req.files);
 
   if (req.files) {
     uploadedImage = await ImageUpload(
@@ -166,18 +182,27 @@ exports.userUpdateNationalID = async (req, res) => {
         err: uploadedImage.err,
         message: uploadedImage.message,
       });
+
+    nationalId.national_id_image = uploadedImage.image;
+  } else {
+    nationalId.national_id_image = req.body.national_id_image_name;
   }
-  if (uploadedImage) nationalId.national_id_image = uploadedImage.image;
 
-  console.log(nationalId);
+  var query = { phone_number: "09127170126" },
+    update = nationalId,
+    options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
-  const updateStatus = await nationalId.save();
-  if (!updateStatus)
-    return res.json({
-      success: false,
-      err: true,
-      message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
-    });
+  db.nationalID.findOneAndUpdate(query, update, options, function (
+    error,
+    result
+  ) {
+    if (error)
+      return res.json({
+        success: false,
+        err: true,
+        message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+      });
+  });
 
   return res.json({
     success: true,
