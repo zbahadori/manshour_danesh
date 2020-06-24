@@ -1,22 +1,7 @@
-import React, { useState, Fragment, useEffect } from "react";
-import "./StudentDashboard.scss";
-import axios from "axios";
+import React from "react";
 
-import StudentHeader from "../../../partials/student/containers/Header";
-import StudentMenu from "../../../partials/student/containers/Menu";
-import StudentFooter from "../../../partials/student/containers/Footer";
-
-import ReferenceLink from "../../../partials/student/components/Link";
+import StudentDashboard from "../../../partials/student/containers/StudentDashboard";
 
 export default function Dashboard(props) {
-  return (
-    <Fragment>
-      <StudentHeader />
-      <StudentMenu />
-      <main>
-        <ReferenceLink />
-      </main>
-      <StudentFooter />
-    </Fragment>
-  );
+  return <StudentDashboard />;
 }

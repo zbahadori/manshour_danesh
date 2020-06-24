@@ -33,7 +33,7 @@ module.exports = (app) => {
     UserController.userUpdateNationalID
   );
 
-  router.get("/referenced-users", UserController.userGetReferencedUsers);
+  router.post("/referenced-users", UserController.userGetReferencedUsers);
 
   router.post("/reference-link", UserController.userGetReferencedLink);
 

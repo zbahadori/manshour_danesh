@@ -9,8 +9,9 @@ import {
 import axios from "axios";
 
 import SignIn from "./componenets/pages/public/SignIn";
-import StudentDashboard from "./componenets/pages/student/StudentDashboard";
+import StudentDashboard from "./componenets/partials/student/containers/StudentDashboard";
 import AdminDashboard from "./componenets/pages/admin/AdminDashboard";
+import AdminUserList from "./componenets/pages/admin/AdminUserList";
 import StudentUserInfo from "./componenets/pages/student/StudentUserInfo";
 import AdminNationalID from "./componenets/pages/admin/AdminNationalID";
 import { useRecoilState } from "recoil";
@@ -54,7 +55,7 @@ export default function App() {
           path="/"
           name="adminUserList"
           render={(props) => {
-            return <AdminNationalID {...props} />;
+            return <StudentDashboard {...props} />;
           }}
         />
 

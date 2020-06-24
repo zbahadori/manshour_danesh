@@ -107,7 +107,7 @@ exports.userUpdateUserInformation = async (req, res) => {
 
 //Get the list of users that has been invited to the application
 exports.userGetReferencedUsers = async (req, res) => {
-  const user = await db.user.findOne({ phone_number: req.user.phone_number });
+  const user = await db.user.findOne({ phone_number: "09127170126" });
   if (!user)
     return res.json({
       success: false,

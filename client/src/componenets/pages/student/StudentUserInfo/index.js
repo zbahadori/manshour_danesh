@@ -1,5 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 
 import StudentInfo from "../../../partials/student/containers/StudentUserInfo";
 

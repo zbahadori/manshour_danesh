@@ -8,7 +8,7 @@ module.exports = (app) => {
 
   //Admin routes
   //user manage routes
-  router.get("/get-all-users", AdminController.adminGetAllUser);
+  router.post("/get-all-users", AdminController.adminGetAllUser);
   router.post(
     "/update-user-block",
     [UserValidations.phone_number],
