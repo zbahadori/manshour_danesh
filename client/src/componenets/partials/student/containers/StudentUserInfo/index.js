@@ -5,6 +5,7 @@ import StudentMenu from "../Menu";
 import StudentFooter from "../Footer";
 
 import StudentInfoForm from "../../components/StudentInfoForm";
+import NationalCode from "../../components/NationalCode";
 import Alert from "../../components/Alert";
 
 export default function StudentInfo() {
@@ -14,8 +15,8 @@ export default function StudentInfo() {
       <StudentMenu />
       <main>
         <Alert />
-
         <StudentInfoForm />
+        <NationalCode />
       </main>
       <StudentFooter />
     </>

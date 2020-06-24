@@ -133,7 +133,6 @@ exports.userGetReferencedUsers = async (req, res) => {
   });
 };
 
-// User update National ID information
 exports.userUpdateNationalID = async (req, res) => {
   //Validation
   const errors = validationResult(req);
@@ -145,6 +144,65 @@ exports.userUpdateNationalID = async (req, res) => {
       error: errors,
     });
   }
+
+  const nationalId = new db.nationalID({
+    phone_number: "09127170126",
+  });
+
+  nationalId.national_id = req.body.national_id;
+
+  let uploadedImage;
+  console.log(req.files);
+
+  if (req.files) {
+    uploadedImage = await ImageUpload(
+      req,
+      req.files.national_id_image,
+      process.env.USER_NATIONAL_ID_PATH
+    );
+    if (!uploadedImage.success)
+      return res.json({
+        success: uploadedImage.success,
+        err: uploadedImage.err,
+        message: uploadedImage.message,
+      });
+  }
+  if (uploadedImage) nationalId.national_id_image = uploadedImage.image;
+
+  console.log(nationalId);
+
+  const updateStatus = await nationalId.save();
+  if (!updateStatus)
+    return res.json({
+      success: false,
+      err: true,
+      message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+    });
+
+  return res.json({
+    success: true,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
+  });
+};
+// User update National ID information
+exports.userGetNationalID = async (req, res) => {
+  const nationalID = await db.nationalID
+    .findOne({ phone_number: "09127170126" })
+    .sort({ created_at: -1 });
+  if (!nationalID)
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعاتی در دیتابیس یافت نشد.",
+    });
+
+  return res.json({
+    success: true,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
+    data: nationalID,
+  });
 };
 
 // User update National ID information

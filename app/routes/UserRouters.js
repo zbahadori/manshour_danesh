@@ -25,12 +25,16 @@ module.exports = (app) => {
     ],
     UserController.userUpdateUserInformation
   );
-  router.get("/referenced-users", UserController.userGetReferencedUsers);
+  router.post("/get-national-id", UserController.userGetNationalID);
+
   router.post(
     "/update-national-id",
     [NationalIDValidation.national_id],
     UserController.userUpdateNationalID
   );
+
+  router.get("/referenced-users", UserController.userGetReferencedUsers);
+
   router.get("/get-active-alerts", UserController.userGetActiveAlerts);
 
   router.get("/test", UserController.test);

@@ -80,13 +80,16 @@ export default function StudentInfoForm() {
       url:
         process.env.REACT_APP_BACKEND_URL + "api/user/update-user-information",
       withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
       method: "POST",
       data: data,
     }).then((res) => {
       console.log(res);
       setErrorStatus(res.data.success ? "success" : "danger");
       setErrorMessage(res.data.message);
-      submitBtn.disabled = true;
+      submitBtn.disabled = false;
       updateListComponent();
     });
   };
