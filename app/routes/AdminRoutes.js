@@ -31,7 +31,12 @@ module.exports = (app) => {
     ],
     AdminController.adminUpdateSingleAlert
   );
-  router.get("/get-alert", AdminController.adminGetAllAlert);
+  router.post(
+    "/delete-single-alert",
+    [AlertValidation.id],
+    AdminController.adminDeleteSingleAlert
+  );
+  router.post("/get-alert", AdminController.adminGetAllAlert);
 
   //national Id
   router.post("/get-national-id", AdminController.adminGetAllNationalID);

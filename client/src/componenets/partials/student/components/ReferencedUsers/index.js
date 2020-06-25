@@ -16,8 +16,8 @@ function ReferencedUsers() {
       withCredentials: true,
       method: "POST",
     }).then((res) => {
-      console.log(res);
-      // setUserCount(res.data.data);
+      console.log(res.data.data);
+      setUserCount(res.data.data.length);
     });
   };
 
@@ -27,7 +27,7 @@ function ReferencedUsers() {
         <h2 className="section-title">زیر مجموعه های شما</h2>
         <div className="container-fluid">
           <div className="row">
-            <SubSetItem count={userCount} text="some text1"></SubSetItem>
+            <SubSetItem count={userCount} linkTo="/referenceUserLink" />
           </div>
         </div>
       </section>

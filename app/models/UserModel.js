@@ -78,7 +78,7 @@ module.exports = (mongoose) => {
       user_image: {
         type: String,
         required: true,
-        default: "default_image.jpg",
+        default: "default_image.png",
         min: 6,
         max: 255,
       },

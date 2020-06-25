@@ -14,6 +14,10 @@ import AdminDashboard from "./componenets/pages/admin/AdminDashboard";
 import AdminUserList from "./componenets/pages/admin/AdminUserList";
 import StudentUserInfo from "./componenets/pages/student/StudentUserInfo";
 import AdminNationalID from "./componenets/pages/admin/AdminNationalID";
+import AdminCreateAlert from "./componenets/pages/admin/AdminCreateAlert";
+import AdminUpdateAlert from "./componenets/pages/admin/AdminUpdateAlert";
+import StudentReferencedList from "./componenets/pages/student/StudentReferencedList";
+
 import { useRecoilState } from "recoil";
 import { IsAuthenticated, UserRole, PhoneNumber } from "./services/Recoils";
 require("dotenv").config();
@@ -55,7 +59,7 @@ export default function App() {
           path="/"
           name="adminUserList"
           render={(props) => {
-            return <StudentDashboard {...props} />;
+            return <StudentReferencedList {...props} />;
           }}
         />
 

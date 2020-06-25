@@ -115,9 +115,11 @@ exports.userGetReferencedUsers = async (req, res) => {
       message: "اطلاعاتی در دیتابیس یافت نشد.",
     });
 
-  const referencedUsers = await db.user.findOne({
-    reference_phone_number: user.phone_number,
-  });
+  const referencedUsers = await db.user
+    .find({
+      reference_phone_number: user.phone_number,
+    })
+    .sort({ createdAt: -1 });
   if (!referencedUsers)
     return res.json({
       success: false,
@@ -129,7 +131,7 @@ exports.userGetReferencedUsers = async (req, res) => {
     message: "عملیات با موفقیت انجام شد.",
     success: true,
     error: false,
-    data: { referencedUsers },
+    data: referencedUsers,
   });
 };
 

@@ -99,6 +99,13 @@ exports.adminDeleteSingleNationalID = async (req, res) => {
     });
 
   const deleted = await nationalIDs.delete();
+  if (!deleted)
+    return res.json({
+      success: false,
+      err: true,
+      message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+    });
+
   return res.json({
     success: true,
     err: false,
@@ -190,7 +197,7 @@ exports.adminGetAllAlert = async (req, res) => {
     success: true,
     err: false,
     message: "عملیات با موفقیت انجام شد.",
-    data: { alerts },
+    data: alerts,
   });
 };
 
@@ -223,5 +230,43 @@ exports.adminUpdateSingleAlert = async (req, res) => {
     err: false,
     message: "عملیات با موفقیت انجام شد.",
     data: { alert },
+  });
+};
+
+exports.adminDeleteSingleAlert = async (req, res) => {
+  //Validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.json({
+      success: false,
+      err: true,
+      message: errors.errors[errors.errors.length - 1].msg,
+      error: errors,
+    });
+  }
+
+  const alert = await db.alert.findOne({
+    _id: req.body.id,
+  });
+
+  if (!alert)
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعات با این مشخصات یافت نشد.",
+    });
+
+  const deleted = await alert.delete();
+  if (!deleted)
+    return res.json({
+      success: false,
+      err: true,
+      message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+    });
+
+  return res.json({
+    success: true,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
   });
 };
