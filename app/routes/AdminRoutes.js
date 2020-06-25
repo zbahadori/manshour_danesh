@@ -23,12 +23,7 @@ module.exports = (app) => {
   );
   router.post(
     "/update-single-alert",
-    [
-      AlertValidation.id,
-      AlertValidation.title,
-      AlertValidation.message,
-      AlertValidation.status,
-    ],
+    [AlertValidation.id, AlertValidation.title, AlertValidation.message],
     AdminController.adminUpdateSingleAlert
   );
   router.post(

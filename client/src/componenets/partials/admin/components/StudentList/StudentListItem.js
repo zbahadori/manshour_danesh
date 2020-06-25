@@ -1,7 +1,6 @@
 import React from "react";
 // import "../../sass/home.scss";
 
-import PropTypes from "prop-types";
 function StudentListItem({ ...props }) {
   return (
     <tr>
@@ -21,17 +20,21 @@ function StudentListItem({ ...props }) {
         </b>
       </td>
       <td>
-        <button class="btn btn-primary pt-2 hint--top" aria-label="ویرایش">
+        <button
+          class="btn btn-primary pt-2 hint--top"
+          aria-label="ویرایش"
+          onClick={() => props.updateItem(props.phone_number)}
+        >
+          ویرایش
           <i class="icon-pencil"></i>
         </button>
         <button class="btn btn-danger pt-2 hint--top" aria-label="بلاک">
+          بلاک
           <i class="icon-trash"></i>
         </button>
       </td>
     </tr>
   );
 }
-StudentListItem.propTypes = {
-  title: PropTypes.string.isRequired,
-};
+
 export default StudentListItem;

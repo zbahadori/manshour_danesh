@@ -225,6 +225,16 @@ exports.adminUpdateSingleAlert = async (req, res) => {
       message: "اطلاعاتی در دیتابیس یافت نشد.",
     });
 
+  alert.title = req.body.title;
+  alert.message = req.body.message;
+  const status = await alert.save();
+  if (!status)
+    return res.json({
+      success: false,
+      err: true,
+      message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+    });
+
   return res.json({
     success: true,
     err: false,

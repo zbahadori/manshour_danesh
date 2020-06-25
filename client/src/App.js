@@ -59,7 +59,7 @@ export default function App() {
           path="/"
           name="adminUserList"
           render={(props) => {
-            return <StudentReferencedList {...props} />;
+            return <AdminUserList {...props} />;
           }}
         />
 

@@ -10,7 +10,7 @@ export default function StudentInfoForm() {
   const [file, setFile] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
   const [phone_number, setPhone_number] = useState("");
-  const [reference_Phone_number, setReference_Phone_number] = useState("");
+  const [reference_phone_number, setReference_phone_number] = useState("");
   const [name, setName] = useState("");
   const [lastname, setLastname] = useState("");
   const [name_english, setName_english] = useState("");
@@ -61,7 +61,7 @@ export default function StudentInfoForm() {
 
     let data = new FormData();
     data.append("phone_number", phone_number);
-    data.append("reference_Phone_number", reference_Phone_number);
+    data.append("reference_phone_number", reference_phone_number);
     data.append("name", name);
     data.append("lastname", lastname);
     data.append("name_english", name_english);
@@ -106,7 +106,7 @@ export default function StudentInfoForm() {
       console.log(res);
 
       setPhone_number(res.data.data.phone_number);
-      setReference_Phone_number(res.data.data.reference_Phone_number);
+      setReference_phone_number(res.data.data.reference_phone_number);
       setName(res.data.data.name);
       setLastname(res.data.data.lastname);
       setName_english(res.data.data.lastname_english);
@@ -141,7 +141,7 @@ export default function StudentInfoForm() {
             <input
               className="form-control"
               type="text"
-              name="phone-number"
+              name="phone_number"
               id="phoneNumber"
               value={phone_number}
               placeholder="شماره تماس"
@@ -158,7 +158,7 @@ export default function StudentInfoForm() {
               type="text"
               name="reference-phone-number"
               id="referencePhoneNumber"
-              value={reference_Phone_number}
+              value={reference_phone_number}
               placeholder="بدون معرف"
               readOnly
             />

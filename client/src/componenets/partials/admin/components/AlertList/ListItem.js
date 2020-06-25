@@ -1,5 +1,4 @@
 import React from "react";
-import "./listitem.scss";
 
 // import PropTypes from "prop-types";
 function ListItem({ ...props }) {
@@ -17,7 +16,9 @@ function ListItem({ ...props }) {
             props.verified ? "success" : "warning"
           } pt-2 hint--top my-1`}
           aria-label="وضعیت"
-          onClick={(e) => props.UpdateItem(e, props.id)}
+          onClick={(e) =>
+            props.UpdateItem(props.id, props.title, props.message)
+          }
         >
           ادیت
           <i className="icon-check px-2"></i>
