@@ -12,13 +12,12 @@ const { user } = require("../models");
 
 // Start the Registration Process by sending the code via sms
 exports.registerStart = async (req, res) => {
-  //Validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.json({
       success: false,
       err: true,
-      message: errors.errors[0].msg,
+      message: errors.errors[errors.errors.length - 1].msg,
       error: errors,
     });
   }
@@ -79,8 +78,7 @@ exports.registerStart = async (req, res) => {
   });
 
   // Save record in the database
-  status = await registrationCodeData.save(registrationCodeData);
-
+  const status = await registrationCodeData.save(registrationCodeData);
   //if could not store in DB throw error
   if (!status)
     return res.json({
@@ -265,13 +263,12 @@ exports.loginStart = async (req, res) => {
 
 // Loggin user in
 exports.loginComplete = async (req, res) => {
-  //Validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.json({
       success: false,
       err: true,
-      message: errors.errors[0].msg,
+      message: errors.errors[errors.errors.length - 1].msg,
       error: errors,
     });
   }

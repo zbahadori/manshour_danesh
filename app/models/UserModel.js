@@ -48,7 +48,7 @@ module.exports = (mongoose) => {
       },
       grade: {
         type: Number,
-        default: null,
+        default: 0,
       },
       province: {
         type: String,

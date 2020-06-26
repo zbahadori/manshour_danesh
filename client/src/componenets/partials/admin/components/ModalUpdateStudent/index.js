@@ -35,6 +35,7 @@ export default function Index(props) {
     data.append("lastname", props.lastname);
     data.append("name_english", props.name_english);
     data.append("lastname_english", props.lastname_english);
+    data.append("father_name", props.father_name);
     data.append("grade", props.grade);
     data.append("city", props.city);
     data.append("province", props.province);
@@ -196,7 +197,7 @@ export default function Index(props) {
                 <input
                   className="form-control"
                   type="text"
-                  name="father-name"
+                  name="father_name"
                   id="fatherName"
                   placeholder="نام پدر شما"
                   value={props.father_name}

@@ -89,7 +89,7 @@ exports.userUpdateUserInformation = async (req, res) => {
   if (uploadedImage) {
     inputdata.user_image = uploadedImage.image;
   }
-
+  console.log(inputdata);
   const userStored = await user.update(inputdata);
   if (!userStored)
     return res.json({
