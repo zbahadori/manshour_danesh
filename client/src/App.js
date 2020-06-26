@@ -141,15 +141,15 @@ export default function App() {
         />
 
         {/* TEST */}
-
         <Route
           exact
           path="/test"
           name="test"
           render={(props) => {
-            return <SignIn {...props} />;
+            return <AdminUserList {...props} />;
           }}
         />
+
         {/* Login Route */}
         <Route
           exact

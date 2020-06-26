@@ -7,6 +7,7 @@ import StudentFooter from "../Footer";
 
 import ReferenceLink from "../../components/Link";
 import ReferencedUsers from "../../components/ReferencedUsers";
+import NewAlert from "../../components/NewAlert";
 
 export default function Dashboard(props) {
   return (
@@ -14,6 +15,7 @@ export default function Dashboard(props) {
       <StudentHeader />
       <StudentMenu />
       <main>
+        <NewAlert />
         <ReferencedUsers />
         <ReferenceLink />
       </main>

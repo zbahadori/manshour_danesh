@@ -15,7 +15,6 @@ function Link() {
       withCredentials: true,
       method: "POST",
     }).then((res) => {
-      console.log(res);
       setReference_link(res.data.data);
     });
   };

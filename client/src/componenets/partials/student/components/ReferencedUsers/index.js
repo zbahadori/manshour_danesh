@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./_subset.scss";
+import "./subset.scss";
 import SubSetItem from "./ReferencedUsersItem";
 import Axios from "axios";
 
@@ -16,7 +16,6 @@ function ReferencedUsers() {
       withCredentials: true,
       method: "POST",
     }).then((res) => {
-      console.log(res.data.data);
       setUserCount(res.data.data.length);
     });
   };

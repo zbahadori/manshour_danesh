@@ -1,48 +1,42 @@
-import React from "react";
-import "../../sass/alert.scss";
+import React, { useEffect, useState } from "react";
+import Axios from "axios";
+import "./alert.scss";
 import AlertBox from "./AlertBox";
 function Alert({ ...props }) {
+  const [alerts, setAlerts] = useState([]);
+
+  useEffect(() => {
+    updateListComponent();
+  }, []);
+
+  const updateListComponent = async () => {
+    Axios({
+      url: process.env.REACT_APP_BACKEND_URL + "api/user/get-active-alerts",
+      withCredentials: true,
+      method: "POST",
+    }).then((res) => {
+      console.log("sdkjsbf", res);
+      setAlerts(res.data.data);
+    });
+  };
+
   return (
-    <div className="alert">
-      <div class="site-padding">
-        <main>
-          <section class="form-wrapper has-icon wrapper">
-            <div class="container-fluid">
-              <div className="row">
-                <div class="col-md-6">
-                  <AlertBox
-                    title="اینم از الرت!"
-                    text="محتوای آلرت در این قسمت نوشته میشود"
-                    type="success"
-                  ></AlertBox>
-                </div>
-                <div class="col-md-6">
-                  <AlertBox
-                    title="اینم از الرت!"
-                    text="محتوای آلرت در این قسمت نوشته میشود"
-                    type="warning"
-                  ></AlertBox>
-                </div>
-                <div class="col-md-6">
-                  <AlertBox
-                    title="اینم از الرت!"
-                    text="محتوای آلرت در این قسمت نوشته میشود"
-                    type="info"
-                  ></AlertBox>
-                </div>
-                <div class="col-md-6">
-                  <AlertBox
-                    title="اینم از الرت!"
-                    text="محتوای آلرت در این قسمت نوشته میشود"
-                    type="danger"
-                  ></AlertBox>
-                </div>
-              </div>
-            </div>
-          </section>
-        </main>
+    <section class="form-wrapper has-icon wrapper">
+      <div class="container-fluid">
+        <div className="row">
+          <div class="col-12">
+            {alerts.map((item, index) => (
+              <AlertBox
+                key={index}
+                title={item.title}
+                text={item.message}
+                type={"primary"}
+              />
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 

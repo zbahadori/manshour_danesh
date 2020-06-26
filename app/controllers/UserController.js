@@ -234,7 +234,7 @@ exports.userGetNationalID = async (req, res) => {
 
 // User update National ID information
 exports.userGetActiveAlerts = async (req, res) => {
-  const alerts = await db.alert.find({ status: true }).sort({ createdAt: -1 });
+  const alerts = await db.alert.find().sort({ createdAt: -1 });
   if (!alerts)
     return res.json({
       success: false,
@@ -246,7 +246,7 @@ exports.userGetActiveAlerts = async (req, res) => {
     success: true,
     err: false,
     message: "عملیات با موفقیت انجام شد.",
-    data: { alerts },
+    data: alerts,
   });
 };
 

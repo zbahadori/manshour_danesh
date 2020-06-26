@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import studentImg from "./profile-pic.jpg";
 import StudentListItem from "./StudentListItem";
 import PaginationListItem from "./PaginationListItem";
 import Axios from "axios";
@@ -17,7 +16,6 @@ export default function Index() {
       withCredentials: true,
       method: "POST",
     }).then((res) => {
-      console.log(res);
       setReferencedUsers(res.data.data);
     });
   };

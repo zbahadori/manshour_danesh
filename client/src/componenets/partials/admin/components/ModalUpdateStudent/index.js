@@ -283,7 +283,10 @@ export default function Index(props) {
               <div className="col-12 col-lg-6 form-group">
                 <label htmlFor="avatar">آپلود آواتار</label>
                 <img
-                  src={"./uploads/user_image/" + props.user_image}
+                  src={
+                    `${process.env.REACT_APP_URL}/uploads/user_image/` +
+                    props.user_image
+                  }
                   className="d-block mb-2"
                   alt="عکی آواتار"
                 />
