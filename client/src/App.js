@@ -85,6 +85,12 @@ export default function App() {
                 <nav className="m-auto">
                   <ul>
                     <li>
+                      <Link to="/">ROOT</Link>
+                    </li>
+                    <li>
+                      <Link to="/test">test</Link>
+                    </li>
+                    <li>
                       <Link to="/signin">signin</Link>
                     </li>
                     <li>
@@ -134,6 +140,16 @@ export default function App() {
           }}
         />
 
+        {/* TEST */}
+
+        <Route
+          exact
+          path="/test"
+          name="test"
+          render={(props) => {
+            return <SignIn {...props} />;
+          }}
+        />
         {/* Login Route */}
         <Route
           exact
@@ -155,7 +171,8 @@ export default function App() {
           path="/student/dashboard"
           name="studentDashboard"
           render={(props) => {
-            if (isAuthenticated) return <StudentDashboard {...props} />;
+            if (isAuthenticated && userRole == "student")
+              return <StudentDashboard {...props} />;
             else return <Redirect to="/signin" />;
           }}
         />
@@ -165,7 +182,8 @@ export default function App() {
           path="/student/userinfo"
           name="studentUserInfo"
           render={(props) => {
-            if (isAuthenticated) return <StudentUserInfo {...props} />;
+            if (isAuthenticated && userRole == "student")
+              return <StudentUserInfo {...props} />;
             else return <Redirect to="/signin" />;
           }}
         />
@@ -176,7 +194,8 @@ export default function App() {
           path="/student/referencedlist"
           name="studentReferencedList"
           render={(props) => {
-            if (isAuthenticated) return <StudentReferencedList {...props} />;
+            if (isAuthenticated && userRole == "student")
+              return <StudentReferencedList {...props} />;
             else return <Redirect to="/signin" />;
           }}
         />

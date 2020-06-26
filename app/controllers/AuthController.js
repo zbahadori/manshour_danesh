@@ -314,30 +314,31 @@ exports.loginComplete = async (req, res) => {
       message: "اطلاعات با این مشخصات یافت نشد.",
     });
 
-  // try {
-  const token = await jwt.sign(
-    { phone_number: user.phone_number, role: user.role },
-    AuthConfig.secret,
-    {
-      expiresIn: process.env.JWT_EXPIRATION * 60,
-    }
-  );
+  try {
+    console.log(user);
+    const token = await jwt.sign(
+      { phone_number: user.phone_number, role: user.role },
+      AuthConfig.secret,
+      {
+        expiresIn: process.env.JWT_EXPIRATION * 60,
+      }
+    );
 
-  const expirationDate = Date.now() + process.env.JWT_EXPIRATION * 60000;
-  return res
-    .cookie("authorization", token, {
-      expires: new Date(expirationDate),
-      httpOnly: true,
-    })
-    .redirect("/api/auth/is-authenticated");
-  // } catch (e) {
-  //   return res.json({
-  //     success: false,
-  //     err: true,
-  //     message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
-  //     e,
-  //   });
-  // }
+    const expirationDate = Date.now() + process.env.JWT_EXPIRATION * 60000;
+    return res
+      .cookie("authorization", token, {
+        expires: new Date(expirationDate),
+        httpOnly: true,
+      })
+      .redirect("/api/auth/is-authenticated");
+  } catch (e) {
+    return res.json({
+      success: false,
+      err: true,
+      message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+      e,
+    });
+  }
 };
 
 exports.jwtTest = async (req, res) => {
@@ -367,13 +368,6 @@ exports.jwtTest = async (req, res) => {
       httpOnly: true,
     })
     .redirect("/api/auth/is-authenticated");
-
-  // .json({
-  //   message: "یوزر با موفقیت وارد شد",
-  //   success: true,
-  //   error: false,
-  //   data: { token },
-  // });
 };
 
 // Find a single User with an id
@@ -393,10 +387,6 @@ exports.isAuthenticated = async (req, res, next) => {
       success: false,
       err: true,
       message: "یوزر مهمان است.",
-      data: {
-        phone_number: user.phone_number,
-        role: user.role,
-      },
     });
 
   try {
