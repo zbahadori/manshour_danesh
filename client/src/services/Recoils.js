@@ -24,3 +24,8 @@ export const UserRole = atom({
   key: "user-role",
   default: null,
 });
+
+export const TriggerIsAuthenticated = atom({
+  key: "trigger_is_authenticated",
+  default: false,
+});

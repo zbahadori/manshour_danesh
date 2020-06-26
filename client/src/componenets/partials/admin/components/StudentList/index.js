@@ -10,9 +10,6 @@ function StudentList() {
 
   const [modalState, setModalState] = useState(false);
 
-  const [modalItem, setModalItem] = useState([{}]);
-
-  const [Cities, setCities] = useState([]);
   const [phone_number, setPhone_number] = useState("");
   const [reference_phone_number, setReference_phone_number] = useState("");
   const [name, setName] = useState("");

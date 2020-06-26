@@ -9,6 +9,7 @@ module.exports = (app) => {
   //Admin routes
   //user manage routes
   router.post("/get-all-users", AdminController.adminGetAllUser);
+
   router.post(
     "/update-user-block",
     [UserValidations.phone_number],
@@ -45,6 +46,23 @@ module.exports = (app) => {
     "/delete-national-id",
     [UserValidations.phone_number],
     AdminController.adminDeleteSingleNationalID
+  );
+
+  router.post(
+    "/update-single-user",
+    [
+      UserValidations.phone_number,
+      UserValidations.name,
+      UserValidations.lastname,
+      UserValidations.name_english,
+      UserValidations.lastname_english,
+      UserValidations.grade,
+      UserValidations.city,
+      UserValidations.province,
+      UserValidations.school,
+      UserValidations.user_image,
+    ],
+    AdminController.adminUpdateSingleUser
   );
 
   // router.post("/test", AdminController.test);

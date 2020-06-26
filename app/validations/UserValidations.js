@@ -11,7 +11,6 @@ module.exports.reference_phone_number = [
   check("reference_phone_number")
     .isString()
     .isLength({ min: 11, max: 11 })
-    .optional()
     .withMessage("شماره موبایل معرف خود را بررسی مجدد کنید.")
     .custom((value, { req }) => {
       if (value == req.body.phone_number) {
@@ -20,7 +19,8 @@ module.exports.reference_phone_number = [
 
       // Indicates the success of this synchronous custom validator
       return true;
-    }),
+    })
+    .optional(),
 ];
 
 const smsCodeLength = process.env.SMS_CODE_LENGTH;
@@ -86,4 +86,11 @@ module.exports.school = [
   check("school")
     .isString()
     .withMessage("نام مدرسه وارد شده را بررسی مجدد کنید."),
+];
+
+module.exports.user_image = [
+  check("phone_number")
+    .isString()
+    .isLength({ min: 4, max: 255 })
+    .withMessage("عکس آپلود شده خود را بررسی مجدد کنید."),
 ];

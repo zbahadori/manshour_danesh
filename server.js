@@ -5,7 +5,6 @@ const dotenv = require("dotenv");
 const path = require("path");
 var cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
-const TestController = require("./app/controllers/TestController");
 
 dotenv.config();
 
@@ -64,16 +63,16 @@ db.mongoose
     process.exit();
   });
 
-// simple route
-// app.get("/", (req, res) => res.render("./client/build/index.html"));
-
 //Routes
 require("./app/routes/AdminRoutes")(app);
 require("./app/routes/UserRouters")(app);
 require("./app/routes/AuthRoutes")(app);
 
 // static folder route
-app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static("build"));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "build", "index.html"));
+});
 
 app.get("/test", async (req, res) => {
   try {
@@ -91,8 +90,6 @@ app.get("/test", async (req, res) => {
     message: "یوزر مهمان است.",
     data,
   });
-
-  TestController;
 });
 
 // set port, listen for requests

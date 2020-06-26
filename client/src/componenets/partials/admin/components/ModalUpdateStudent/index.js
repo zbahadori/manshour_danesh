@@ -28,30 +28,37 @@ export default function Index(props) {
     var submitBtn = document.querySelector("#custom-button-update-user-submit");
     submitBtn.disabled = true;
 
-    // let data = new FormData();
+    let data = new FormData();
 
-    // props.append("id", props.id);
-    // props.append("title", props.title);
-    // props.append("message", props.message);
+    data.append("phone_number", props.phone_number);
+    data.append("name", props.name);
+    data.append("lastname", props.lastname);
+    data.append("name_english", props.name_english);
+    data.append("lastname_english", props.lastname_english);
+    data.append("grade", props.grade);
+    data.append("city", props.city);
+    data.append("province", props.province);
+    data.append("school", props.school);
+    data.append("user_image", props.user_image);
 
-    // for (var key of props.entries()) {
-    //   console.log(key[0] + ", " + key[1]);
-    // }
-    // Axios({
-    //   url: process.env.REACT_APP_BACKEND_URL + "api/admin/update-single-alert",
-    //   withCredentials: true,
-    //   headers: {
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    //   method: "POST",
-    //   data: data,
-    // }).then((res) => {
-    //   console.log(res);
-    //   props.setErrorStatus(res.props.success ? "success" : "danger");
-    //   props.setErrorMessage(res.props.message);
-    //   submitBtn.disabled = false;
-    //   props.updateListComponent();
-    // });
+    for (var key of data.entries()) {
+      console.log(key[0] + ", " + key[1]);
+    }
+    Axios({
+      url: process.env.REACT_APP_BACKEND_URL + "api/admin/update-single-user",
+      withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      method: "POST",
+      data: data,
+    }).then((res) => {
+      console.log(res);
+      props.setErrorStatus(res.data.success ? "success" : "danger");
+      props.setErrorMessage(res.data.message);
+      submitBtn.disabled = false;
+      props.updateListComponent();
+    });
   };
 
   const handleProvinceOnChange = (e) => {
@@ -91,10 +98,10 @@ export default function Index(props) {
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
+          <Alert />
+
           <form onSubmit={handleFormSubmitBtn}>
             <div className="modal-body row">
-              <Alert />
-
               <div className="col-md-6 col-lg-4 form-group">
                 <label htmlFor="phoneNumber">
                   شماره تماس<i className="icon-people"></i>
@@ -282,6 +289,7 @@ export default function Index(props) {
                 />
                 <div>
                   <button
+                    type="button"
                     className="btn btn-primary"
                     data-ripple="ripple"
                     id="custom-button-change-default-avatar"

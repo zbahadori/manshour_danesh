@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Form, FormGroup, Input } from "reactstrap";
-import { ErrorStatus, ErrorMessage } from "../../../../../services/Recoils";
+import {
+  ErrorStatus,
+  ErrorMessage,
+  TriggerIsAuthenticated,
+} from "../../../../../services/Recoils";
 import { useRecoilState } from "recoil";
 
 const Login = ({ props }) => {
@@ -12,6 +16,14 @@ const Login = ({ props }) => {
 
   const [errorStatus, setErrorStatus] = useRecoilState(ErrorStatus);
   const [errorMessage, setErrorMessage] = useRecoilState(ErrorMessage);
+
+  const [triggerIsAuthenticated, setTriggerIsAuthenticated] = useRecoilState(
+    TriggerIsAuthenticated
+  );
+
+  useEffect(() => {
+    return setIsSMSSent(false);
+  }, []);
 
   const handleSubmitLoginStart = (e) => {
     e.preventDefault();
@@ -60,6 +72,7 @@ const Login = ({ props }) => {
       setLoading(false);
       setErrorStatus(res.data.success ? "success" : "danger");
       setErrorMessage(res.data.message);
+      setTriggerIsAuthenticated(!triggerIsAuthenticated);
     });
   };
 
@@ -88,6 +101,15 @@ const Login = ({ props }) => {
                 value="ورود"
               />
             </FormGroup>
+            <div className="row">
+              <div className="col-md-12">
+                <p className="text-right">
+                  <a href="#" onClick={(e) => setIsSMSSent(false)}>
+                    ارسال پیام کوتاه مجدد
+                  </a>
+                </p>
+              </div>
+            </div>
           </Form>
         </>
       ) : (

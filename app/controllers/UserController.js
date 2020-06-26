@@ -44,7 +44,7 @@ exports.userUpdateUserInformation = async (req, res) => {
     return res.json({
       success: false,
       err: true,
-      message: errors.errors[0].msg,
+      message: errors.errors[errors.errors.length - 1].msg,
       error: errors,
     });
   }
@@ -159,7 +159,7 @@ exports.userUpdateNationalID = async (req, res) => {
     return res.json({
       success: false,
       err: true,
-      message: errors.errors[0].msg,
+      message: errors.errors[errors.errors.length - 1].msg,
       error: errors,
     });
   }

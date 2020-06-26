@@ -105,7 +105,7 @@ exports.registerComplete = async (req, res) => {
     return res.json({
       success: false,
       err: true,
-      message: errors.errors[0].msg,
+      message: errors.errors[errors.errors.length - 1].msg,
       error: errors,
     });
   }
@@ -144,7 +144,6 @@ exports.registerComplete = async (req, res) => {
   const user = await User.findOne({
     phone_number: code.phone_number,
   });
-
   if (user)
     return res.json({
       success: false,
@@ -163,12 +162,11 @@ exports.registerComplete = async (req, res) => {
   // Save User in the database
   try {
     const createdUser = await query.save();
-
     const token = await jwt.sign(
-      { phone_number: user.phone_number, role: user.role },
+      { phone_number: createdUser.phone_number, role: createdUser.role },
       AuthConfig.secret,
       {
-        expiresIn: process.env.JWT_EXPIRATION,
+        expiresIn: process.env.JWT_EXPIRATION * 60,
       }
     );
 
@@ -178,16 +176,13 @@ exports.registerComplete = async (req, res) => {
         expires: new Date(expirationDate),
         httpOnly: true,
       })
-      .json({
-        success: true,
-        err: false,
-        message: "یوزر با موفقیت ثبت شد.",
-      });
+      .redirect("/api/auth/is-authenticated");
   } catch (e) {
     return res.json({
       success: false,
       err: true,
       message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+      e,
     });
   }
 };
@@ -200,7 +195,7 @@ exports.loginStart = async (req, res) => {
     return res.json({
       success: false,
       err: true,
-      message: errors.errors[0].msg,
+      message: errors.errors[errors.errors.length - 1].msg,
       error: errors,
     });
   }
@@ -319,11 +314,12 @@ exports.loginComplete = async (req, res) => {
       message: "اطلاعات با این مشخصات یافت نشد.",
     });
 
+  // try {
   const token = await jwt.sign(
     { phone_number: user.phone_number, role: user.role },
     AuthConfig.secret,
     {
-      expiresIn: process.env.JWT_EXPIRATION,
+      expiresIn: process.env.JWT_EXPIRATION * 60,
     }
   );
 
@@ -333,11 +329,15 @@ exports.loginComplete = async (req, res) => {
       expires: new Date(expirationDate),
       httpOnly: true,
     })
-    .json({
-      message: "یوزر با موفقیت وارد شد",
-      success: true,
-      error: false,
-    });
+    .redirect("/api/auth/is-authenticated");
+  // } catch (e) {
+  //   return res.json({
+  //     success: false,
+  //     err: true,
+  //     message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+  //     e,
+  //   });
+  // }
 };
 
 exports.jwtTest = async (req, res) => {

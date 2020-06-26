@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Form, FormGroup, Input } from "reactstrap";
-import { ErrorStatus, ErrorMessage } from "../../../../../services/Recoils";
+import {
+  ErrorStatus,
+  ErrorMessage,
+  TriggerIsAuthenticated,
+} from "../../../../../services/Recoils";
 import { useRecoilState } from "recoil";
 
 const SignUp = ({ props }) => {
@@ -14,6 +18,10 @@ const SignUp = ({ props }) => {
   const [errorStatus, setErrorStatus] = useRecoilState(ErrorStatus);
   const [errorMessage, setErrorMessage] = useRecoilState(ErrorMessage);
 
+  const [triggerIsAuthenticated, setTriggerIsAuthenticated] = useRecoilState(
+    TriggerIsAuthenticated
+  );
+
   const handleSubmitRegisterStart = (e) => {
     e.preventDefault();
 
@@ -24,16 +32,17 @@ const SignUp = ({ props }) => {
 
     setLoading(true);
 
+    let data = new FormData();
+
+    data.append("phone_number", phoneNumber);
+
+    if (referencePhoneNumber)
+      data.append("reference_phone_number", referencePhoneNumber);
+
     axios({
       url: process.env.REACT_APP_BACKEND_URL + "api/auth/register-start",
       method: "POST",
-
-      data: {
-        phone_number: phoneNumber,
-        reference_phone_number: referencePhoneNumber
-          ? referencePhoneNumber
-          : "",
-      },
+      data,
     }).then((res) => {
       console.log(res.data);
       submitBtn.disabled = false;
@@ -65,8 +74,13 @@ const SignUp = ({ props }) => {
       setLoading(false);
       setErrorStatus(res.data.success ? "success" : "danger");
       setErrorMessage(res.data.message);
+      setTriggerIsAuthenticated(!triggerIsAuthenticated);
     });
   };
+
+  useEffect(() => {
+    return setIsSMSSent(false);
+  }, []);
 
   return (
     <section id="content2" className="tab-content">
@@ -81,6 +95,7 @@ const SignUp = ({ props }) => {
                 name="code"
                 id="code"
                 placeholder="کد"
+                value={code}
                 onChange={(e) => setCode(e.target.value)}
                 required
               />
@@ -93,6 +108,15 @@ const SignUp = ({ props }) => {
                 value="ثبت نام"
               />
             </FormGroup>
+            <div className="row">
+              <div className="col-md-12">
+                <p className="text-right">
+                  <a href="#" onClick={(e) => setIsSMSSent(false)}>
+                    ارسال پیام کوتاه مجدد
+                  </a>
+                </p>
+              </div>
+            </div>
           </Form>
         </>
       ) : (
@@ -103,6 +127,7 @@ const SignUp = ({ props }) => {
               name="phone_number"
               id="phone_number"
               placeholder="شماره تلفن"
+              value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
               required
             />
@@ -113,6 +138,7 @@ const SignUp = ({ props }) => {
               name="reference_phone_number"
               id="reference_phone_number"
               placeholder="شماره تلفن معرف"
+              value={referencePhoneNumber}
               onChange={(e) => setReferencePhoneNumber(e.target.value)}
             />
           </FormGroup>

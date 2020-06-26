@@ -19,6 +19,54 @@ exports.adminGetAllUser = async (req, res) => {
   });
 };
 
+//Admin Updates Single User
+exports.adminUpdateSingleUser = async (req, res) => {
+  //Validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.json({
+      success: false,
+      err: true,
+      message: errors.errors[errors.errors.length - 1].msg,
+      error: errors,
+    });
+  }
+
+  const user = await db.user.findOne({
+    phone_number: req.body.phone_number,
+  });
+  if (!user)
+    return res.json({
+      success: false,
+      err: true,
+      message: "دانش آموزی با این مشخصات یافت نشد.",
+    });
+
+  user.name = req.body.name;
+  user.lastname = req.body.lastname;
+  user.name_english = req.body.name_english;
+  user.lastname_english = req.body.lastname_english;
+  user.grade = req.body.grade;
+  user.city = req.body.city;
+  user.province = req.body.province;
+  user.school = req.body.school;
+  if (user.user_image != req.body.user_image) user.school = req.body.school;
+
+  const modifiedUser = user.save();
+  if (!modifiedUser)
+    return res.json({
+      success: false,
+      err: true,
+      message: "تکمیل عملیات در دیتابیس با موفقیت انجام نشد.",
+    });
+
+  return res.json({
+    success: true,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
+  });
+};
+
 //block or unblock a user
 exports.adminUserBlockUpdate = async (req, res) => {
   //Validation
@@ -27,7 +75,7 @@ exports.adminUserBlockUpdate = async (req, res) => {
     return res.json({
       success: false,
       err: true,
-      message: errors.errors[0].msg,
+      message: errors.errors[errors.errors.length - 1].msg,
       error: errors,
     });
   }
@@ -161,7 +209,7 @@ exports.adminCreateAlert = async (req, res) => {
     return res.json({
       success: false,
       err: true,
-      message: errors.errors[0].msg,
+      message: errors.errors[errors.errors.length - 1].msg,
       error: errors,
     });
   }
@@ -208,7 +256,7 @@ exports.adminUpdateSingleAlert = async (req, res) => {
     return res.json({
       success: false,
       err: true,
-      message: errors.errors[0].msg,
+      message: errors.errors[errors.errors.length - 1].msg,
       error: errors,
     });
   }

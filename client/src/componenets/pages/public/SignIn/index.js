@@ -49,22 +49,6 @@ const Account = ({ props }) => {
 
           <Longin />
           <SignUp />
-
-          {tabState ? (
-            <div className="row">
-              <div className="col-md-12">
-                <p className="text-right">
-                  عضو هستید؟ <Link to="/forget-password">وارد شوید</Link>
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="col-md-12">
-              <p className="text-right">
-                <Link to="/forget-password">رمز خود را فراموش کردید؟</Link>
-              </p>
-            </div>
-          )}
         </div>
       </section>
     </>
