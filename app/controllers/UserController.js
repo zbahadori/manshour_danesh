@@ -132,6 +132,7 @@ exports.userGetReferencedUsers = async (req, res) => {
     success: true,
     error: false,
     data: referencedUsers,
+    user: req.user,
   });
 };
 
