@@ -78,9 +78,9 @@ exports.registerStart = async (req, res) => {
   });
 
   // Save record in the database
-  const status = await registrationCodeData.save(registrationCodeData);
+  const codeStatus = await registrationCodeData.save(registrationCodeData);
   //if could not store in DB throw error
-  if (!status)
+  if (!codeStatus)
     return res.json({
       success: false,
       err: true,
