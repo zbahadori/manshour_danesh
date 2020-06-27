@@ -67,5 +67,6 @@ module.exports = (app) => {
 
   // router.post("/test", AdminController.test);
 
-  app.use("/api/admin", router);
+  app.use("/api/admin", [JWTAdminMiddleware], router);
+  // app.use("/api/admin", router);
 };

@@ -16,7 +16,7 @@ export default function Index() {
       withCredentials: true,
       method: "POST",
     }).then((res) => {
-      if (res.data.data) setReferencedUsers();
+      if (res.data.data) setReferencedUsers(res.data.data);
     });
   };
 

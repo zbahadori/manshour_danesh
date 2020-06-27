@@ -8,7 +8,7 @@ function NationalCode({ ...props }) {
   const inputFileRef = useRef(null);
   const [national_id, setNational_Id] = useState("");
 
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState("default_image.png");
   const [imageFile, setImageFile] = useState();
   const [errorStatus, setErrorStatus] = useRecoilState(ErrorStatus);
   const [errorMessage, setErrorMessage] = useRecoilState(ErrorMessage);
@@ -20,8 +20,10 @@ function NationalCode({ ...props }) {
       method: "POST",
     }).then((res) => {
       if (res.data.data) {
-        setNational_Id(res.data.data.national_id);
-        setImage(res.data.data.national_id_image);
+        if (res.success) {
+          setNational_Id(res.data.data.national_id);
+          setImage(res.data.data.national_id_image);
+        }
       }
     });
   };
@@ -111,7 +113,7 @@ function NationalCode({ ...props }) {
                     <img
                       className="NasionalCart"
                       src={
-                        `${process.env.REACT_APP_URL}/uploads/user_image/national_id/` +
+                        `${process.env.REACT_APP_URL}uploads/user_image/national_id/` +
                         image
                       }
                       alt="کارت ملی"

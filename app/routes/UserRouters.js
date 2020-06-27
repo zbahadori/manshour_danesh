@@ -42,6 +42,6 @@ module.exports = (app) => {
   router.get("/test", UserController.test);
   router.post("/test", UserController.test);
 
-  // app.use("/api/user", [jwtStudentMiddleware], router);
-  app.use("/api/user", router);
+  app.use("/api/user", [jwtStudentMiddleware], router);
+  // app.use("/api/user", router);
 };
