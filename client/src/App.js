@@ -9,6 +9,7 @@ import {
 import axios from "axios";
 import "./index.css";
 
+import HomePage from "./componenets/pages/public/HomePage";
 import SignIn from "./componenets/pages/public/SignIn";
 import StudentDashboard from "./componenets/partials/student/containers/StudentDashboard";
 import AdminDashboard from "./componenets/pages/admin/AdminDashboard";
@@ -146,7 +147,7 @@ export default function App() {
           path="/test"
           name="test"
           render={(props) => {
-            return <AdminUserList {...props} />;
+            return <HomePage {...props} />;
           }}
         />
 
