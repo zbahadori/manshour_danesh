@@ -6,10 +6,7 @@ function StudentListItem({ ...props }) {
     <tr>
       <td>
         <img
-          src={
-            `${process.env.REACT_IMAGE_APP_URL}/uploads/user_image/` +
-            props.image
-          }
+          src={`${process.env.REACT_APP_URL}/uploads/user_image/` + props.image}
           alt="اسم دانش آموز"
           title="اسم دانش آموز"
         />

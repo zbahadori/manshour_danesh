@@ -108,12 +108,12 @@ function NationalCode({ ...props }) {
                     </button>
                   </div>
                 </div>
-                <div className="col-md-6 ">
+                <div className="col-md-6">
                   <div className="image NasionalCart">
                     <img
                       className="NasionalCart"
                       src={
-                        `${process.env.REACT_IMAGE_APP_URL}/uploads/user_image/national_id/` +
+                        `${process.env.REACT_APP_URL}/uploads/national_id/` +
                         image
                       }
                       alt="کارت ملی"

@@ -319,8 +319,7 @@ export default function StudentInfoForm() {
             <label htmlFor="avatar">آپلود آواتار</label>
             <img
               src={
-                `${process.env.REACT_IMAGE_APP_URL}/uploads/user_image/user_image/` +
-                user_image
+                `${process.env.REACT_APP_URL}/uploads/user_image/` + user_image
               }
               className="d-block mb-2"
               alt="عکی آواتار"
