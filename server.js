@@ -70,6 +70,9 @@ require("./app/routes/AuthRoutes")(app);
 
 // static folder route
 app.use(express.static("build"));
+app.get("/static-index", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "static", "index.html"));
+});
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "build", "index.html"));
 });

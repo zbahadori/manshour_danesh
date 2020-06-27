@@ -2,7 +2,6 @@ import React from "react";
 import Header from "../../components/Header";
 import logo from "./images/logo.png";
 import "./css/style.scss";
-// import "./js/main";
 import woman_image from "./images/woman-image.jpg";
 import why_wrapper_img from "./images/why-human.png";
 import IntroWrapper from "../../components/IntroWrapper";

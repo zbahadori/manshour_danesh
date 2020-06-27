@@ -83,55 +83,106 @@ export default function App() {
           render={(props) => {
             return (
               <section className="index wv-100 hv-100">
-                <nav className="m-auto">
-                  <ul>
-                    <li>
+                <nav className="m-auto d-flex justify-content-center align-items-center">
+                  <ul className="row">
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-warning text-white">
                       <Link to="/">ROOT</Link>
                     </li>
-                    <li>
-                      <Link to="/test">test</Link>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-warning text-white">
+                      <Link to="/test">Index Under Construction</Link>
                     </li>
-                    <li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-warning text-white">
+                      <Link to="/static-index">Static index</Link>
+                    </li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-warning text-white">
                       <Link to="/signin">signin</Link>
                     </li>
-                    <li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-warning text-white">
                       <Link to="/student/dashboard">
                         <i class="icon-user"></i>Student/Dashboard
                       </Link>
                     </li>
-                    <li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-warning text-white">
                       <Link to="/student/userinfo">
                         <i class="icon-thumbs-up-alt"></i>Student/Userinfo
                       </Link>
                     </li>
-                    <li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-warning text-white">
                       <Link to="/student/referencedlist">
                         <i class="icon-gear"></i>Student/ReferencedList
                       </Link>
                     </li>
-                    <li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-warning text-white">
                       <Link to="/admin/dashboard">
                         <i class="icon-picture"></i>Admin/Dashboard
                       </Link>
                     </li>
-                    <li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-warning text-white">
                       <Link to="/admin/createalert">
                         <i class="icon-picture"></i>Admin/CreateAlert
                       </Link>
                     </li>
-                    <li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-warning text-white">
                       <Link to="/admin/updatealert">
                         <i class="icon-picture"></i>Admin/UpdateAlert
                       </Link>
                     </li>
-                    <li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-warning text-white">
                       <Link to="/admin/userlist">
                         <i class="icon-picture"></i>Admin/Userlist
                       </Link>
                     </li>
-                    <li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-warning text-white">
                       <Link to="/admin/nationalid">
                         <i class="icon-picture"></i>Admin/NationalId
+                      </Link>
+                    </li>
+                  </ul>
+                </nav>
+                <br />
+                <hr />
+                <br />
+                <nav className="m-auto d-flex justify-content-center align-items-center">
+                  <ul className="row">
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-dark text-white">
+                      <Link to="preview/student/dashboard">
+                        <i class="icon-user"></i>Student/Dashboard
+                      </Link>
+                    </li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-dark text-white">
+                      <Link to="preview/student/userinfo">
+                        <i class="icon-thumbs-up-alt"></i>
+                        Preview/Student/Userinfo
+                      </Link>
+                    </li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-dark text-white">
+                      <Link to="preview/student/referencedlist">
+                        <i class="icon-gear"></i>Preview/Student/ReferencedList
+                      </Link>
+                    </li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-dark text-white">
+                      <Link to="preview/admin/dashboard">
+                        <i class="icon-picture"></i>Preview/Admin/Dashboard
+                      </Link>
+                    </li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-dark text-white">
+                      <Link to="preview/admin/createalert">
+                        <i class="icon-picture"></i>Preview/Admin/CreateAlert
+                      </Link>
+                    </li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-dark text-white">
+                      <Link to="preview/admin/updatealert">
+                        <i class="icon-picture"></i>Preview/Admin/UpdateAlert
+                      </Link>
+                    </li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-dark text-white">
+                      <Link to="preview/admin/userlist">
+                        <i class="icon-picture"></i>Preview/Admin/Userlist
+                      </Link>
+                    </li>
+                    <li className="col-6 col-md-4 text-center p-4 border d-flex justify-content-center align-items-center bg-dark text-white">
+                      <Link to="preview/admin/nationalid">
+                        <i class="icon-picture"></i>Preview/Admin/NationalId
                       </Link>
                     </li>
                   </ul>
@@ -239,7 +290,7 @@ export default function App() {
         <Route
           exact
           path="/admin/updatealert"
-          name="TEST"
+          name="adminUpdateAlert"
           render={(props) => {
             if (isAuthenticated && userRole == "admin")
               return <AdminUpdateAlert {...props} />;
@@ -255,6 +306,80 @@ export default function App() {
             if (isAuthenticated && userRole == "admin")
               return <AdminNationalID {...props} />;
             else return <Redirect to="/signin" />;
+          }}
+        />
+
+        {/* ROUTES JUST FOR PREVIEW */}
+        <Route
+          exact
+          path="/preview/student/dashboard"
+          name="previewStudentDashboard"
+          render={(props) => {
+            return <StudentDashboard {...props} />;
+          }}
+        />
+
+        <Route
+          exact
+          path="/preview/student/userinfo"
+          name="previewStudentUserInfo"
+          render={(props) => {
+            return <StudentUserInfo {...props} />;
+          }}
+        />
+
+        {/* Student Referenced list */}
+        <Route
+          exact
+          path="/preview/student/referencedlist"
+          name="previewStudentReferencedList"
+          render={(props) => {
+            return <StudentReferencedList {...props} />;
+          }}
+        />
+
+        <Route
+          exact
+          path="/preview/admin/dashboard"
+          name="previewAdminDashboard"
+          render={(props) => {
+            return <AdminDashboard {...props} />;
+          }}
+        />
+        {/* Userlist for admin */}
+        <Route
+          exact
+          path="/preview/admin/userlist"
+          name="previewAdminUserList"
+          render={(props) => {
+            return <AdminUserList {...props} />;
+          }}
+        />
+        {/* Admin Creates Alert */}
+        <Route
+          exact
+          path="/preview/admin/createalert"
+          name="previewAdminCreateAlert"
+          render={(props) => {
+            return <AdminCreateAlert {...props} />;
+          }}
+        />
+        {/* Admin Update A Single Alert */}
+        <Route
+          exact
+          path="/preview/admin/updatealert"
+          name="previewAdminUpdateAlert"
+          render={(props) => {
+            return <AdminUpdateAlert {...props} />;
+          }}
+        />
+        {/* Admin Review National Ids */}
+        <Route
+          exact
+          path="/preview/admin/nationalid"
+          name="previewAdminNationalId"
+          render={(props) => {
+            return <AdminNationalID {...props} />;
           }}
         />
 
