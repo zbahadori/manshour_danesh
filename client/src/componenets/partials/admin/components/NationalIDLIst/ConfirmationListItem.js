@@ -14,7 +14,8 @@ function ConfirmationListItem({ ...props }) {
         <img
           className="NationalImg"
           src={
-            `${process.env.REACT_APP_URL}/uploads/national_id/` + props.image
+            `${process.env.REACT_IMAGE_APP_URL}/uploads/national_id/` +
+            props.image
           }
           alt="image"
           title="image"
