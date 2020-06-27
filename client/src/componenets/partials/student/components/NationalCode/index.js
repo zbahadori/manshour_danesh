@@ -113,7 +113,7 @@ function NationalCode({ ...props }) {
                     <img
                       className="NasionalCart"
                       src={
-                        `${process.env.REACT_APP_URL}uploads/user_image/national_id/` +
+                        `${process.env.REACT_IMAGE_APP_URL}/uploads/user_image/national_id/` +
                         image
                       }
                       alt="کارت ملی"
