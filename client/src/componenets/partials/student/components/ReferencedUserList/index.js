@@ -16,17 +16,17 @@ export default function Index() {
       withCredentials: true,
       method: "POST",
     }).then((res) => {
-      setReferencedUsers(res.data.data);
+      if (res.data.data) setReferencedUsers();
     });
   };
 
   return (
     <div className="container-fluid">
-      <section class="wrapper">
-        <h2 class="section-title">لیست کل دانش آموزان معرفی شده</h2>
-        <div class="container-fluid">
-          <table class="table table-bordered table-striped text-center">
-            <thead class="thead-light">
+      <section className="wrapper">
+        <h2 className="section-title">لیست کل دانش آموزان معرفی شده</h2>
+        <div className="container-fluid">
+          <table className="table table-bordered table-striped text-center">
+            <thead className="thead-light">
               <tr>
                 <th scope="col">عکس</th>
                 <th scope="col">نام و نام خانوداگی</th>
@@ -49,10 +49,10 @@ export default function Index() {
           </table>
 
           <nav aria-label="...">
-            <ul class="pagination pagination-sm">
+            <ul className="pagination pagination-sm">
               <PaginationListItem
                 status="disabled"
-                tabindex="-1"
+                tabIndex="-1"
                 text="قبلی"
                 link="#"
               ></PaginationListItem>

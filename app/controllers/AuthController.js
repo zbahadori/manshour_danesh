@@ -174,7 +174,7 @@ exports.registerComplete = async (req, res) => {
         expires: new Date(expirationDate),
         httpOnly: true,
       })
-      .redirect("/api/auth/is-authenticated");
+      .redirect("/");
   } catch (e) {
     return res.json({
       success: false,
@@ -312,7 +312,6 @@ exports.loginComplete = async (req, res) => {
     });
 
   try {
-    console.log(user);
     const token = await jwt.sign(
       { phone_number: user.phone_number, role: user.role },
       AuthConfig.secret,
@@ -327,7 +326,7 @@ exports.loginComplete = async (req, res) => {
         expires: new Date(expirationDate),
         httpOnly: true,
       })
-      .redirect("/api/auth/is-authenticated");
+      .redirect("/");
   } catch (e) {
     return res.json({
       success: false,

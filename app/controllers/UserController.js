@@ -5,7 +5,7 @@ const db = require("../models");
 
 //Get Authenticated user information
 exports.userGetUserInformantion = async (req, res) => {
-  const user = await db.user.findOne({ phone_number: "09127170126" });
+  const user = await db.user.findOne({ phone_number: req.user.phone_number });
   if (!user)
     return res.json({
       success: false,
@@ -49,7 +49,7 @@ exports.userUpdateUserInformation = async (req, res) => {
     });
   }
 
-  const user = await db.user.findOne({ phone_number: "09127170126" });
+  const user = await db.user.findOne({ phone_number: req.user.phone_number });
   if (!user)
     return res.json({
       success: false,
@@ -107,7 +107,7 @@ exports.userUpdateUserInformation = async (req, res) => {
 
 //Get the list of users that has been invited to the application
 exports.userGetReferencedUsers = async (req, res) => {
-  const user = await db.user.findOne({ phone_number: "09127170126" });
+  const user = await db.user.findOne({ phone_number: req.user.phone_number });
   if (!user)
     return res.json({
       success: false,
@@ -137,7 +137,7 @@ exports.userGetReferencedUsers = async (req, res) => {
 };
 
 exports.userGetReferencedLink = async (req, res) => {
-  const user = await db.user.findOne({ phone_number: "09127170126" });
+  const user = await db.user.findOne({ phone_number: req.user.phone_number });
   if (!user)
     return res.json({
       success: false,
@@ -166,7 +166,7 @@ exports.userUpdateNationalID = async (req, res) => {
   }
 
   let nationalId = {
-    phone_number: "09127170126",
+    phone_number: req.user.phone_number,
   };
 
   nationalId.national_id = req.body.national_id;
@@ -191,7 +191,7 @@ exports.userUpdateNationalID = async (req, res) => {
     nationalId.national_id_image = req.body.national_id_image_name;
   }
 
-  var query = { phone_number: "09127170126" },
+  var query = { phone_number: req.user.phone_number },
     update = nationalId,
     options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
@@ -216,7 +216,7 @@ exports.userUpdateNationalID = async (req, res) => {
 // User update National ID information
 exports.userGetNationalID = async (req, res) => {
   const nationalID = await db.nationalID
-    .findOne({ phone_number: "09127170126" })
+    .findOne({ phone_number: req.user.phone_number })
     .sort({ created_at: -1 });
   if (!nationalID)
     return res.json({
