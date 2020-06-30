@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useEffect } from "react";
-import "./StudentDashboard.scss";
+import "./student_dashboard.scss";
 
 import StudentHeader from "../Header";
 import StudentMenu from "../Menu";

@@ -1,5 +1,5 @@
 import React from "react";
-import "./confirmationlist.scss";
+import "./confirmation_list.scss";
 
 function ConfirmationListItem({ ...props }) {
   return (
