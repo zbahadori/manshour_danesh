@@ -1,6 +1,5 @@
 import React from "react";
-// import "../../sass/home.scss";
-// import PropTypes from "prop-types";
+
 function PaginationListItem({ ...props }) {
   return (
     <li class={`page-item ${props.status}`}>
@@ -11,7 +10,5 @@ function PaginationListItem({ ...props }) {
     </li>
   );
 }
-// PaginationListItem.propTypes = {
-//   title: PropTypes.string.isRequired,
-// };
+
 export default PaginationListItem;

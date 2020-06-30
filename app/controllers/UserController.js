@@ -70,28 +70,26 @@ exports.userUpdateUserInformation = async (req, res) => {
         success: uploadedImage.success,
         err: uploadedImage.err,
         message: uploadedImage.message,
-        hello: "dgdg",
+        hello: "file upload error",
       });
   }
 
-  var inputdata = {
-    name: req.body.name,
-    lastname: req.body.lastname,
-    name_english: req.body.name_english,
-    lastname_english: req.body.lastname_english,
-    father_name: req.body.father_name,
-    grade: req.body.grade,
-    province: req.body.province,
-    city: req.body.city,
-    school: req.body.school,
-  };
+  // console.log("file seen", uploadedImage);
 
-  if (uploadedImage) {
-    inputdata.user_image = uploadedImage.image;
-  }
-  console.log(inputdata);
-  const userStored = await user.update(inputdata);
-  if (!userStored)
+  user.name = req.body.name;
+  user.lastname = req.body.lastname;
+  user.name_english = req.body.name_english;
+  user.lastname_english = req.body.lastname_english;
+  user.father_name = req.body.father_name;
+  user.grade = req.body.grade;
+  user.city = req.body.city;
+  user.province = req.body.province;
+  user.school = req.body.school;
+
+  if (uploadedImage) user.user_image = uploadedImage.image;
+
+  const modifiedUser = user.save();
+  if (!modifiedUser)
     return res.json({
       success: false,
       err: true,
@@ -99,9 +97,9 @@ exports.userUpdateUserInformation = async (req, res) => {
     });
 
   return res.json({
-    message: "عملیات با موفقیت انجام شد",
     success: true,
-    error: false,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
   });
 };
 

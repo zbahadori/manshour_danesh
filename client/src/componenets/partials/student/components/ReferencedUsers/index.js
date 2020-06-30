@@ -16,7 +16,11 @@ function ReferencedUsers() {
       withCredentials: true,
       method: "POST",
     }).then((res) => {
-      setUserCount(res.data.data.length);
+      try {
+        setUserCount(res.data.data.length);
+      } catch (e) {
+        setUserCount(0);
+      }
     });
   };
 

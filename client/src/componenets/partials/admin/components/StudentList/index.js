@@ -3,8 +3,10 @@ import axios from "axios";
 import StudentListItem from "./StudentListItem";
 import PaginationListItem from "./PaginationListItem";
 import ModalUpdateStudent from "../ModalUpdateStudent";
+
 import { ErrorStatus, ErrorMessage } from "../../../../../services/Recoils";
 import { useRecoilState } from "recoil";
+
 function StudentList() {
   const [usersData, setUsersData] = useState([]);
 
@@ -57,8 +59,12 @@ function StudentList() {
       withCredentials: true,
       method: "POST",
     }).then((res) => {
-      console.log(res.data.data.users);
-      setUsersData(res.data.data.users);
+      console.log(res.data);
+      try {
+        setUsersData(res.data.data.users);
+      } catch (e) {
+        //you could show there res.data.message here for example
+      }
     });
   };
 

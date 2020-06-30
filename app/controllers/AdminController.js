@@ -46,11 +46,13 @@ exports.adminUpdateSingleUser = async (req, res) => {
   user.lastname = req.body.lastname;
   user.name_english = req.body.name_english;
   user.lastname_english = req.body.lastname_english;
+  user.father_name = req.body.father_name;
   user.grade = req.body.grade;
   user.city = req.body.city;
   user.province = req.body.province;
   user.school = req.body.school;
-  if (user.user_image != req.body.user_image) user.school = req.body.school;
+  if (user.user_image != req.body.user_image)
+    user.user_image = req.body.user_image;
 
   const modifiedUser = user.save();
   if (!modifiedUser)

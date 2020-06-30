@@ -6,9 +6,21 @@
 
 ## First phase - Update Status - 6/14
 
+## Second phase - Update Status - 6/30
+
 <h3>Bellow is the reference numbers pointing to client's specifications:</h3>
 
-1, 2, 4, 6, 15, 19, 23, 24, 25, 26, 27
+Phase One : 1, 2, 4, 6, 15, 19, 23, 24, 25, 26
+Phase Two Starter: 7, 8, 9, 10, 13, 14, 16, 27, 28 + 11, 12, 17
+
+## GENERAL RESPONSE MAP
+
+response : {
+success: Boolaen,
+err : Boolean,
+message : String,
+data : MIX|Array|Object
+}
 
 ############################################
 
@@ -18,7 +30,6 @@ Routes => [
 {
 url : '/api/auth/register-start',
 auth : public ,
-users : Students,
 method : 'POST',
 parameters : {
 phone_number : String,
@@ -30,7 +41,6 @@ details : 'GUESTS COULD START REGISTERATION AND GET THE SMS CODE'
 {
 url : '/api/auth/register-complete',
 auth : public ,
-users : Students,
 method : 'POST',
 parameters : {
 code : String
@@ -41,7 +51,6 @@ details : 'GUESTS COULD COMPLETE REGISTRATION AND GET THE AUTH USER'
 {
 url : '/api/auth/login-start',
 auth : public ,
-users : Students,
 method : 'POST',
 parameters : {
 phone_number : String,
@@ -52,7 +61,6 @@ details : 'GUESTS COULD START LOGIN PROCESS AND GET THE SMS CODE'
 {
 url : '/api/auth/login-complete',
 auth : public ,
-users : Students,
 method : 'POST',
 parameters : {
 code : String

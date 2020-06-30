@@ -9,9 +9,11 @@ export default function index(props) {
 
     console.log("submited" + props.id);
 
+    //use Ref
     var submitBtn = document.querySelector(
       "#custom-button-update-alert-submit"
     );
+
     submitBtn.disabled = true;
 
     let data = new FormData();
@@ -20,9 +22,11 @@ export default function index(props) {
     data.append("title", props.title);
     data.append("message", props.message);
 
+    //For debug only
     for (var key of data.entries()) {
       console.log(key[0] + ", " + key[1]);
     }
+
     Axios({
       url: process.env.REACT_APP_BACKEND_URL + "api/admin/update-single-alert",
       withCredentials: true,
@@ -35,8 +39,12 @@ export default function index(props) {
       console.log(res);
       props.setErrorStatus(res.data.success ? "success" : "danger");
       props.setErrorMessage(res.data.message);
+
+      //Move to finally
       submitBtn.disabled = false;
-      props.updateListComponent();
+
+      //Net really a good practise , try an alternative
+      //props.updateListComponent();
     });
   };
 

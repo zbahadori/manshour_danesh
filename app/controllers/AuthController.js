@@ -8,8 +8,6 @@ const User = db.user;
 const registrationCode = db.registrationCode;
 const loginCode = db.loginCode;
 
-const { user } = require("../models");
-
 // Start the Registration Process by sending the code via sms
 exports.registerStart = async (req, res) => {
   const errors = validationResult(req);
@@ -337,11 +335,40 @@ exports.loginComplete = async (req, res) => {
   }
 };
 
-exports.jwtTest = async (req, res) => {
+exports.jwtStudent = async (req, res) => {
   //check if User exists
   //code.phone_number
 
   const user = await User.findOne({ phone_number: "09127170126" });
+  if (!user)
+    return res.json({
+      success: false,
+      err: true,
+      message: "اطلاعات با این مشخصات یافت نشد.",
+    });
+
+  const token = await jwt.sign(
+    { phone_number: user.phone_number, role: user.role },
+    AuthConfig.secret,
+    {
+      expiresIn: process.env.JWT_EXPIRATION * 60,
+    }
+  );
+
+  const expirationDate = Date.now() + process.env.JWT_EXPIRATION * 60000;
+  return res
+    .cookie("authorization", token, {
+      expires: new Date(expirationDate),
+      httpOnly: true,
+    })
+    .redirect("/api/auth/is-authenticated");
+};
+
+exports.jwtAdmin = async (req, res) => {
+  //check if User exists
+  //code.phone_number
+
+  const user = await User.findOne({ phone_number: "09120000000" });
   if (!user)
     return res.json({
       success: false,

@@ -47,6 +47,7 @@ export default function StudentInfoForm() {
 
   const handleAvatarOnChange = (e) => {
     setFile(e.target.files[0]);
+    //User ref instead in this component
     document.querySelector("#custom-text-avatar").innerHTML = "";
     document
       .querySelector("#custom-button-avatar")
@@ -76,9 +77,6 @@ export default function StudentInfoForm() {
     for (var key of data.entries()) {
       console.log(key[0] + ", " + key[1]);
     }
-
-    console.log(data);
-
     Axios({
       url:
         process.env.REACT_APP_BACKEND_URL + "api/user/update-user-information",
@@ -93,7 +91,9 @@ export default function StudentInfoForm() {
       setErrorStatus(res.data.success ? "success" : "danger");
       setErrorMessage(res.data.message);
       submitBtn.disabled = false;
-      updateListComponent();
+
+      // Its may not be a good practise to reset fields after submition like this
+      // updateListComponent();
     });
   };
 
@@ -105,27 +105,31 @@ export default function StudentInfoForm() {
     }).then((res) => {
       console.log(res);
 
-      setPhone_number(res.data.data.phone_number);
-      setReference_phone_number(res.data.data.reference_phone_number);
-      setName(res.data.data.name);
-      setLastname(res.data.data.lastname);
-      setName_english(res.data.data.lastname_english);
-      setLastname_english(res.data.data.lastname_english);
-      setFather_name(res.data.data.father_name);
-      setGrade(res.data.data.grade);
-      setSchool(res.data.data.school);
-      setProvince(res.data.data.province);
-      //get the cities list too
-      let tempArray = CompleteList.filter((item) => {
-        return item.province == res.data.data.province;
-      });
-      tempArray = tempArray.map((item) => {
-        return item.state;
-      });
-      tempArray = [...new Set([...tempArray])];
-      setCities(tempArray);
-      setCity(res.data.data.city);
-      setUser_image(res.data.data.user_image);
+      try {
+        setPhone_number(res.data.data.phone_number);
+        setReference_phone_number(res.data.data.reference_phone_number);
+        setName(res.data.data.name);
+        setLastname(res.data.data.lastname);
+        setName_english(res.data.data.lastname_english);
+        setLastname_english(res.data.data.lastname_english);
+        setFather_name(res.data.data.father_name);
+        setGrade(res.data.data.grade);
+        setSchool(res.data.data.school);
+        setProvince(res.data.data.province);
+        //get the cities list too
+        let tempArray = CompleteList.filter((item) => {
+          return item.province == res.data.data.province;
+        });
+        tempArray = tempArray.map((item) => {
+          return item.state;
+        });
+        tempArray = [...new Set([...tempArray])];
+        setCities(tempArray);
+        setCity(res.data.data.city);
+        setUser_image(res.data.data.user_image);
+      } catch (e) {
+        //show alert that user is not conneted or login or redirect, your choice
+      }
     });
   };
 

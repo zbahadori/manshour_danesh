@@ -27,12 +27,15 @@ function ConfirmationList() {
       withCredentials: true,
       method: "POST",
     }).then((res) => {
-      setAlertList(res.data.data);
+      try {
+        setAlertList(res.data.data ? res.data.data : []);
+      } catch (e) {}
     });
   };
 
   const deleteSignleAlert = (e, id) => {
-    e.currentTarget.disabled = true;
+    // use Ref instead
+    // e.currentTarget.disabled = true;
 
     let data = new FormData();
     data.append("id", id);
@@ -49,13 +52,16 @@ function ConfirmationList() {
       },
       method: "POST",
       data,
-    }).then((res) => {
-      console.log(res.data);
-      updateListComponent();
-      setErrorStatus(res.data.success ? "success" : "danger");
-      setErrorMessage(res.data.message);
-      e.currentTarget.disabled = false;
-    });
+    })
+      .then((res) => {
+        console.log(res.data);
+        updateListComponent();
+        setErrorStatus(res.data.success ? "success" : "danger");
+        setErrorMessage(res.data.message);
+      })
+      .finally(() => {
+        // e.currentTarget.disabled = false;
+      });
   };
 
   const updateSingleAlert = (index) => {
@@ -74,7 +80,7 @@ function ConfirmationList() {
             <Link
               className="btn btn-primary p-2 hint--top"
               aria-label="اطلاعیه جدید"
-              to="#"
+              to="/admin/createalert"
             >
               اطلاعیه جدید
               <i className="icon-trash px-2"></i>

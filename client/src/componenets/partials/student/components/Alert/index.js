@@ -6,12 +6,9 @@ export default function Alert() {
   const [errorStatus, setErrorStatus] = useRecoilState(ErrorStatus);
   const [errorMessage, setErrorMessage] = useRecoilState(ErrorMessage);
 
-  // useEffect(() => {
-  //   return () => {
-  //     setErrorStatus(null);
-  //     setErrorMessage(null);
-  //   };
-  // }, []);
+  useEffect(() => {
+    return setErrorStatus(""), setErrorMessage("");
+  }, []);
 
   return errorMessage ? (
     <div className={"alert alert-" + errorStatus}>{errorMessage}</div>

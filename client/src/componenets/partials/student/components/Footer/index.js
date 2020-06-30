@@ -1,5 +1,5 @@
 import React from "react";
-// import PropTypes from "prop-types";
+
 function Footer({ ...props }) {
   return (
     <footer class="footer">
@@ -20,7 +20,5 @@ function Footer({ ...props }) {
     </footer>
   );
 }
-// Footer.propTypes = {
-//   title: PropTypes.string.isRequired,
-// };
+
 export default Footer;

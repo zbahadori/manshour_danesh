@@ -1,5 +1,4 @@
 import React from "react";
-// import "../../sass/home.scss";
 
 function StudentListItem({ ...props }) {
   return (

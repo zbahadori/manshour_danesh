@@ -20,10 +20,11 @@ function NationalCode({ ...props }) {
       method: "POST",
     }).then((res) => {
       if (res.data.data) {
-        if (res.success) {
+        console.log(res);
+        try {
           setNational_Id(res.data.data.national_id);
           setImage(res.data.data.national_id_image);
-        }
+        } catch {}
       }
     });
   };

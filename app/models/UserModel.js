@@ -3,25 +3,25 @@ module.exports = (mongoose) => {
     {
       name: {
         type: String,
-        default: null,
+        default: "",
         min: 2,
         max: 255,
       },
       lastname: {
         type: String,
-        default: null,
+        default: "",
         min: 2,
         max: 255,
       },
       name_english: {
         type: String,
-        default: null,
+        default: "",
         min: 2,
         max: 255,
       },
       lastname_english: {
         type: String,
-        default: null,
+        default: "",
         min: 2,
         max: 255,
       },
@@ -32,13 +32,13 @@ module.exports = (mongoose) => {
       },
       reference_phone_number: {
         type: String,
-        default: null,
+        default: "",
         unique: true,
         length: 11,
       },
       father_name: {
         type: String,
-        default: null,
+        default: "",
         min: 2,
         max: 255,
       },
@@ -52,19 +52,19 @@ module.exports = (mongoose) => {
       },
       province: {
         type: String,
-        default: null,
+        default: "",
         min: 2,
         max: 255,
       },
       city: {
         type: String,
-        default: null,
+        default: "",
         min: 2,
         max: 255,
       },
       school: {
         type: String,
-        default: null,
+        default: "",
         min: 2,
         max: 255,
       },

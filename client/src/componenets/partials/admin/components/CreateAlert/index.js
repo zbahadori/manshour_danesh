@@ -32,16 +32,22 @@ export default function Index() {
       },
       method: "POST",
       data: data,
-    }).then((res) => {
-      console.log(res);
-      setErrorStatus(res.data.success ? "success" : "danger");
-      setErrorMessage(res.data.message);
-      submitBtn.disabled = false;
-      if (res.data.success) {
-        setTitle("");
-        setMessage("");
-      }
-    });
+    })
+      .then((res) => {
+        //Console logs are just for debuging, would be removed upon deployment
+        console.log(res);
+        setErrorStatus(res.data.success ? "success" : "danger");
+        setErrorMessage(res.data.message);
+        if (res.data.success) {
+          //reset the state as you wish
+          setTitle("");
+          setMessage("");
+        }
+      })
+      .finally(() => {
+        // Do the clean up in finally
+        submitBtn.disabled = false;
+      });
   };
 
   return (
@@ -62,7 +68,7 @@ export default function Index() {
             <textarea
               className="form-control h-auto"
               placeholder="متن اطلاعیه"
-              rows="30"
+              rows="15"
               onChange={(e) => setMessage(e.target.value)}
               value={message}
             ></textarea>

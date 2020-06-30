@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./signin.scss";
 import Logo from "../../assets/images/logo.png";
-import { Input } from "reactstrap";
 import Alert from "../../components/Alert";
 import SignUp from "../../components/Signup";
 import Longin from "../../components/Login";
@@ -21,7 +20,7 @@ const Account = ({ props }) => {
           </div>
           <Alert />
 
-          <Input
+          <input
             id="tab1"
             type="radio"
             name="tabs"
@@ -34,7 +33,7 @@ const Account = ({ props }) => {
             <span>ورود به حساب کاربری</span>
           </label>
 
-          <Input
+          <input
             id="tab2"
             type="radio"
             name="tabs"

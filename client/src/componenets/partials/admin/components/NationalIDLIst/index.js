@@ -21,7 +21,10 @@ function ConfirmationList() {
       method: "POST",
     }).then((res) => {
       console.log(res.data);
-      setNationalIDList(res.data.data);
+      try {
+        //a good practise with validation
+        setNationalIDList(res.data.data ? res.data.data : []);
+      } catch (e) {}
     });
   };
 
@@ -31,6 +34,7 @@ function ConfirmationList() {
     let data = new FormData();
     data.append("phone_number", phoneNumber);
 
+    //This script helps you console.log the appended properties to FormData object
     // for (var key of data.entries()) {
     //   console.log(key[0] + ", " + key[1]);
     // }
@@ -45,6 +49,7 @@ function ConfirmationList() {
       data,
     }).then((res) => {
       console.log(res.data);
+      //not really a bad practise here
       updateListComponent();
       setErrorStatus(res.data.success ? "success" : "danger");
       setErrorMessage(res.data.message);
@@ -57,6 +62,7 @@ function ConfirmationList() {
     let data = new FormData();
     data.append("phone_number", phoneNumber);
 
+    //This script helps you console.log the appended properties to FormData object
     // for (var key of data.entries()) {
     //   console.log(key[0] + ", " + key[1]);
     // }

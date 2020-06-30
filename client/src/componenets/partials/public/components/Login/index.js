@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Form, FormGroup, Input } from "reactstrap";
 import {
   ErrorStatus,
   ErrorMessage,
@@ -38,7 +37,6 @@ const Login = ({ props }) => {
     axios({
       url: process.env.REACT_APP_BACKEND_URL + "api/auth/login-start",
       method: "POST",
-
       data: {
         phone_number: phoneNumber,
       },
@@ -60,12 +58,17 @@ const Login = ({ props }) => {
 
     setLoading(true);
 
+    let formData = new FormData();
+    formData.append("code", code);
+
     axios({
       url: process.env.REACT_APP_BACKEND_URL + "api/auth/login-complete",
       method: "POST",
-      data: {
-        code,
+      withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
+      data: formData,
     }).then((res) => {
       console.log(res.data);
       submitBtn.disabled = false;
@@ -82,25 +85,26 @@ const Login = ({ props }) => {
         "Loading"
       ) : isSMSSent ? (
         <>
-          <Form onSubmit={handleSubmitLoginCode}>
-            <FormGroup>
-              <Input
+          <form onSubmit={handleSubmitLoginCode}>
+            <div className="form-group">
+              <input
                 type="text"
                 name="code"
+                className="form-control"
                 id="code"
                 placeholder="کد"
                 onChange={(e) => setCode(e.target.value)}
                 required
               />
-            </FormGroup>
-            <FormGroup>
-              <Input
+            </div>
+            <div className="form-group">
+              <input
                 type="submit"
-                className="btn btn-primary"
+                className="btn btn-primary btn-block"
                 id="register_submit"
                 value="ورود"
               />
-            </FormGroup>
+            </div>
             <div className="row">
               <div className="col-md-12">
                 <p className="text-right">
@@ -110,30 +114,31 @@ const Login = ({ props }) => {
                 </p>
               </div>
             </div>
-          </Form>
+          </form>
         </>
       ) : (
-        <Form onSubmit={handleSubmitLoginStart}>
-          <FormGroup>
-            <Input
+        <form onSubmit={handleSubmitLoginStart}>
+          <div className="form-group">
+            <input
               type="text"
+              className="form-control"
               name="code"
               id="code"
               placeholder="شماره تلفن خود را وارد کنید"
               onChange={(e) => setPhoneNumber(e.target.value)}
               required
             />
-          </FormGroup>
-
-          <FormGroup>
-            <Input
+          </div>
+          <div className="form-group">
+            <input
               type="submit"
+              className="form-control"
               id="register_submit"
-              className="btn btn-primary"
+              className="btn btn-primary btn-block"
               value="ادامه"
             />
-          </FormGroup>
-        </Form>
+          </div>
+        </form>
       )}
     </section>
   );

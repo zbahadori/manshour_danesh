@@ -1,7 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import "../../sass/home.scss";
-// import PropTypes from "prop-types";
 
 function SubSetItem(props) {
   return (
@@ -16,8 +14,5 @@ function SubSetItem(props) {
     </div>
   );
 }
-// SubSetItem.propTypes = {
-//   count: PropTypes.number.isRequired,
-//   text: PropTypes.string,
-// };
+
 export default SubSetItem;

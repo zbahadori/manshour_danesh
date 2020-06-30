@@ -9,6 +9,8 @@ export default function Index(props) {
   const [Cities, setCities] = useState([]);
 
   useEffect(() => {
+    //Set for provance Please move it to a new function
+
     let tempArray = CompleteList.filter((item) => {
       return item.province == props.province;
     });
@@ -23,8 +25,10 @@ export default function Index(props) {
   const handleFormSubmitBtn = (e) => {
     e.preventDefault();
 
+    //just a debug test
     console.log("submited " + props.phone_number);
 
+    //User ref
     var submitBtn = document.querySelector("#custom-button-update-user-submit");
     submitBtn.disabled = true;
 
@@ -42,6 +46,7 @@ export default function Index(props) {
     data.append("school", props.school);
     data.append("user_image", props.user_image);
 
+    //Just for debug
     for (var key of data.entries()) {
       console.log(key[0] + ", " + key[1]);
     }
@@ -57,6 +62,8 @@ export default function Index(props) {
       console.log(res);
       props.setErrorStatus(res.data.success ? "success" : "danger");
       props.setErrorMessage(res.data.message);
+
+      //use finally with use ref
       submitBtn.disabled = false;
       props.updateListComponent();
     });

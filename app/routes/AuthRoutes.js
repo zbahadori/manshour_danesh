@@ -21,7 +21,8 @@ module.exports = (app) => {
     [UserValidations.code],
     AuthController.registerComplete
   );
-  router.get("/jwt", AuthController.jwtTest);
+  router.get("/jwt-student", AuthController.jwtStudent);
+  router.get("/jwt-admin", AuthController.jwtAdmin);
   router.get("/is-authenticated", AuthController.isAuthenticated);
 
   app.use("/api/auth", router);

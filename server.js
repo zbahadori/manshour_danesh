@@ -10,14 +10,11 @@ dotenv.config();
 
 const app = express();
 
-// Init Auth middleware
-// app.use(AuthMiddleware);
-
 //CORS middleware
 app.use(
   cors({
     origin: [
-      `${process.env.FRONT_URL}`,
+      `${process.env.REACT_APP_URL}`,
       "http://localhost:3000",
       "https://manshour.herokuapp.com",
     ],
@@ -43,7 +40,10 @@ app.use(
     preserveExtension: 4,
     debug: true,
     limitHandler: (req, res, next) => {
-      return res.json({ err: true, message: "Size limit has been exceeded" });
+      return res.json({
+        err: true,
+        message: "حجم فایل بیشتر از اندازه تعیین شده است.",
+      });
     },
   })
 );
@@ -77,23 +77,23 @@ app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "build", "index.html"));
 });
 
-app.get("/test", async (req, res) => {
-  try {
-    const data = req.headers.cookie.split("authorization=")[1];
-  } catch (e) {
-    return res.json({
-      success: false,
-      err: true,
-      message: "یوزر مهمان است.",
-    });
-  }
-  return res.json({
-    success: false,
-    err: true,
-    message: "یوزر مهمان است.",
-    data,
-  });
-});
+// app.get("/test", async (req, res) => {
+//   try {
+//     const data = req.headers.cookie.split("authorization=")[1];
+//   } catch (e) {
+//     return res.json({
+//       success: false,
+//       err: true,
+//       message: "یوزر مهمان است.",
+//     });
+//   }
+//   return res.json({
+//     success: false,
+//     err: true,
+//     message: "یوزر مهمان است.",
+//     data,
+//   });
+// });
 
 // set port, listen for requests
 const PORT = process.env.PORT || 5000;

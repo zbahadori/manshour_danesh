@@ -1,7 +1,6 @@
 import React from "react";
 import "./confirmationlist.scss";
 
-// import PropTypes from "prop-types";
 function ConfirmationListItem({ ...props }) {
   return (
     <tr>

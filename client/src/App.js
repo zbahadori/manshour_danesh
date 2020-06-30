@@ -36,15 +36,14 @@ export default function App() {
   const [triggerIsAuthenticated, setTriggerIsAuthenticated] = useRecoilState(
     TriggerIsAuthenticated
   );
+
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     checkIsAuthenticated();
-    console.log("first checked");
   }, []);
 
   useEffect(() => {
     checkIsAuthenticated();
-    console.log("checked");
   }, [triggerIsAuthenticated]);
 
   const checkIsAuthenticated = () => {
@@ -58,13 +57,13 @@ export default function App() {
           setIsAuthenticated(res.data.success);
           setPhoneNumber(res.data.data.phone_number);
           setUserRole(res.data.data.role);
+          console.log("Authenticated as " + res.data.data.phone_number);
         } catch (e) {
           setIsAuthenticated(false);
           setPhoneNumber(null);
           setUserRole(null);
+          console.log("Not Authenticated");
         }
-
-        console.log(res.data);
       })
       .finally(() => {
         setIsLoaded(true);
