@@ -1,4 +1,5 @@
 const { validationResult } = require("express-validator");
+const paginate = require("express-paginate");
 const ImageUpload = require("../services/ImageUpload");
 
 const db = require("../models");
@@ -105,19 +106,17 @@ exports.userUpdateUserInformation = async (req, res) => {
 
 //Get the list of users that has been invited to the application
 exports.userGetReferencedUsers = async (req, res) => {
-  const user = await db.user.findOne({ phone_number: req.user.phone_number });
-  if (!user)
-    return res.json({
-      success: false,
-      err: true,
-      message: "اطلاعاتی در دیتابیس یافت نشد.",
-    });
+  const [referencedUsers, itemCount] = await Promise.all([
+    db.user
+      .find({ reference_phone_number: req.user.phone_number })
+      .limit(req.body.limit)
+      .skip(req.body.skip)
+      .sort({ createdAt: -1 })
+      .lean()
+      .exec(),
+    db.user.count({}),
+  ]);
 
-  const referencedUsers = await db.user
-    .find({
-      reference_phone_number: user.phone_number,
-    })
-    .sort({ createdAt: -1 });
   if (!referencedUsers)
     return res.json({
       success: false,
@@ -125,12 +124,17 @@ exports.userGetReferencedUsers = async (req, res) => {
       message: "اطلاعاتی در دیتابیس یافت نشد.",
     });
 
+  const pageCount = Math.ceil(itemCount / req.query.limit);
+
   return res.json({
-    message: "عملیات با موفقیت انجام شد.",
     success: true,
     error: false,
-    data: referencedUsers,
-    user: req.user,
+    message: "عملیات با موفقیت انجام شد.",
+    data: {
+      has_more: paginate.hasNextPages(req)(pageCount),
+      count: itemCount,
+      data: referencedUsers,
+    },
   });
 };
 

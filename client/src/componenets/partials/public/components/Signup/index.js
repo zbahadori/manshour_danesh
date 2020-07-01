@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Form, FormGroup, Input } from "reactstrap";
 import {
   ErrorStatus,
   ErrorMessage,
@@ -31,21 +32,17 @@ const SignUp = ({ props }) => {
 
     setLoading(true);
 
-    let formData = new FormData();
+    let data = new FormData();
 
-    formData.append("phone_number", phoneNumber);
+    data.append("phone_number", phoneNumber);
 
     if (referencePhoneNumber)
-      formData.append("reference_phone_number", referencePhoneNumber);
+      data.append("reference_phone_number", referencePhoneNumber);
 
     axios({
       url: process.env.REACT_APP_BACKEND_URL + "api/auth/register-start",
       method: "POST",
-      withCredentials: true,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      data: formData,
+      data,
     }).then((res) => {
       console.log(res.data);
       submitBtn.disabled = false;
@@ -91,27 +88,26 @@ const SignUp = ({ props }) => {
         "Loading"
       ) : isSMSSent ? (
         <>
-          <form onSubmit={handleSubmitRegisterCode}>
-            <div className="form-group">
-              <input
+          <Form onSubmit={handleSubmitRegisterCode}>
+            <FormGroup>
+              <Input
                 type="text"
                 name="code"
-                className="form-control"
                 id="code"
                 placeholder="کد"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 required
               />
-            </div>
-            <div className="form-group">
-              <input
+            </FormGroup>
+            <FormGroup>
+              <Input
                 type="submit"
-                className="btn btn-primary btn-block"
+                className="btn btn-primary"
                 id="register_submit"
                 value="ثبت نام"
               />
-            </div>
+            </FormGroup>
             <div className="row">
               <div className="col-md-12">
                 <p className="text-right">
@@ -121,14 +117,13 @@ const SignUp = ({ props }) => {
                 </p>
               </div>
             </div>
-          </form>
+          </Form>
         </>
       ) : (
-        <form onSubmit={handleSubmitRegisterStart}>
-          <div className="form-group">
-            <input
+        <Form onSubmit={handleSubmitRegisterStart}>
+          <FormGroup>
+            <Input
               type="text"
-              className="form-control"
               name="phone_number"
               id="phone_number"
               placeholder="شماره تلفن"
@@ -136,27 +131,26 @@ const SignUp = ({ props }) => {
               onChange={(e) => setPhoneNumber(e.target.value)}
               required
             />
-          </div>
-          <div className="form-group">
-            <input
+          </FormGroup>
+          <FormGroup>
+            <Input
               type="text"
-              className="form-control"
               name="reference_phone_number"
               id="reference_phone_number"
               placeholder="شماره تلفن معرف"
               value={referencePhoneNumber}
               onChange={(e) => setReferencePhoneNumber(e.target.value)}
             />
-          </div>
-          <div className="form-group">
-            <input
+          </FormGroup>
+          <FormGroup>
+            <Input
               type="submit"
-              className="btn btn-primary btn-block"
+              className="btn btn-primary"
               id="register_submit"
               value="ادامه"
             />
-          </div>
-        </form>
+          </FormGroup>
+        </Form>
       )}
     </section>
   );

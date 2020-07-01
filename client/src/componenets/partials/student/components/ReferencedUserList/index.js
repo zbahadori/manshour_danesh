@@ -15,9 +15,13 @@ export default function Index() {
       url: process.env.REACT_APP_BACKEND_URL + "api/user/referenced-users",
       withCredentials: true,
       method: "POST",
-    }).then((res) => {
-      if (res.data.data) setReferencedUsers(res.data.data);
-    });
+    })
+      .then((res) => {
+        console.log(res);
+        //Just an example of pagination
+        if (res.data.data.data) setReferencedUsers(res.data.data.data);
+      })
+      .catch((e) => console.log(e.response));
   };
 
   return (

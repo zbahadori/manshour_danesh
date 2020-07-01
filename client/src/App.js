@@ -19,6 +19,8 @@ import AdminNationalID from "./componenets/pages/admin/AdminNationalID";
 import AdminCreateAlert from "./componenets/pages/admin/AdminCreateAlert";
 import AdminUpdateAlert from "./componenets/pages/admin/AdminUpdateAlert";
 import StudentReferencedList from "./componenets/pages/student/StudentReferencedList";
+import Loading from "./componenets/partials/public/components/Loading";
+import NotFoundPage from "./componenets/partials/public/components/NotFoundPage";
 
 import { useRecoilState } from "recoil";
 import {
@@ -382,10 +384,24 @@ export default function App() {
           }}
         />
 
-        <Route name="ارور ۴۰۴" render={(props) => "404 Error"} />
+        <Route
+          name="ارور ۴۰۴"
+          render={(props) => {
+            return (
+              <NotFoundPage
+                title="خطا ...!"
+                text=" صفحه مورد نظر پیدا نشد"
+                mound_text="404"
+                link="/"
+                link_text="بازگشت به خانه"
+                {...props}
+              />
+            );
+          }}
+        />
       </Switch>
     </Router>
   ) : (
-    "Loading"
+    <Loading></Loading>
   );
 }

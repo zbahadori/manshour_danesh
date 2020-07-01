@@ -26,9 +26,14 @@ function ConfirmationList() {
       url: process.env.REACT_APP_BACKEND_URL + "api/admin/get-alert",
       withCredentials: true,
       method: "POST",
+      data: {
+        //test for pagination
+        // skip: 2,
+        // limit: 2,
+      },
     }).then((res) => {
       try {
-        setAlertList(res.data.data ? res.data.data : []);
+        setAlertList(res.data.data.data ? res.data.data.data : []);
       } catch (e) {}
     });
   };

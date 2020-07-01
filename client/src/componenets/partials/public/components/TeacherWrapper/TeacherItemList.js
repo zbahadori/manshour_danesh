@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 function TeacherItemList({ ...props }) {
   return (
     <div className="item">
@@ -17,7 +16,4 @@ function TeacherItemList({ ...props }) {
     </div>
   );
 }
-TeacherItemList.propTypes = {
-  title: PropTypes.string.isRequired,
-};
 export default TeacherItemList;

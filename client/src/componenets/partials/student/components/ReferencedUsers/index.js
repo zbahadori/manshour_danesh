@@ -17,7 +17,7 @@ function ReferencedUsers() {
       method: "POST",
     }).then((res) => {
       try {
-        setUserCount(res.data.data.length);
+        setUserCount(res.data.data.count);
       } catch (e) {
         setUserCount(0);
       }

@@ -17,6 +17,7 @@ module.exports = (app) => {
   );
 
   //alerts
+  router.post("/get-alert", AdminController.adminGetAllAlert);
   router.post(
     "/create-alert",
     [AlertValidation.title, AlertValidation.message],
@@ -32,7 +33,6 @@ module.exports = (app) => {
     [AlertValidation.id],
     AdminController.adminDeleteSingleAlert
   );
-  router.post("/get-alert", AdminController.adminGetAllAlert);
 
   //national Id
   router.post("/get-national-id", AdminController.adminGetAllNationalID);

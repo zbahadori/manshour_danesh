@@ -58,10 +58,15 @@ function StudentList() {
       url: process.env.REACT_APP_BACKEND_URL + "api/admin/get-all-users",
       withCredentials: true,
       method: "POST",
+      data: {
+        //for pagination
+        // limit: 0,
+        // skip : 0
+      },
     }).then((res) => {
       console.log(res.data);
       try {
-        setUsersData(res.data.data.users);
+        setUsersData(res.data.data.data);
       } catch (e) {
         //you could show there res.data.message here for example
       }

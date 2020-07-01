@@ -1,10 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const paginate = require("express-paginate");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
 var cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
+const db = require("./app/models");
 
 dotenv.config();
 
@@ -20,6 +22,14 @@ app.use(
     ],
     credentials: true,
   })
+);
+
+// keep this before all routes that will use pagination
+app.use(
+  paginate.middleware(
+    process.env.PAGINATION_LIMIT,
+    process.env.PAGINATION_MAXLIMIT
+  )
 );
 
 // parse requests of content-type - application/json
@@ -49,7 +59,6 @@ app.use(
 );
 
 //Database Connection
-const db = require("./app/models");
 db.mongoose
   .connect(process.env.DB_CONNECT, {
     useNewUrlParser: true,
@@ -73,27 +82,31 @@ app.use(express.static("build"));
 app.get("/static-index", (req, res) => {
   res.sendFile(path.resolve(__dirname, "static", "index.html"));
 });
+
+app.get("/this", async (req, res) => {
+  const [results, itemCount] = await Promise.all([
+    db.user.find({}).limit(req.query.limit).skip(req.skip).lean().exec(),
+    db.user.count({}),
+  ]);
+
+  const pageCount = Math.ceil(itemCount / req.query.limit);
+
+  return res.json({
+    success: true,
+    err: false,
+    message: "عملیات با موفقیت انجام شد.",
+    data: {
+      has_more: paginate.hasNextPages(req)(pageCount),
+      count: itemCount,
+      data: results,
+    },
+  });
+});
+
+//Redirect all other routes
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "build", "index.html"));
 });
-
-// app.get("/test", async (req, res) => {
-//   try {
-//     const data = req.headers.cookie.split("authorization=")[1];
-//   } catch (e) {
-//     return res.json({
-//       success: false,
-//       err: true,
-//       message: "یوزر مهمان است.",
-//     });
-//   }
-//   return res.json({
-//     success: false,
-//     err: true,
-//     message: "یوزر مهمان است.",
-//     data,
-//   });
-// });
 
 // set port, listen for requests
 const PORT = process.env.PORT || 5000;

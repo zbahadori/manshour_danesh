@@ -2,15 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 function AmountWrapperItems({ ...props }) {
   return (
-    <div class="col-md-4">
-      <div class="title-box">
+    <div className="col-md-4">
+      <div className="title-box">
         <div data-ripple="ripple">
-          <i class="fas fa-home"></i>
+          <i className="fas fa-home"></i>
           <span>{props.title}</span>
         </div>
       </div>
-      <div class="content-box">
-        <div class="dots">
+      <div className="content-box">
+        <div className="dots">
           <span></span>
           <span></span>
           <span></span>
@@ -20,7 +20,7 @@ function AmountWrapperItems({ ...props }) {
         <h5>{props.sub_title1}</h5>
 
         {props.count1 && (
-          <strong class="blue-color">
+          <strong className="blue-color">
             <span>۵,۱۲۳</span> نفر
           </strong>
         )}
@@ -29,7 +29,7 @@ function AmountWrapperItems({ ...props }) {
         {props.btn_link1 && (
           <a
             href={props.btn_link1}
-            class="btn btn-primary"
+            className="btn btn-primary"
             data-ripple="ripple"
           >
             شرکت در کلاس
@@ -39,7 +39,7 @@ function AmountWrapperItems({ ...props }) {
         <h5>{props.sub_title2}</h5>
 
         {props.count2 && (
-          <strong class="blue-color">
+          <strong className="blue-color">
             <span>۳۰۷</span> نفر
           </strong>
         )}
@@ -48,7 +48,7 @@ function AmountWrapperItems({ ...props }) {
         {props.btn_link2 && (
           <a
             href={props.btn_link2}
-            class="btn btn-primary"
+            className="btn btn-primary"
             data-ripple="ripple"
           >
             شرکت در کلاس

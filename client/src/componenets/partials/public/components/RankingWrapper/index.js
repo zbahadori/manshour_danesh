@@ -4,6 +4,7 @@ import slider_image1 from "./images/student01.jpg";
 import slider_image2 from "./images/student02.jpg";
 import RankingWrapperItems from "./RankingWrapperItems";
 import RankingWrapperSliderItems from "./RankingWrapperSliderItems";
+import Carousel from "react-elastic-carousel";
 function RankingWrapper({ ...props }) {
   return (
     <section className="ranking-wrapper wrapper">
@@ -37,21 +38,23 @@ function RankingWrapper({ ...props }) {
               <span>{props.slider_title}</span>
             </div>
             <div className="ranking-carousel owl-carousel owl-theme">
-              <RankingWrapperSliderItems
-                image={slider_image1}
-                user_name="نوید بهروزی مجد"
-                text="رتبه ۳ کنکور سال ۱۳۹۸"
-              ></RankingWrapperSliderItems>
-              <RankingWrapperSliderItems
-                image={slider_image2}
-                user_name="نوید بهروزی مجد"
-                text="رتبه ۳ کنکور سال ۱۳۹۸"
-              ></RankingWrapperSliderItems>
-              <RankingWrapperSliderItems
-                image={slider_image1}
-                user_name="نوید بهروزی مجد"
-                text="رتبه ۳ کنکور سال ۱۳۹۸"
-              ></RankingWrapperSliderItems>
+              <Carousel className="elastic-carousel" itemsToShow={2} itemPadding={[5, 5]}>
+                <RankingWrapperSliderItems
+                  image={slider_image1}
+                  user_name="نوید بهروزی مجد"
+                  text="رتبه ۳ کنکور سال ۱۳۹۸"
+                ></RankingWrapperSliderItems>
+                <RankingWrapperSliderItems
+                  image={slider_image2}
+                  user_name="نوید بهروزی مجد"
+                  text="رتبه ۳ کنکور سال ۱۳۹۸"
+                ></RankingWrapperSliderItems>
+                <RankingWrapperSliderItems
+                  image={slider_image1}
+                  user_name="نوید بهروزی مجد"
+                  text="رتبه ۳ کنکور سال ۱۳۹۸"
+                ></RankingWrapperSliderItems>
+              </Carousel>
             </div>
           </div>
         </div>

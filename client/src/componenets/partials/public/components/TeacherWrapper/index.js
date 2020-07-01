@@ -3,6 +3,7 @@ import TeacherItemList from "./TeacherItemList";
 import teacher01 from "./images/teacher01.jpg";
 import teacher02 from "./images/teacher02.jpg";
 import teacher03 from "./images/teacher03.jpg";
+import Carousel from "react-elastic-carousel";
 import PropTypes from "prop-types";
 function TeacherWrapper({ ...props }) {
   return (
@@ -16,26 +17,28 @@ function TeacherWrapper({ ...props }) {
         </div>
         <div className="slide-content">
           <div className="teacher-carousel owl-carousel owl-theme">
-            <TeacherItemList
-              image={teacher01}
-              teacher_name="اسم استاد منشور دانش"
-              description="دبیر ریاضی و فیزیک"
-            ></TeacherItemList>
-            <TeacherItemList
-              image={teacher02}
-              teacher_name="اسم استاد منشور دانش"
-              description="دبیر ریاضی و فیزیک"
-            ></TeacherItemList>
-            <TeacherItemList
-              image={teacher03}
-              teacher_name="اسم استاد منشور دانش"
-              description="دبیر ریاضی و فیزیک"
-            ></TeacherItemList>
-            <TeacherItemList
-              image={teacher02}
-              teacher_name="اسم استاد منشور دانش"
-              description="دبیر ریاضی و فیزیک"
-            ></TeacherItemList>
+            <Carousel itemsToShow={3}>
+              <TeacherItemList
+                image={teacher01}
+                teacher_name="اسم استاد منشور دانش"
+                description="دبیر ریاضی و فیزیک"
+              ></TeacherItemList>
+              <TeacherItemList
+                image={teacher02}
+                teacher_name="اسم استاد منشور دانش"
+                description="دبیر ریاضی و فیزیک"
+              ></TeacherItemList>
+              <TeacherItemList
+                image={teacher03}
+                teacher_name="اسم استاد منشور دانش"
+                description="دبیر ریاضی و فیزیک"
+              ></TeacherItemList>
+              <TeacherItemList
+                image={teacher02}
+                teacher_name="اسم استاد منشور دانش"
+                description="دبیر ریاضی و فیزیک"
+              ></TeacherItemList>
+            </Carousel>
           </div>
         </div>
 

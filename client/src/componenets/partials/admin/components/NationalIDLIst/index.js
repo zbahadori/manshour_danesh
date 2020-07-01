@@ -3,6 +3,7 @@ import ConfirmationListItem from "./ConfirmationListItem";
 import Axios from "axios";
 import { ErrorStatus, ErrorMessage } from "../../../../../services/Recoils";
 import { useRecoilState } from "recoil";
+import AlertItem from "../../../public/components/Alert/AlertItem";
 
 function ConfirmationList() {
   const [nationalIDList, setNationalIDList] = useState([]);
@@ -85,6 +86,12 @@ function ConfirmationList() {
 
   return (
     <div className="container-fluid">
+      <AlertItem
+        title="باریکلا !"
+        text="شما موفق شدین همه ی تست ها رو درست بزنید! شما موفق شدین همه ی تست ها رو درست بزنید! شما موفق شدین همه ی تست ها رو درست بزنید! شما موفق شدین همه ی تست ها رو درست بزنید!"
+        desc="برای کسب اطلاعات بیشتر با مدیریت مجموعه منشور پلاس تماس بگیرید"
+        class_name="success"
+      ></AlertItem>
       <section class="confirm-wrapper wrapper">
         <h2 class="section-title">لیست تایید کارت ملی</h2>
         <div class="container-fluid">

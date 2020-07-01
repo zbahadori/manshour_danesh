@@ -1,9 +1,20 @@
 const { validationResult } = require("express-validator");
+const paginate = require("express-paginate");
 const db = require("../models");
 
 //get all users
 exports.adminGetAllUser = async (req, res) => {
-  const users = await db.user.find().sort({ createdAt: -1 });
+  const [users, itemCount] = await Promise.all([
+    db.user
+      .find({ role: "student" })
+      .limit(req.body.limit)
+      .skip(req.body.skip)
+      .sort({ createdAt: -1 })
+      .lean()
+      .exec(),
+    db.user.count({}),
+  ]);
+
   if (!users)
     return res.json({
       success: false,
@@ -11,11 +22,17 @@ exports.adminGetAllUser = async (req, res) => {
       message: "اطلاعاتی یافت نشد.",
     });
 
+  const pageCount = Math.ceil(itemCount / req.query.limit);
+
   return res.json({
     success: true,
-    err: false,
-    message: "اطلاعات با موفقیت یافت شد",
-    data: { users },
+    error: false,
+    message: "عملیات با موفقیت انجام شد.",
+    data: {
+      has_more: paginate.hasNextPages(req)(pageCount),
+      count: itemCount,
+      data: users,
+    },
   });
 };
 
@@ -234,8 +251,18 @@ exports.adminCreateAlert = async (req, res) => {
 
 // Admin Get the Alerts
 exports.adminGetAllAlert = async (req, res) => {
-  //Store alert in DB
-  const alerts = await db.alert.find();
+  //Get alert in DB
+  const [alerts, itemCount] = await Promise.all([
+    db.alert
+      .find({})
+      .limit(req.body.limit)
+      .skip(req.body.skip)
+      .sort({ createdAt: -1 })
+      .lean()
+      .exec(),
+    db.alert.count({}),
+  ]);
+
   if (!alerts)
     return res.json({
       success: false,
@@ -243,11 +270,17 @@ exports.adminGetAllAlert = async (req, res) => {
       message: "اطلاعاتی در دیتابیس یافت نشد.",
     });
 
+  const pageCount = Math.ceil(itemCount / req.query.limit);
+
   return res.json({
     success: true,
-    err: false,
+    error: false,
     message: "عملیات با موفقیت انجام شد.",
-    data: alerts,
+    data: {
+      has_more: paginate.hasNextPages(req)(pageCount),
+      count: itemCount,
+      data: alerts,
+    },
   });
 };
 

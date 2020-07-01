@@ -46,7 +46,7 @@ function WhyWrapper({ ...props }) {
           </div>
         </div>
       </div>
-      <img src={props.image} alt="image" class="humanObj" />
+      <img src={props.image} alt="image" className="humanObj" />
     </section>
   );
 }

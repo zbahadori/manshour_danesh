@@ -39,6 +39,7 @@
     "react-bootstrap": "^1.0.1",
     "react-chartjs-2": "^2.9.0",
     "react-dom": "^16.13.1",
+    "react-elastic-carousel": "^0.6.4",
     "react-intl": "^4.6.5",
     "react-lines-ellipsis": "^0.14.1",
     "react-rater": "^5.1.1",
