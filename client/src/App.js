@@ -19,8 +19,8 @@ import AdminNationalID from "./componenets/pages/admin/AdminNationalID";
 import AdminCreateAlert from "./componenets/pages/admin/AdminCreateAlert";
 import AdminUpdateAlert from "./componenets/pages/admin/AdminUpdateAlert";
 import StudentReferencedList from "./componenets/pages/student/StudentReferencedList";
-import Loading from "./componenets/partials/public/components/Loading";
-import NotFoundPage from "./componenets/partials/public/components/NotFoundPage";
+import Loading from "./componenets/partials/shaired/components/Loading";
+import NotFoundPage from "./componenets/partials/shaired/components/NotFoundPage";
 
 import { useRecoilState } from "recoil";
 import {

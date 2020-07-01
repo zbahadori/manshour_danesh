@@ -21,10 +21,10 @@ function Alert({ ...props }) {
   };
 
   return (
-    <section class="form-wrapper has-icon wrapper">
-      <div class="container-fluid">
+    <section className="form-wrapper has-icon wrapper">
+      <div className="container-fluid">
         <div className="row">
-          <div class="col-12">
+          <div className="col-12">
             {alerts.map((item, index) => (
               <AlertBox
                 key={index}

@@ -14,22 +14,22 @@ function StudentListItem({ ...props }) {
       <td>{props.father_name}</td>
       <td>{props.role}</td>
       <td>
-        <b class={`bg-${props.status ? "success" : "warning"}`}>
+        <b className={`bg-${props.status ? "success" : "warning"}`}>
           {props.status ? "تایید شده" : "تایید نشده"}
         </b>
       </td>
       <td>
         <button
-          class="btn btn-primary pt-2 hint--top"
+          className="btn btn-primary pt-2 hint--top"
           aria-label="ویرایش"
           onClick={() => props.updateItem(props.phone_number)}
         >
           ویرایش
-          <i class="icon-pencil"></i>
+          <i className="icon-pencil"></i>
         </button>
-        <button class="btn btn-danger pt-2 hint--top" aria-label="بلاک">
+        <button className="btn btn-danger pt-2 hint--top" aria-label="بلاک">
           بلاک
-          <i class="icon-trash"></i>
+          <i className="icon-trash"></i>
         </button>
       </td>
     </tr>

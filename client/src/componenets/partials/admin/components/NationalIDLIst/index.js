@@ -85,18 +85,18 @@ function ConfirmationList() {
   };
 
   return (
-    <div className="container-fluid">
+    <div classNameName="container-fluid">
       <AlertItem
         title="باریکلا !"
         text="شما موفق شدین همه ی تست ها رو درست بزنید! شما موفق شدین همه ی تست ها رو درست بزنید! شما موفق شدین همه ی تست ها رو درست بزنید! شما موفق شدین همه ی تست ها رو درست بزنید!"
         desc="برای کسب اطلاعات بیشتر با مدیریت مجموعه منشور پلاس تماس بگیرید"
-        class_name="success"
+        className_name="success"
       ></AlertItem>
-      <section class="confirm-wrapper wrapper">
-        <h2 class="section-title">لیست تایید کارت ملی</h2>
-        <div class="container-fluid">
-          <table class="table table-bordered table-striped text-center">
-            <thead class="thead-light">
+      <section className="confirm-wrapper wrapper">
+        <h2 className="section-title">لیست تایید کارت ملی</h2>
+        <div className="container-fluid">
+          <table className="table table-bordered table-striped text-center">
+            <thead className="thead-light">
               <tr>
                 <th scope="col">ردیف</th>
                 <th scope="col">نام و نام خانوداگی</th>

@@ -1,14 +1,14 @@
 import React from "react";
 function ChargeWallet({ ...props }) {
   return (
-    <section class="wrapper">
-      <h2 class="section-title">{props.title}</h2>
-      <div class="container-fluid">
-        <div class="increase-box">
+    <section className="wrapper">
+      <h2 className="section-title">{props.title}</h2>
+      <div className="container-fluid">
+        <div className="increase-box">
           <p>{props.info}</p>
           <input
             type="number"
-            class="form-control"
+            className="form-control"
             name="amount"
             id="amount"
             required
@@ -16,7 +16,7 @@ function ChargeWallet({ ...props }) {
           />
           <button
             type="submit"
-            class="btn btn-info d-block w-100"
+            className="btn btn-info d-block w-100"
             data-ripple="ripple"
           >
             {props.btn_text}

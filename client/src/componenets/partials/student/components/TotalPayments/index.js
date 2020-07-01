@@ -2,11 +2,11 @@ import React from "react";
 import TotalPaymentItems from "./TotalPaymentItems";
 function TotalPayments() {
   return (
-    <section class="wrapper">
-      <h2 class="section-title">مجموعه پرداختی ها</h2>
-      <div class="container-fluid">
-        <table class="table table-striped">
-          <thead class="thead-dark">
+    <section className="wrapper">
+      <h2 className="section-title">مجموعه پرداختی ها</h2>
+      <div className="container-fluid">
+        <table className="table table-striped">
+          <thead className="thead-dark">
             <tr>
               <th scope="col">ردیف</th>
               <th scope="col">دانش آموز</th>
@@ -47,30 +47,30 @@ function TotalPayments() {
           </tbody>
         </table>
 
-        <div class="dir-ltr">
-          <ul class="pagination">
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1">
+        <div className="dir-ltr">
+          <ul className="pagination">
+            <li className="page-item disabled">
+              <a className="page-link" href="#" tabindex="-1">
                 قبلی
               </a>
             </li>
-            <li class="page-item">
-              <a class="page-link" href="#">
+            <li className="page-item">
+              <a className="page-link" href="#">
                 1
               </a>
             </li>
-            <li class="page-item active">
-              <a class="page-link" href="#">
-                2 <span class="sr-only">(فعلی)</span>
+            <li className="page-item active">
+              <a className="page-link" href="#">
+                2 <span className="sr-only">(فعلی)</span>
               </a>
             </li>
-            <li class="page-item">
-              <a class="page-link" href="#">
+            <li className="page-item">
+              <a className="page-link" href="#">
                 3
               </a>
             </li>
-            <li class="page-item">
-              <a class="page-link" href="#">
+            <li className="page-item">
+              <a className="page-link" href="#">
                 بعدی
               </a>
             </li>
